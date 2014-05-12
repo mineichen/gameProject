@@ -32,6 +32,8 @@ public class View {
      * @param Game The gameboard
      */
     public View(){
+        this.cols = 7;
+        this.rows=6;
         this.neutralIcon = new ImageIcon(View.class.getResource("/connectFour/images/default_white_dot.png"));
         initSurface();
     }
@@ -39,13 +41,6 @@ public class View {
     //JUST FOR TEST ////////////////////////////////////
     public static void main(String[] arg){
         View view = new View();
-    }
-    //JUST FOR TESTING GUI//////////////////////////////
-    public View(){
-        this.cols = 7;
-        this.rows=6;
-        this.neutralIcon = new ImageIcon(View.class.getResource("/connectFour/images/default_white_dot.png"));
-        initSurface();
     }
     
     /**
