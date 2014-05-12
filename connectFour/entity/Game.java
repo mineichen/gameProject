@@ -51,7 +51,8 @@ public class Game implements GameInterface
         this.players = players;
         discs = new Disc[rows][cols];
     }
-    public void addDisc(int col)
+
+    public void addDisc(int col) throws InvalidInputException
     {
         int nextRow = calcNextRow(col);
         if(isWinnerMove(col, nextRow)) {

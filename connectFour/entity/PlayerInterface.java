@@ -6,11 +6,31 @@
 
 package connectFour.entity;
 
+import java.util.HashSet;
+
 /**
  *
  * @author mineichen
  */
-public interface PlayerInterface
+public abstract class PlayerInterface
 {
-    public void onMove();
+    public abstract void onMove();
+    private HashSet<MoveListener> _listener = new HashSet<>() ;
+    
+    public synchronized void addMoveListener(MoveListener listener)
+    {
+         _listener.add(listener) ;
+    }
+
+    public synchronized void removeMoveListener(MoveListener listener)
+    {
+         _listener.remove(listener) ;
+    }
+
+    private synchronized void fireMoveEvent(int col) {
+          MoveEvent moveEvent = new MoveEvent(col, this) ;
+          for(MoveListener listener : _listener) {
+               listener.movePerformed(moveEvent) ;
+          }
+    }
 }
