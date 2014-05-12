@@ -8,6 +8,9 @@ package connectFour;
 
 import connectFour.entity.Game;
 import connectFour.entity.GuiPlayer;
+import connectFour.entity.PlayerInterface;
+import connectFour.entity.View;
+import java.awt.Color;
 
 /**
  *
@@ -20,12 +23,14 @@ public class GameProject {
      */
     public static void main(String[] args) {
         try {
-            Game game = new Game(new GuiPlayer("Markus"));
+            Color c = Color.red;
+            PlayerInterface player = new GuiPlayer("Markus", c, new View());
+            Game game = new Game(player);
             game.addDisc(4);
             game.addDisc(3);
             game.addDisc(2);
             System.out.println("Win: " + (game.isWinnerMove(1) ? "true" : "false"));
-            game.addDisc(3);
+            game.addDisc(4);
             game.addDisc(4);
             System.out.println("Win: " + (game.isWinnerMove(4) ? "true" : "false"));
         } catch(InvalidInputException e) {

@@ -167,7 +167,6 @@ public enum Direction
     abstract public boolean exists(int col, int row, int cols, int rows);
 
     public int count(GameInterface game, int col, int row) {
-        //System.out.println("Col: " + col + " Row: " + row + "NextCol: " + calcCol(col) + " NextRow: "+calcRow(row));
         if(game.isFromPlayer(game.getCurrentPlayer(), calcCol(col), calcRow(row))) {
             return 1 + count(game, calcCol(col), calcRow(row));
         }

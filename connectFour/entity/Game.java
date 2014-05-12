@@ -174,7 +174,7 @@ public class Game implements GameInterface
         
         public boolean isSameTeam(PlayerInterface player)
         {
-            return this.player.equals(player);
+            return this.player == player;
         }
     }
 }
