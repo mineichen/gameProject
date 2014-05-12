@@ -7,6 +7,7 @@
 package connectFour.entity;
 
 import connectFour.InvalidInputException;
+import java.awt.Graphics;
 
 /**
  *
@@ -51,7 +52,24 @@ public class Game implements GameInterface
         this.players = players;
         discs = new Disc[rows][cols];
     }
-
+    
+    /**
+     * Checks, weather field is from a specific Player
+     * 
+     * @param player
+     * @param col
+     * @param row
+     * @return 
+     */
+    @Override
+    public boolean isFromPlayer(PlayerInterface player, int col, int row)
+    {
+        return cols - col >= 1 
+            && rows - row >= 1 
+            && discs[col][row] != null
+            && discs[col][row].isSameTeam(player);
+    }
+    
     public void addDisc(int col) throws InvalidInputException
     {
         int nextRow = calcNextRow(col);
@@ -72,12 +90,17 @@ public class Game implements GameInterface
     private boolean isWinnerMove(int col, int row) 
     {
         for(Direction dir : checkDirections) {
-            if((dir.count(col, row, cols, rows) + dir.getOpposite().count(col, row, cols, rows) + 1) >= winNumber) {
+            if((dir.count(this, col, row) + dir.getOpposite().count(this, col, row) + 1) >= winNumber) {
                 return true;
             }
         }
         
         return false;
+    }
+    
+    private Disc getDisc(int row, int col)
+    {
+        return discs[col][row];
     }
     
     public PlayerInterface getCurrentPlayer()
@@ -94,6 +117,13 @@ public class Game implements GameInterface
         }
     }
     
+    /**
+     * Calculates the next row in respect to all currently
+     * set Discs
+     * 
+     * @param col
+     * @return nextRow
+     */
     public int calcNextRow(int col)
     {
         for(int i = 0; i < cols; i++) {
@@ -106,15 +136,27 @@ public class Game implements GameInterface
     
     protected class Disc
     {
+        private int col;
+        private int row;
         private PlayerInterface player;
-        public Disc(PlayerInterface player) 
+        public Disc(PlayerInterface player, int col, int row) 
         {
             this.player = player;
+            this.col = col;
+            this.row = row;
         }
         
-        public boolean isSameTeam(Disc Disc)
-        {
-            return this.player.equals(Disc.player);
+        public int getCol(){
+            return col;
         }
+        public int getRow(){
+            return row;
+        }
+        
+        public boolean isSameTeam(PlayerInterface player)
+        {
+            return this.player.equals(player);
+        }
+
     }
 }
