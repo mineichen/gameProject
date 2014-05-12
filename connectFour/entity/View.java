@@ -10,6 +10,7 @@ import connectFour.entity.Game.Disc;
 import java.awt.Dimension;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.HashMap;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -19,13 +20,14 @@ import javax.swing.JFrame;
  *
  * @author mike
  */
-public class View {
+public class View{
     
     private int cols;
     private int rows;
     private ImageIcon neutralIcon;
     private HashMap<Integer, JButton> buttons = new HashMap<Integer, JButton>();
     private JFrame mainWindow;
+    private ArrayList<buttonClickedListener> listeners = new ArrayList<>();
     
     /**
      * Constructor
@@ -35,7 +37,7 @@ public class View {
         this.cols = 7;
         this.rows=6;
         this.neutralIcon = new ImageIcon(View.class.getResource("/connectFour/images/default_white_dot.png"));
-        initSurface();
+        drawSurface();
     }
     
     //JUST FOR TEST ////////////////////////////////////
@@ -51,10 +53,23 @@ public class View {
         
     }
     
+    public void addListener(buttonClickedListener listener){
+        listeners.add(listener);
+    }
+    public void removeListener(buttonClickedListener listener){
+        listeners.remove(listener);
+    }
+    
+    public void initializeGame(Game game){
+        this.cols = game.getCols();
+        this.rows = game.getRows();
+        drawSurface();
+    }
+    
     /**
      * Draw the Surface of the Game
      */
-    public void initSurface(){
+    public void drawSurface(){
         mainWindow = new JFrame("FourConnect");
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.setSize(new Dimension(600, 400));
@@ -86,7 +101,10 @@ public class View {
                 buttonClicked = i;
             }
         }
-        System.out.println("Button clicked: " + buttonClicked);
+        //Inform all Listeners for the change
+        for(buttonClickedListener listener : listeners){
+            listener.buttonClicked(buttonClicked);
+        }
     }
     
     /**
