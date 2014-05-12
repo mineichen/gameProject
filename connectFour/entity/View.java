@@ -7,6 +7,7 @@
 package connectFour.entity;
 
 import connectFour.entity.Game.Disc;
+import javax.swing.ImageIcon;
 import javax.swing.JFrame;
 
 /**
@@ -16,18 +17,22 @@ import javax.swing.JFrame;
 public class View {
     
     private Game gameboard;
+    private int cols;
+    private int rows;
+    private ImageIcon neutralIcon;
     
     /**
      * Constructor
      * @param player The Players
      */
-    public View(){
-        drawSurface();
+    public View(Game gameboard){
+        this.gameboard = gameboard;
+        this.cols = gameboard.getCols();
+        this.rows = gameboard.getRows();
+        this.neutralIcon = new ImageIcon(View.class.getResource("/connectFour.images/default_white_dot.png"));
+        initSurface();
     }
     
-    public static void main(String args[]){
-        
-    }
     
     public void addDisc(Disc disc){
         
@@ -36,7 +41,7 @@ public class View {
     /**
      * Draw the Surface of the Game
      */
-    public void drawSurface(){
+    public void initSurface(){
         JFrame mainWindow = new JFrame("FourConnect");
         
         
