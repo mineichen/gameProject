@@ -63,8 +63,10 @@ public class Game implements GameInterface
     @Override
     public boolean isFromPlayer(PlayerInterface player, int col, int row)
     {
-        return cols - col >= 1 
-            && rows - row >= 1 
+        System.out.println("New Pos: " + (cols - col) + " row: " + (rows - row) + "Existance" + ((discs[col][row] != null) ? "yes" : "no"));
+        
+        return (cols - col) >= 1 
+            && (rows - row) >= 1
             && discs[col][row] != null
             && discs[col][row].isSameTeam(player);
     }
@@ -75,10 +77,9 @@ public class Game implements GameInterface
         if(isWinnerMove(col, nextRow)) {
         
         }
-    
-        discs[col][nextRow] = new Disc(getCurrentPlayer());
+        System.out.println("Add Disc: " + col + ":" + nextRow);
+        discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
         risePlayerCounter();
-        
     }
     
     
@@ -135,7 +136,7 @@ public class Game implements GameInterface
         return -1;
     }
     
-    protected class Disc implements Drawable
+    protected class Disc
     {
         private int col;
         private int row;
@@ -150,6 +151,7 @@ public class Game implements GameInterface
         
         public boolean isSameTeam(PlayerInterface player)
         {
+            System.out.println("Is Same Player Check");
             return this.player.equals(player);
         }
     }
