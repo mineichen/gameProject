@@ -99,7 +99,7 @@ public class Game implements GameInterface
         return false;
     }
     
-    private Disc getDisc(int row, int col)
+    public Disc getDisc(int row, int col)
     {
         return discs[col][row];
     }
