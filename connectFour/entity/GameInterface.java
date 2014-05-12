@@ -7,6 +7,7 @@
 package connectFour.entity;
 
 import connectFour.InvalidInputException ;
+import connectFour.entity.Disc;
 
 /**
  *
@@ -18,4 +19,5 @@ public interface GameInterface
     public boolean isWinnerMove(int col);
     public PlayerInterface getCurrentPlayer();
     public boolean isFromPlayer(PlayerInterface player, int col, int row);
+    //public Disc[] getDiscs();
 }

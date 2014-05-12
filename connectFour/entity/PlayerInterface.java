@@ -7,6 +7,7 @@
 package connectFour.entity;
 
 import java.util.HashSet;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -16,7 +17,7 @@ public abstract class PlayerInterface
 {
     public abstract void onMove();
     public abstract String getName();
-            
+    public abstract ImageIcon getIcon();        
     private HashSet<MoveListener> _listener = new HashSet<>() ;
     
     public synchronized void addMoveListener(MoveListener listener)

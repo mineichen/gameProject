@@ -140,41 +140,4 @@ public class Game implements GameInterface
     public int getCols(){
         return cols;
     }
-    
-    protected class Disc
-    {
-        private int col;
-        private int row;
-        private ImageIcon icon;
-        private PlayerInterface player;
-        public Disc(PlayerInterface player, int col, int row) 
-        {
-            this.player = player;
-            this.col = col;
-            this.row = row;
-            //this.icon = new ImageIcon(Game.class.getResource("/connectFour.images/default_red_dot.png"));
-        }
-        public Disc(PlayerInterface player, int col, int row, ImageIcon icon) 
-        {
-            this.player = player;
-            this.col = col;
-            this.row = row;
-            this.icon = icon;
-        }
-        
-        public int getCol(){
-            return col;
-        }
-        public int getRow(){
-            return row;
-        }
-        public ImageIcon getIcon(){
-            return icon;
-        }
-        
-        public boolean isSameTeam(PlayerInterface player)
-        {
-            return this.player == player;
-        }
-    }
 }
