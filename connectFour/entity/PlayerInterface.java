@@ -15,6 +15,8 @@ import java.util.HashSet;
 public abstract class PlayerInterface
 {
     public abstract void onMove();
+    public abstract String getName();
+            
     private HashSet<MoveListener> _listener = new HashSet<>() ;
     
     public synchronized void addMoveListener(MoveListener listener)
@@ -27,7 +29,7 @@ public abstract class PlayerInterface
          _listener.remove(listener) ;
     }
 
-    protected synchronized void fireMoveEvent(int col) {
+    private synchronized void fireMoveEvent(int col) {
           MoveEvent moveEvent = new MoveEvent(col, this) ;
           for(MoveListener listener : _listener) {
                listener.movePerformed(moveEvent) ;

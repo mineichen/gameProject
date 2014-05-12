@@ -6,6 +6,12 @@
 
 package connectFour;
 
+import connectFour.entity.Game;
+import connectFour.entity.GuiPlayer;
+import connectFour.entity.PlayerInterface;
+import connectFour.entity.View;
+import java.awt.Color;
+
 /**
  *
  * @author mike
@@ -16,9 +22,21 @@ public class GameProject {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        // TODO code application logic here
-        System.out.println("test");
-        System.out.println("Hello World");
+        try {
+            Color c = Color.red;
+            PlayerInterface player = new GuiPlayer("Markus");
+            Game game = new Game(player);
+            game.addDisc(4);
+            game.addDisc(3);
+            game.addDisc(2);
+            System.out.println("Win: " + (game.isWinnerMove(1) ? "true" : "false"));
+            game.addDisc(4);
+            game.addDisc(4);
+            System.out.println("Win: " + (game.isWinnerMove(4) ? "true" : "false"));
+        } catch(InvalidInputException e) {
+            
+        }
+        
     }
     
 }

@@ -65,8 +65,8 @@ public class Game implements GameInterface
     @Override
     public boolean isFromPlayer(PlayerInterface player, int col, int row)
     {
-        return cols - col >= 1 
-            && rows - row >= 1 
+        return (cols - col) >= 1 && col >= 0
+            && (rows - row) >= 1 && row >= 0
             && discs[col][row] != null
             && discs[col][row].isSameTeam(player);
     }
@@ -77,10 +77,9 @@ public class Game implements GameInterface
         if(isWinnerMove(col, nextRow)) {
         
         }
-    
-        discs[col][nextRow] = new Disc(getCurrentPlayer());
-        risePlayerCounter();
         
+        discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
+        risePlayerCounter();
     }
     
     public boolean isWinnerMove(int col) 
@@ -95,7 +94,7 @@ public class Game implements GameInterface
                 return true;
             }
         }
-        
+       
         return false;
     }
     
@@ -153,7 +152,7 @@ public class Game implements GameInterface
             this.player = player;
             this.col = col;
             this.row = row;
-            this.icon = new ImageIcon(Game.class.getResource("/connectFour.images/default_red_dot.png"));
+            //this.icon = new ImageIcon(Game.class.getResource("/connectFour.images/default_red_dot.png"));
         }
         public Disc(PlayerInterface player, int col, int row, ImageIcon icon) 
         {
@@ -175,8 +174,7 @@ public class Game implements GameInterface
         
         public boolean isSameTeam(PlayerInterface player)
         {
-            return this.player.equals(player);
+            return this.player == player;
         }
-
     }
 }
