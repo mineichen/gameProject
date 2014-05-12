@@ -135,13 +135,18 @@ public class Game implements GameInterface
         return -1;
     }
     
-    protected class Disc
+    protected class Disc implements Drawable
     {
+        private int col;
+        private int row;
         private PlayerInterface player;
-        public Disc(PlayerInterface player) 
+        public Disc(PlayerInterface player, int col, int row) 
         {
             this.player = player;
+            this.col = col;
+            this.row = row;
         }
+        
         
         public boolean isSameTeam(PlayerInterface player)
         {
