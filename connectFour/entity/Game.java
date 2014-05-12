@@ -136,7 +136,7 @@ public class Game implements GameInterface
         return -1;
     }
     
-    protected class Disc implements DrawableInterface
+    protected class Disc
     {
         private int col;
         private int row;
