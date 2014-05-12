@@ -12,5 +12,5 @@ package connectFour.entity;
  */
 public interface PlayerInterface
 {
-    public void onMove();
+    
 }
