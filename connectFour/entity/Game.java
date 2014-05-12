@@ -51,6 +51,15 @@ public class Game implements GameInterface
         this.players = players;
         discs = new Disc[rows][cols];
     }
+    
+    @Override
+    public boolean isFromPlayer(PlayerInterface player, int col, int row)
+    {
+        return cols - col >= 1 
+                && rows - row >= 1 
+                && discs[col][row].isSameTeam(player);
+    }
+    
     public void addDisc(int col)
     {
         int nextRow = calcNextRow(col);
@@ -63,6 +72,8 @@ public class Game implements GameInterface
         
     }
     
+    
+    
     public boolean isWinnerMove(int col) 
     {
         return isWinnerMove(col, calcNextRow(col));
@@ -71,12 +82,17 @@ public class Game implements GameInterface
     private boolean isWinnerMove(int col, int row) 
     {
         for(Direction dir : checkDirections) {
-            if((dir.count(col, row, cols, rows) + dir.getOpposite().count(col, row, cols, rows) + 1) >= winNumber) {
+            if((dir.count(this, col, row) + dir.getOpposite().count(this, col, row) + 1) >= winNumber) {
                 return true;
             }
         }
         
         return false;
+    }
+    
+    private Disc getDisc(int row, int col)
+    {
+        return discs[col][row];
     }
     
     public PlayerInterface getCurrentPlayer()
@@ -93,6 +109,13 @@ public class Game implements GameInterface
         }
     }
     
+    /**
+     * Calculates the next row in respect to all currently
+     * set Discs
+     * 
+     * @param col
+     * @return nextRow
+     */
     public int calcNextRow(int col)
     {
         for(int i = 0; i < cols; i++) {
@@ -111,9 +134,9 @@ public class Game implements GameInterface
             this.player = player;
         }
         
-        public boolean isSameTeam(Disc Disc)
+        public boolean isSameTeam(PlayerInterface player)
         {
-            return this.player.equals(Disc.player);
+            return this.player.equals(player);
         }
     }
 }
