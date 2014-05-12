@@ -6,6 +6,8 @@
 
 package connectFour.entity;
 
+import javax.swing.ImageIcon;
+
 /**
  * Description
  *
@@ -14,9 +16,11 @@ package connectFour.entity;
 public class GuiPlayer extends PlayerInterface{
 
     private String name;
+    private ImageIcon icon;
     
-    public GuiPlayer(String name){
+    public GuiPlayer(String name, ImageIcon icon){
         this.name = name;
+        this.icon = icon;
     }
     
     public String getName(){
@@ -26,6 +30,11 @@ public class GuiPlayer extends PlayerInterface{
     @Override   // evtl Name aendern
     public void onMove(){
         
+    }
+    
+    public ImageIcon getIcon()
+    {
+        return icon;
     }
     
 }
