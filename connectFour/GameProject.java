@@ -24,7 +24,7 @@ public class GameProject {
     public static void main(String[] args) {
         try {
             Color c = Color.red;
-            PlayerInterface player = new GuiPlayer("Markus", c, new View());
+            PlayerInterface player = new GuiPlayer("Markus");
             Game game = new Game(player);
             game.addDisc(4);
             game.addDisc(3);
