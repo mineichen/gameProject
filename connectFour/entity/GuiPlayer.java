@@ -7,20 +7,32 @@
 package connectFour.entity;
 
 import javax.swing.ImageIcon;
+import connectFour.EventDispatcher;
+import connectFour.EventListener;
 
 /**
  * Description
  *
  * @author  Jon Buchli
  */
-public class GuiPlayer extends AbstractPlayer {
+public class GuiPlayer implements PlayerInterface {
 
     private String name;
     private ImageIcon icon;
+    private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
     
     public GuiPlayer(String name, ImageIcon icon){
         this.name = name;
         this.icon = icon;
+    }
+    
+    public void addEventListener(EventListener<MoveEvent> e) {
+        dispatcher.addEventListener(e);
+    }
+    
+    public void removeEventListener(EventListener<MoveEvent> e)
+    {
+        dispatcher.removeEventListener(e);
     }
     
     public String getName(){

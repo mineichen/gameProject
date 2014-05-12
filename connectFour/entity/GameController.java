@@ -6,13 +6,14 @@
 
 package connectFour.entity;
 
+import connectFour.EventListener;
 import connectFour.InvalidInputException ;
 
 /**
  *
  * @author efux
  */
-public class GameController implements MoveEventListener
+public class GameController implements EventListener<MoveEvent>
 {
     private Game game ;
 
