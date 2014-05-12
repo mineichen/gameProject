@@ -7,6 +7,7 @@
 package connectFour.entity;
 
 import connectFour.InvalidInputException;
+import java.awt.Graphics;
 
 /**
  *
@@ -135,7 +136,7 @@ public class Game implements GameInterface
         return -1;
     }
     
-    protected class Disc implements Drawable
+    protected class Disc implements DrawableInterface
     {
         private int col;
         private int row;
@@ -147,10 +148,17 @@ public class Game implements GameInterface
             this.row = row;
         }
         
+        public int getCol(){
+            return col;
+        }
+        public int getRow(){
+            return row;
+        }
         
         public boolean isSameTeam(PlayerInterface player)
         {
             return this.player.equals(player);
         }
+
     }
 }
