@@ -13,27 +13,11 @@ import javax.swing.ImageIcon;
  *
  * @author mineichen
  */
-public abstract class PlayerInterface
+public interface PlayerInterface
 {
-    public abstract void onMove();
-    public abstract String getName();
-    public abstract ImageIcon getIcon();        
-    private HashSet<MoveListener> _listener = new HashSet<>() ;
-    
-    public synchronized void addMoveListener(MoveListener listener)
-    {
-         _listener.add(listener) ;
-    }
-
-    public synchronized void removeMoveListener(MoveListener listener)
-    {
-         _listener.remove(listener) ;
-    }
-
-    private synchronized void fireMoveEvent(int col) {
-          MoveEvent moveEvent = new MoveEvent(col, this) ;
-          for(MoveListener listener : _listener) {
-               listener.movePerformed(moveEvent) ;
-          }
-    }
+    public void onMove();
+    public String getName();
+    public ImageIcon getIcon();        
+    public void addMoveListener(MoveListener listener);
+    public void removeMoveListener(MoveListener listener);
 }

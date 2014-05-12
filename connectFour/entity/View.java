@@ -59,7 +59,8 @@ public class View{
      * When a new Disc is added to the gameboard
      * @param disc The Disc
      */
-    public void addDisc(Disc disc){
+    public void addDisc(Disc disc)
+    {
         
     }
     

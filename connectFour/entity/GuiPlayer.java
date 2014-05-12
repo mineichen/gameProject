@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
  *
  * @author  Jon Buchli
  */
-public class GuiPlayer extends PlayerInterface{
+public class GuiPlayer extends AbstractPlayer {
 
     private String name;
     private ImageIcon icon;

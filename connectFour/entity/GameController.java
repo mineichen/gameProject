@@ -20,7 +20,7 @@ public class GameController implements MoveListener
        this.game = game ;
     }
 
-    public void movePerformed(MoveEvent event) {
+    public void on(MoveEvent event) {
        if(game.getCurrentPlayer() == event.getPlayer()) {
           try {
               game.addDisc(event.getCol()) ;

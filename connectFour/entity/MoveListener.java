@@ -12,5 +12,5 @@ package connectFour.entity;
  */
 public interface MoveListener
 {
-	public void movePerformed(MoveEvent event) ;
+    public void on(MoveEvent event);
 }
