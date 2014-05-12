@@ -17,11 +17,11 @@ public class MoveEvent extends EventObject
     private int col;
     private PlayerInterface player;
 
-    public MoveEvent(int col, PlayerInterface player)
+    public MoveEvent(PlayerInterface player, int col)
     {
-        super(player) ;
-        this.col = col;
+        super(player);
         this.player = player;
+        this.col = col;
     }
     
     public int getCol()

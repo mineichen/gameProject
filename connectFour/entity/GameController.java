@@ -12,7 +12,7 @@ import connectFour.InvalidInputException ;
  *
  * @author efux
  */
-public class GameController implements MoveListener
+public class GameController implements MoveEventListener
 {
     private Game game ;
 

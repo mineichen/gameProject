@@ -10,7 +10,7 @@ package connectFour.entity;
  *
  * @author efux
  */
-public interface MoveListener
+public interface MoveEventListener
 {
     public void on(MoveEvent event);
 }

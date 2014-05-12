@@ -74,17 +74,18 @@ public class Game implements GameInterface
     public void addDisc(int col) throws InvalidInputException
     {
         int nextRow = calcNextRow(col);
-        if(isWinnerMove(col, nextRow)) {
-        
-        }
         
         discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
         risePlayerCounter();
     }
     
-    public boolean isWinnerMove(int col) 
+    public boolean isWinnerMove(int col)
     {
-        return isWinnerMove(col, calcNextRow(col));
+        try {
+            return isWinnerMove(col, calcNextRow(col));
+        } catch(InvalidInputException e) {
+            return false;
+        }
     }
     
     private boolean isWinnerMove(int col, int row) 
@@ -124,14 +125,14 @@ public class Game implements GameInterface
      * @param col
      * @return nextRow
      */
-    public int calcNextRow(int col)
+    public int calcNextRow(int col) throws InvalidInputException
     {
         for(int i = 0; i < cols; i++) {
             if(discs[col][i] == null) {
                 return i;
             }
         }
-        return -1;
+        throw new InvalidInputException();
     }
     
     public int getRows(){

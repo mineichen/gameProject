@@ -18,6 +18,6 @@ public interface PlayerInterface
     public void onMove();
     public String getName();
     public ImageIcon getIcon();        
-    public void addMoveListener(MoveListener listener);
-    public void removeMoveListener(MoveListener listener);
+    public void addMoveListener(MoveEventListener listener);
+    public void removeMoveListener(MoveEventListener listener);
 }

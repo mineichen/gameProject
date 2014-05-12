@@ -15,21 +15,21 @@ import javax.swing.ImageIcon;
  */
 public abstract class AbstractPlayer implements PlayerInterface
 {
-    private ArrayList<MoveListener> listener = new ArrayList<>() ;
+    private ArrayList<MoveEventListener> listener = new ArrayList<>() ;
     
-    public synchronized void addMoveListener(MoveListener listener)
+    public synchronized void addMoveListener(MoveEventListener listener)
     {
          this.listener.add(listener) ;
     }
 
-    public synchronized void removeMoveListener(MoveListener listener)
+    public synchronized void removeMoveListener(MoveEventListener listener)
     {
          this.listener.remove(listener) ;
     }
 
     private synchronized void fireMoveEvent(int col) {
-          MoveEvent moveEvent = new MoveEvent(col, this) ;
-          for(MoveListener listener : listener) {
+          MoveEvent moveEvent = new MoveEvent(this, col) ;
+          for(MoveEventListener listener : listener) {
                listener.on(moveEvent) ;
           }
     }
