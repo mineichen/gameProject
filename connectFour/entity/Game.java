@@ -135,6 +135,13 @@ public class Game implements GameInterface
         return -1;
     }
     
+    public int getRows(){
+        return rows;
+    }
+    public int getCols(){
+        return cols;
+    }
+    
     protected class Disc
     {
         private int col;
