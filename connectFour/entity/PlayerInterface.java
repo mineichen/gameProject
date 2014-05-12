@@ -27,7 +27,7 @@ public abstract class PlayerInterface
          _listener.remove(listener) ;
     }
 
-    private synchronized void fireMoveEvent(int col) {
+    protected synchronized void fireMoveEvent(int col) {
           MoveEvent moveEvent = new MoveEvent(col, this) ;
           for(MoveListener listener : _listener) {
                listener.movePerformed(moveEvent) ;
