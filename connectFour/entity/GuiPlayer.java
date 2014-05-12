@@ -6,26 +6,45 @@
 
 package connectFour.entity;
 
+import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
 /**
  * Description
  *
  * @author  Jon Buchli
  */
-public class GuiPlayer implements PlayerInterface{
+public class GuiPlayer extends PlayerInterface implements ActionListener{
 
     private String name;
+    private Color discColor;
+    private View view;
     
-    public GuiPlayer(String name){
+    public GuiPlayer(String name, Color discColor, View view){
         this.name = name;
+        this.discColor = discColor;
+        this.view = view;
+        //this.view.addActionListener(this);
     }
     
     public String getName(){
         return name;
     }
     
-    @Override   // evtl Name aendern
     public void onMove(){
         
+        
     }
+    
+    public Color getDiscImage(){
+        
+        return discColor;
+    }
+    
+     public void actionPerformed(ActionEvent e) {
+         // get col
+         //fireMoveEvent(col);
+     }
     
 }
