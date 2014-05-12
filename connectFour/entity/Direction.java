@@ -15,7 +15,7 @@ public enum Direction
     NORTH {
         @Override
         public boolean exists(int col, int row, int cols, int rows) { 
-            return row++ >= 0;
+            return (row + 1) >= 0;
         } 
         @Override
         public int calcCol(int col) {
@@ -23,7 +23,7 @@ public enum Direction
         }
         @Override
         public int calcRow(int row) {
-            return row++;
+            return row + 1;
         }
         @Override
         public Direction getOpposite() {
@@ -33,7 +33,7 @@ public enum Direction
     SOUTH {
         @Override
         public boolean exists(int col, int row, int cols, int rows) { 
-            return row-- < rows;
+            return (row - 1) < rows;
         } 
         @Override
         public int calcCol(int col) {
@@ -41,7 +41,7 @@ public enum Direction
         }
         @Override
         public int calcRow(int row) {
-            return row--;
+            return row - 1;
         }
         @Override
         public Direction getOpposite() {
@@ -51,11 +51,11 @@ public enum Direction
     WEST {
         @Override
         public boolean exists(int col, int row, int cols, int rows) { 
-            return col-- >= 0;
+            return (col - 1) >= 0;
         } 
         @Override
         public int calcCol(int col) {
-            return col--;
+            return col - 1;
         }
         @Override
         public int calcRow(int row) {
@@ -69,11 +69,11 @@ public enum Direction
     EAST{
         @Override
         public boolean exists(int col, int row, int cols, int rows) { 
-            return col++ < cols;
+            return (col + 1) < cols;
         } 
         @Override
         public int calcCol(int col) {
-            return col++;
+            return col + 1;
         }
         @Override
         public int calcRow(int row) {
@@ -138,7 +138,7 @@ public enum Direction
         }
         @Override
         public Direction getOpposite() {
-            return SOUTHEAST;
+            return SOUTHWEST;
         }
     },
     SOUTHEAST{
@@ -166,9 +166,10 @@ public enum Direction
     abstract public Direction getOpposite();
     abstract public boolean exists(int col, int row, int cols, int rows);
 
-    public int count(int col, int row, int cols, int rows) {
-        if(exists(col, row, cols, rows)) {
-            return 1 + count(calcCol(col), calcRow(row), cols, rows);
+    public int count(GameInterface game, int col, int row) {
+        //System.out.println("Col: " + col + " Row: " + row + "NextCol: " + calcCol(col) + " NextRow: "+calcRow(row));
+        if(game.isFromPlayer(game.getCurrentPlayer(), calcCol(col), calcRow(row))) {
+            return 1 + count(game, calcCol(col), calcRow(row));
         }
         return 0;
     }

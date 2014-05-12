@@ -11,7 +11,7 @@ package connectFour.entity;
  *
  * @author  Jon Buchli
  */
-public class GuiPlayer implements PlayerInterface{
+public class GuiPlayer extends PlayerInterface{
 
     private String name;
     

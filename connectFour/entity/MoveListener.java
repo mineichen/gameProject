@@ -1,19 +1,16 @@
-package connectFour;
-
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
 
+package connectFour.entity;
+
 /**
  *
- * @author mineichen
+ * @author efux
  */
-public class InvalidInputException extends Exception
+public interface MoveListener
 {
-    public InvalidInputException()
-    {
-        super("Invalid move") ;
-    }
+	public void movePerformed(MoveEvent event) ;
 }

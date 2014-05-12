@@ -7,6 +7,8 @@
 package connectFour.entity;
 
 import connectFour.InvalidInputException;
+import java.awt.Graphics;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -63,26 +65,22 @@ public class Game implements GameInterface
     @Override
     public boolean isFromPlayer(PlayerInterface player, int col, int row)
     {
-        System.out.println("New Pos: " + (cols - col) + " row: " + (rows - row) + "Existance" + ((discs[col][row] != null) ? "yes" : "no"));
-        
-        return (cols - col) >= 1 
-            && (rows - row) >= 1
+        return (cols - col) >= 1 && col >= 0
+            && (rows - row) >= 1 && row >= 0
             && discs[col][row] != null
             && discs[col][row].isSameTeam(player);
     }
     
-    public void addDisc(int col)
+    public void addDisc(int col) throws InvalidInputException
     {
         int nextRow = calcNextRow(col);
         if(isWinnerMove(col, nextRow)) {
         
         }
-        System.out.println("Add Disc: " + col + ":" + nextRow);
+        
         discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
         risePlayerCounter();
     }
-    
-    
     
     public boolean isWinnerMove(int col) 
     {
@@ -96,7 +94,7 @@ public class Game implements GameInterface
                 return true;
             }
         }
-        
+       
         return false;
     }
     
@@ -136,22 +134,46 @@ public class Game implements GameInterface
         return -1;
     }
     
+    public int getRows(){
+        return rows;
+    }
+    public int getCols(){
+        return cols;
+    }
+    
     protected class Disc
     {
         private int col;
         private int row;
+        private ImageIcon icon;
         private PlayerInterface player;
         public Disc(PlayerInterface player, int col, int row) 
         {
             this.player = player;
             this.col = col;
             this.row = row;
+            //this.icon = new ImageIcon(Game.class.getResource("/connectFour.images/default_red_dot.png"));
+        }
+        public Disc(PlayerInterface player, int col, int row, ImageIcon icon) 
+        {
+            this.player = player;
+            this.col = col;
+            this.row = row;
+            this.icon = icon;
         }
         
+        public int getCol(){
+            return col;
+        }
+        public int getRow(){
+            return row;
+        }
+        public ImageIcon getIcon(){
+            return icon;
+        }
         
         public boolean isSameTeam(PlayerInterface player)
         {
-            System.out.println("Is Same Player Check");
             return this.player.equals(player);
         }
     }

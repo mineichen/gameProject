@@ -6,16 +6,20 @@
 
 package connectFour.entity;
 
+import java.util.EventObject ;
+
 /**
  *
  * @author mineichen
  */
-public class MoveEvent
+public class MoveEvent extends EventObject
 {
     private int col;
     private PlayerInterface player;
+
     public MoveEvent(int col, PlayerInterface player)
     {
+        super(player) ;
         this.col = col;
         this.player = player;
     }

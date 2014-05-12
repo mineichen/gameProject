@@ -6,7 +6,7 @@
 
 package connectFour.entity;
 
-import connectFour.InvalidInputException;
+import connectFour.InvalidInputException ;
 
 /**
  *
@@ -14,8 +14,8 @@ import connectFour.InvalidInputException;
  */
 public interface GameInterface
 {
-    public void addDisc(int col) throws InvalidInputException;
+    public void addDisc(int col) throws InvalidInputException ;
     public boolean isWinnerMove(int col);
     public PlayerInterface getCurrentPlayer();
-    
+    public boolean isFromPlayer(PlayerInterface player, int col, int row);
 }
