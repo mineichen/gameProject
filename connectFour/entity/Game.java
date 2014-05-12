@@ -52,12 +52,21 @@ public class Game implements GameInterface
         discs = new Disc[rows][cols];
     }
     
+    /**
+     * Checks, weather field is from a specific Player
+     * 
+     * @param player
+     * @param col
+     * @param row
+     * @return 
+     */
     @Override
     public boolean isFromPlayer(PlayerInterface player, int col, int row)
     {
         return cols - col >= 1 
-                && rows - row >= 1 
-                && discs[col][row].isSameTeam(player);
+            && rows - row >= 1 
+            && discs[col][row] != null
+            && discs[col][row].isSameTeam(player);
     }
     
     public void addDisc(int col)
