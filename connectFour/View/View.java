@@ -243,8 +243,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
             return;
         }
         recalculateIconSizeOnWindowResize();
-
-        for (int i = 0; i < rows; i++) {
+        for(int i = (rows-1); i>=0; i--){
             for (int j = 0; j < cols; j++) {
                 //Make a copy of the Image
                 //This is necesarry that the orignial Image is not touched
@@ -302,7 +301,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     private JPanel createGameBoard() {
         gameboardpanel = new JPanel(new GridLayout(rows, cols));
         gameboardpanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
-        for (int i = 0; i < rows; i++) {
+        for(int i = (rows-1); i>=0; i--){
             for (int j = 0; j < cols; j++) {
                 JLabel jlabel = new JLabel("", neutralIcon, JLabel.CENTER);
                 gameboardpanel.add(jlabel);
@@ -341,7 +340,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      */
     private void rowClicked(MouseEvent e) {
         int buttonClicked = -1;
-        for (int i = 0; i < rows; i++) {
+        for(int i = (rows-1); i>=0; i--){
             for (int j = 0; j < cols; j++) {
                 if (e.getSource().equals(dots.get(j + ":" + i))) {
                     buttonClicked = j;
