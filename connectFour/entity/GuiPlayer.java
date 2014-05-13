@@ -9,6 +9,7 @@ package connectFour.entity;
 import javax.swing.ImageIcon;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
+import connectFour.View.View;
 
 /**
  * Description
@@ -21,10 +22,11 @@ public class GuiPlayer extends AbstractPlayer implements ButtonClickedListener{
     private ImageIcon icon;
     
     
-    public GuiPlayer(String name, ImageIcon icon)
+    public GuiPlayer(String name, ImageIcon icon, View view)
     {
         this.name = name;
         this.icon = icon;
+        view.addListener(this);
         
     }
     
@@ -57,6 +59,8 @@ public class GuiPlayer extends AbstractPlayer implements ButtonClickedListener{
     @Override
     public void buttonClicked(int col)
     {
+        
         dispatcher.dispatch(new MoveEvent(this, col));
+        
     }
 }

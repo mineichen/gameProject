@@ -17,18 +17,22 @@ public class GameController implements EventListener<MoveEvent>
 {
     private Game game ;
 
-    public void GameController(Game game) {
+    public GameController(Game game) {
        this.game = game ;
+       game.getCurrentPlayer().addEventListener(this);
     }
 
     public void on(MoveEvent event) {
-       if(game.getCurrentPlayer() == event.getPlayer()) {
-          try {
-              game.addDisc(event.getCol()) ;
-              // view benachrichtigen
-          } catch(InvalidInputException exception) {
-          }
-       }
+       PlayerInterface player = game.getCurrentPlayer();
+        try {
+            System.out.println("Call me");
+              game.addDisc(event.getCol());
+              player.removeEventListener(this);
+              game.getCurrentPlayer().addEventListener(this);     // view benachrichtigen
+        } catch(InvalidInputException exception) {
+        }
+         
+       
     }
 
 }

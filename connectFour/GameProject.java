@@ -10,6 +10,7 @@ import connectFour.entity.Game;
 import connectFour.entity.GuiPlayer;
 import connectFour.entity.PlayerInterface;
 import connectFour.View.View;
+import connectFour.entity.GameController;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
@@ -23,25 +24,17 @@ public class GameProject {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        try {
-            Color c = Color.red;
-            
-            PlayerInterface player = new GuiPlayer("Markus", new ImageIcon(GameProject.class.getResource("/connectFour/images/default_white_dot.png")));
-            Game game = new Game(player);
-            game.addDisc(4);
-            game.addDisc(3);
-            game.addDisc(2);
+        
             
             View view = new View();
+            
+            PlayerInterface player = new GuiPlayer("Markus", new ImageIcon(GameProject.class.getResource("/connectFour/images/default_red_dot.png")), view);
+            PlayerInterface player2 = new GuiPlayer("Mike", new ImageIcon(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),view);
+            Game game = new Game(player,player2);
+            GameController ctrl = new GameController(game);
+            
             view.bind(game);
             
-            System.out.println("Win: " + (game.isWinnerMove(1) ? "true" : "false"));
-            game.addDisc(4);
-            //game.addDisc(4);
-            System.out.println("Win: " + (game.isWinnerMove(4) ? "true" : "false"));
-        } catch(InvalidInputException e) {
-            
-        }
         
     }
     
