@@ -41,6 +41,7 @@ public class View implements Observer {
     private int iconsize;
     private ImageIcon neutralIcon;
     private HashMap<String, JLabel> dots = new HashMap<String, JLabel>();
+    private HashMap<String, ImageIcon> icons = new HashMap<String, ImageIcon>();
     private JFrame mainWindow;
     private JPanel gameboardpanel;
     private ArrayList<ButtonClickedListener> listeners = new ArrayList<>();
@@ -76,7 +77,7 @@ public class View implements Observer {
 
     /**
      * Bind the game to the View
-     * Whithout this call the View cant be initialised
+     * Without this call the View cant be initialised
      * @param game 
      */
     public void bind(Game game) {
@@ -156,6 +157,20 @@ public class View implements Observer {
      */
     public void repaint() {
         recalculateIconSizeOnWindowResize();
+        
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                ImageIcon icon = icons.get(j+":"+i);
+                try{
+                    icon.setImage(icon.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_DEFAULT));
+                }catch(Exception ex){
+                    System.out.println("Error: "+ex.toString());
+                }
+                setIconOnLabel(j+":"+i, icon);
+            }
+        }
+        
+        /*
         try {
             neutralIcon.setImage(neutralIcon.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_DEFAULT));
         } catch (Exception ex) {
@@ -163,7 +178,7 @@ public class View implements Observer {
         }
         for (JLabel label : dots.values()) {
             label.setIcon(neutralIcon);
-        }
+        }*/
 
     }
 
@@ -183,6 +198,7 @@ public class View implements Observer {
                 }
                 if (disc != null) {
                     ImageIcon icon = disc.getIcon();
+                    icons.put(j+":"+i, icon);
                     setIconOnLabel(j + ":" + i, icon);
                 }
             }
