@@ -15,7 +15,8 @@ import connectFour.InvalidInputException ;
  */
 public class GameController implements EventListener<MoveEvent>
 {
-    private Game game ;
+    private Game game;
+    private MoveEvent lastChange;
 
     public GameController(Game game) {
        this.game = game ;
@@ -23,16 +24,15 @@ public class GameController implements EventListener<MoveEvent>
     }
 
     public void on(MoveEvent event) {
-       PlayerInterface player = game.getCurrentPlayer();
-        try {
-            System.out.println("Call me");
-              game.addDisc(event.getCol());
-              player.removeEventListener(this);
-              game.getCurrentPlayer().addEventListener(this);     // view benachrichtigen
-        } catch(InvalidInputException exception) {
-        }
-         
        
+        PlayerInterface player = game.getCurrentPlayer();
+        if (event.getPlayer() == player) {
+            try {
+                game.addDisc(event.getCol());
+                player.removeEventListener(this);
+                game.getCurrentPlayer().addEventListener(this);     // view benachrichtigen
+            } catch(InvalidInputException exception) {
+            }
+        }
     }
-
 }

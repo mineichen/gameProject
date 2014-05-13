@@ -27,13 +27,17 @@ public class GameProject {
         
             
             View view = new View();
+            View view2 = new View();
             
             PlayerInterface player = new GuiPlayer("Markus", new ImageIcon(GameProject.class.getResource("/connectFour/images/default_red_dot.png")), view);
-            PlayerInterface player2 = new GuiPlayer("Mike", new ImageIcon(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),view);
-            Game game = new Game(player,player2);
+            PlayerInterface player2 = new GuiPlayer("Mike", new ImageIcon(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),view2);
+            
+            System.out.println((player == player2) ? "Equal" : "Other");
+            Game game = new Game(player2, player);
             GameController ctrl = new GameController(game);
             
             view.bind(game);
+            view2.bind(game);
             
         
     }

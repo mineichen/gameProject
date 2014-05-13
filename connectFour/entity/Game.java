@@ -93,7 +93,7 @@ public class Game implements GameInterface
         // if the move is valid
         System.out.println("Add new Disc at " + col + ":" + nextRow);
         discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
-        dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow]));
+        dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow], isWinnerMove(col, nextRow)));
         risePlayerCounter();
     }
 

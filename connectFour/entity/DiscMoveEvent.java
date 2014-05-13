@@ -15,7 +15,8 @@ import java.util.EventObject;
 public class DiscMoveEvent extends EventObject 
 {
     private Disc disc;
-    public DiscMoveEvent(Object dispatcher, Disc disc)
+    private boolean winnerMove;
+    public DiscMoveEvent(Object dispatcher, Disc disc, boolean winnerMove)
     {
         super(dispatcher);
         this.disc = disc;
@@ -24,5 +25,10 @@ public class DiscMoveEvent extends EventObject
     public Disc getDisc()
     {
         return disc;
+    }
+    
+    public boolean isWinnerMove()
+    {
+        return winnerMove;
     }
 }
