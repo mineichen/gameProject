@@ -13,7 +13,7 @@ import javax.swing.ImageIcon;
  *
  * @author  Jon Buchli
  */
-public class GuiPlayer extends AbstractPlayer {
+public class GuiPlayer extends AbstractPlayer implements ButtonClickedListener{
 
     private String name;
     private ImageIcon icon;
@@ -21,6 +21,7 @@ public class GuiPlayer extends AbstractPlayer {
     public GuiPlayer(String name, ImageIcon icon){
         this.name = name;
         this.icon = icon;
+        
     }
     
     public String getName(){
@@ -32,4 +33,9 @@ public class GuiPlayer extends AbstractPlayer {
         return icon;
     }
     
+    public void buttonClicked(int col){
+        
+        fireMoveEvent(col);
+        
+    }
 }
