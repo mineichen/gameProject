@@ -34,12 +34,12 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
-
+import connectFour.EventListener;
 /**
  *
  * @author mike
  */
-public class View implements EventListener<MoveDiscEvent> {
+public class View implements EventListener<DiscMoveEvent> {
 
     /**
      * The cols of the gameBoard
