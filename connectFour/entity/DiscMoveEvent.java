@@ -20,6 +20,7 @@ public class DiscMoveEvent extends EventObject
     {
         super(dispatcher);
         this.disc = disc;
+        this.winnerMove = winnerMove;
     }
     
     public Disc getDisc()

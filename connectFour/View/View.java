@@ -234,11 +234,6 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     }
     
     
-    private void addClosdAction()
-    {
-        
-    }
-
     /**
      * Is called when a new disc get added to the game board
      *
@@ -248,6 +243,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     @Override
     public void on(DiscMoveEvent e)
     {
+        System.out.println("Is Winner Move: " + ((e.isWinnerMove()) ? "yes" : "no"));
         addDisc(e.getDisc());
         repaint();
     }

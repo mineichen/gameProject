@@ -89,8 +89,9 @@ public class Game implements GameInterface
     public void addDisc(int col) throws InvalidInputException
     {
         int nextRow = calcNextRow(col);
+        boolean winnerMove = isWinnerMove(col, nextRow);
         discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
-        dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow], isWinnerMove(col, nextRow)));
+        dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow], winnerMove));
         risePlayerCounter();
     }
 
