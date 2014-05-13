@@ -256,11 +256,17 @@ public class View implements Observer {
             listener.buttonClicked(buttonClicked);
         }
     }
-
+   
+    /**
+     * Is called when a new disc get added to the game board
+     *
+     * @param Observable usually the an object of GameObservable from a game
+     * @param Object the disc added to the game board
+     */
     @Override
     public void update(Observable gameObservable, Object d)
     {
-        Disc disc = (Disc) d ;
+        Disc newDisc = (Disc) d ;
     }
 
 }
