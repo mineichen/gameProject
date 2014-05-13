@@ -25,18 +25,36 @@ public class GuiPlayer extends AbstractPlayer implements ButtonClickedListener{
     {
         this.name = name;
         this.icon = icon;
+        
     }
     
-    public String getName()
-    {
+    /**
+     * Returns the name of this Player
+     * 
+     * @return name
+     */
+    @Override
+    public String getName(){
         return name;
     }
     
+    /**
+     * Returns the set icon of this Player
+     * 
+     * @return icon
+     */
+    @Override
     public ImageIcon getIcon()
     {
         return icon;
     }
     
+    /**
+     * Passes the clicked col to fireMoveEvent
+     * 
+     * @param col
+     */
+    @Override
     public void buttonClicked(int col)
     {
         dispatcher.dispatch(new MoveEvent(this, col));

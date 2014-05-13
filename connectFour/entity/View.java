@@ -46,12 +46,6 @@ public class View implements EventListener<DiscMoveEvent> {
     private JPanel gameboardpanel;
     private ArrayList<ButtonClickedListener> listeners = new ArrayList<>();
     private Game game;
-    private ArrayList<ImageIcon> originalIcons = new ArrayList<ImageIcon>();
-
-    public void on(MoveEvent e) 
-    {
-        
-    }
     
     
     /**
@@ -60,20 +54,7 @@ public class View implements EventListener<DiscMoveEvent> {
      * @param Game The gameboard
      */
     public View() {
-        this.cols = 7;
-        this.rows = 6;
         this.neutralIcon = new ImageIcon(View.class.getResource("/connectFour/images/default_white_dot.png"));
-        originalIcons.add(neutralIcon);
-        this.game = null;
-    }
-
-    /**
-     * When a new Disc is added to the gameboard
-     *
-     * @param disc The Disc
-     */
-    public void addDisc(Disc disc) {
-
     }
 
     public void addListener(ButtonClickedListener listener) {
@@ -245,11 +226,16 @@ public class View implements EventListener<DiscMoveEvent> {
             listener.buttonClicked(buttonClicked);
         }
     }
-   
-    
+
+    /**
+     * Is called when a new disc get added to the game board
+     *
+     * @param Observable usually the an object of GameObservable from a game
+     * @param Object the disc added to the game board
+     */
+     @Override
     public void on(DiscMoveEvent e)
     {
         
     }
-
 }

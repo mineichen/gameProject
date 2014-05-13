@@ -30,13 +30,14 @@ public class Game implements GameInterface
      * 1 2 3 <-cols
      */
     private final Disc[][] discs;
-    
     private static final Direction[] checkDirections = {
         Direction.WEST, 
         Direction.SOUTHWEST, 
         Direction.SOUTH, 
         Direction.SOUTHEAST
     };
+
+    
     
     public Game(PlayerInterface... players)
     {
@@ -94,6 +95,7 @@ public class Game implements GameInterface
         dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow]));
         risePlayerCounter();
     }
+
 
     @Override
     public Iterable<Disc> getDiscs()
