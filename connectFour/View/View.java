@@ -305,6 +305,7 @@ public class View implements EventListener<DiscMoveEvent> {
     private void setIconOnLabel(String identifier, ImageIcon icon) {
         JLabel label = dots.get(identifier);
         label.setIcon(icon);
+        mainWindow.repaint();
     }
 
     /**
@@ -366,6 +367,20 @@ public class View implements EventListener<DiscMoveEvent> {
             listener.buttonClicked(buttonClicked);
         }
     }
+    
+    /**
+     * Add the Disc to the gameboard
+     * @param disc 
+     */
+    private void addDisc(Disc disc){
+        int row = disc.getRow();
+        int col = disc.getCol();
+        ImageIcon icon = disc.getIcon();
+        
+        icons.put(col+":"+row, icon);
+        setIconOnLabel(col+":"+row, icon);
+        
+    }
 
     /**
      * Is called when a new disc get added to the game board
@@ -376,6 +391,6 @@ public class View implements EventListener<DiscMoveEvent> {
     @Override
     public void on(DiscMoveEvent e)
     {
-        
+        addDisc(e.getDisc());
     }
 }
