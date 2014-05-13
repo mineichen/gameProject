@@ -3,7 +3,7 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package connectFour.entity;
+package connectFour.View;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -35,6 +35,10 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 import connectFour.EventListener;
+import connectFour.entity.ButtonClickedListener;
+import connectFour.entity.Disc;
+import connectFour.entity.DiscMoveEvent;
+import connectFour.entity.Game;
 /**
  *
  * @author mike

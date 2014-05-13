@@ -9,7 +9,7 @@ package connectFour;
 import connectFour.entity.Game;
 import connectFour.entity.GuiPlayer;
 import connectFour.entity.PlayerInterface;
-import connectFour.entity.View;
+import connectFour.View.View;
 import java.awt.Color;
 import javax.swing.ImageIcon;
 
