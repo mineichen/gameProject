@@ -9,17 +9,21 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.Graphics;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
+import java.awt.event.ActionEvent;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Observer ;
 import java.util.Observable ;
+import javax.swing.AbstractAction;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JFrame;
@@ -28,6 +32,7 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
+import javax.swing.Timer;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -46,6 +51,10 @@ public class View implements Observer {
     private JPanel gameboardpanel;
     private ArrayList<ButtonClickedListener> listeners = new ArrayList<>();
     private Game game;
+    private boolean initFinished = false;
+    
+    private final int DELAY = 500;
+    private Timer waitingTimer;
 
     /**
      * Constructor
@@ -53,10 +62,7 @@ public class View implements Observer {
      * @param Game The gameboard
      */
     public View() {
-        this.cols = 7;
-        this.rows = 6;
         this.neutralIcon = new ImageIcon(View.class.getResource("/connectFour/images/default_white_dot.png"));
-        this.game = null;
     }
 
     /**
@@ -88,6 +94,8 @@ public class View implements Observer {
         initializeSurface();
     }
 
+    
+    
     /**
      * Draw the Surface of the Game
      */
@@ -95,12 +103,25 @@ public class View implements Observer {
         mainWindow = new JFrame("FourConnect");
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
-        //repaint when Window is resised
+        waitingTimer = new Timer(DELAY, new AbstractAction() {
+
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                repaint();
+            }
+        });
+        waitingTimer.setRepeats(false);
+        
+        //repaint when Window is resised and wait for finished resize
         mainWindow.addComponentListener(new ComponentListener() {
 
             @Override
             public void componentResized(ComponentEvent e) {
-                repaint();
+                if(waitingTimer.isRunning()){
+                    waitingTimer.restart();
+                }else{
+                    waitingTimer.start();
+                }
             }
 
             @Override
@@ -149,18 +170,37 @@ public class View implements Observer {
         loadExistingMoves();
 
         mainWindow.setVisible(true);
+        
+        initFinished = true;
+        
         repaint();
     }
 
+    
+    
     /**
      * Repaint the Gameboard and recalculate the Icon Size etc
      */
     public void repaint() {
+        if(!initFinished){
+            return;
+        }        
         recalculateIconSizeOnWindowResize();
         
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                ImageIcon icon = icons.get(j+":"+i);
+                //Make a copy of the Image
+                //This is necesarry that the orignial Image is not touched
+                ImageIcon img = icons.get(j+":"+i);
+                BufferedImage buImg = new BufferedImage(img.getIconWidth(), img.getIconHeight(), BufferedImage.TYPE_INT_ARGB); 
+                buImg.getGraphics().drawImage(img.getImage(), 0,0, img.getImageObserver());
+                BufferedImage copyOfImage = new BufferedImage(img.getIconWidth(), img.getIconHeight(), BufferedImage.TYPE_INT_ARGB_PRE);
+                Graphics g = copyOfImage.createGraphics();
+                g.drawImage(buImg, 0, 0, null);
+                //Copy of ImageIcon END
+                
+                ImageIcon icon = new ImageIcon(copyOfImage);
+                
                 try{
                     icon.setImage(icon.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_DEFAULT));
                 }catch(Exception ex){
@@ -169,16 +209,7 @@ public class View implements Observer {
                 setIconOnLabel(j+":"+i, icon);
             }
         }
-        
-        /*
-        try {
-            neutralIcon.setImage(neutralIcon.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_DEFAULT));
-        } catch (Exception ex) {
-            System.out.println("Error");
-        }
-        for (JLabel label : dots.values()) {
-            label.setIcon(neutralIcon);
-        }*/
+        mainWindow.repaint();
 
     }
 
@@ -198,8 +229,13 @@ public class View implements Observer {
                 }
                 if (disc != null) {
                     ImageIcon icon = disc.getIcon();
+                    if(icon==null){
+                        icon = neutralIcon;
+                    }
                     icons.put(j+":"+i, icon);
                     setIconOnLabel(j + ":" + i, icon);
+                }else{
+                    icons.put(j+":"+i, neutralIcon);
                 }
             }
         }
@@ -227,6 +263,7 @@ public class View implements Observer {
                 JLabel jlabel = new JLabel("", neutralIcon, JLabel.CENTER);
                 gameboardpanel.add(jlabel);
                 dots.put(j + ":" + i, jlabel);
+                icons.put(j + ":" + i, neutralIcon);
                 jlabel.addMouseListener(new MouseAdapter() {
                     public void mouseReleased(MouseEvent e) {
                         rowClicked(e);
