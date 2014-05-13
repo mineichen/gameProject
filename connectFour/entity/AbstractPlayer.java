@@ -27,7 +27,7 @@ public abstract class AbstractPlayer implements PlayerInterface
          listeners.remove(listener) ;
     }
 
-    private synchronized void fireMoveEvent(int col) {
+    protected synchronized void fireMoveEvent(int col) {
           MoveEvent moveEvent = new MoveEvent(this, col) ;
           for(MoveEventListener listener : listeners) {
                listener.on(moveEvent) ;

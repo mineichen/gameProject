@@ -52,6 +52,7 @@ public class Game implements GameInterface
         this.cols = cols;
         this.rows = rows;
         this.players = players;
+        gameObservable = new GameObservable() ;
         discs = new Disc[rows][cols];
     }
     
