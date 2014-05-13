@@ -213,8 +213,6 @@ public class View implements EventListener<MoveDiscEvent> {
 
     }
 
-    
-    
     /**
      * Will read from Game if already some Disc are in the Board and add it
      */
