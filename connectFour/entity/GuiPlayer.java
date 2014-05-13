@@ -16,18 +16,29 @@ import connectFour.View.View;
  *
  * @author  Jon Buchli
  */
-public class GuiPlayer extends AbstractPlayer implements ButtonClickedListener{
+public class GuiPlayer extends AbstractPlayer {
 
     private String name;
     private ImageIcon icon;
-    
+    private View view;
     
     public GuiPlayer(String name, ImageIcon icon, View view)
     {
         this.name = name;
         this.icon = icon;
-        view.addListener(this);
+        this.view = view;
         
+    }
+    
+    @Override
+    public void addEventListener(EventListener<MoveEvent> e) {
+        view.addEventListener(e);
+    }
+    
+    @Override
+    public void removeEventListener(EventListener<MoveEvent> e)
+    {
+        view.removeEventListener(e);
     }
     
     /**
@@ -49,17 +60,5 @@ public class GuiPlayer extends AbstractPlayer implements ButtonClickedListener{
     public ImageIcon getIcon()
     {
         return icon;
-    }
-    
-    /**
-     * Passes the clicked col to fireMoveEvent
-     * 
-     * @param col
-     */
-    @Override
-    public void buttonClicked(int col)
-    {        
-        dispatcher.dispatch(new MoveEvent(this, col));
-        
     }
 }

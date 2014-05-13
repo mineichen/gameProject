@@ -5,6 +5,7 @@
  */
 package connectFour.View;
 
+import connectFour.EventDispatcher;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
@@ -40,6 +41,7 @@ import connectFour.entity.Disc;
 import connectFour.entity.DiscMoveEvent;
 import connectFour.entity.Game;
 import connectFour.entity.GameInterface;
+import connectFour.entity.MoveEvent;
 /**
  *
  * @author mike
@@ -88,10 +90,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      */
     private JPanel gameboardpanel;
 
-    /**
-     * ArrayList which contains all the Listeners
-     */
-    private ArrayList<ButtonClickedListener> listeners = new ArrayList<>();
+    private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
 
     /**
      * Game
@@ -123,23 +122,16 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         this.neutralIcon = new ImageIcon(View.class.getResource("/connectFour/images/default_white_dot.png"));
     }
 
-    /**
-     * Add Listener go the the changes which row was clicked
-     *
-     * @param listener
-     */
-    public void addListener(ButtonClickedListener listener) {
-        listeners.add(listener);
+    public void addEventListener(EventListener<MoveEvent> e) {
+        dispatcher.addEventListener(e);
+    }
+    
+    public void removeEventListener(EventListener<MoveEvent> e)
+    {
+        dispatcher.removeEventListener(e);
     }
 
-    /**
-     * Remove the Listener
-     *
-     * @param listener
-     */
-    public void removeListener(ButtonClickedListener listener) {
-        listeners.remove(listener);
-    }
+    
 
     /**
      * Bind the game to the View Without this call the View cant be initialised
@@ -347,9 +339,8 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
             }
         }
         //Inform all Listeners for the change
-        for (ButtonClickedListener listener : listeners) {
-            listener.buttonClicked(buttonClicked);
-        }
+        
+        dispatcher.dispatch(new MoveEvent(game.getCurrentPlayer(), buttonClicked));
     }
     
     /**

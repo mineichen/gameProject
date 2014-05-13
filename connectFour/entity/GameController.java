@@ -15,10 +15,10 @@ import connectFour.InvalidInputException ;
  */
 public class GameController implements EventListener<MoveEvent>
 {
-    private Game game;
+    private GameInterface game;
     private MoveEvent lastChange;
 
-    public GameController(Game game) {
+    public GameController(GameInterface game) {
        this.game = game ;
        game.getCurrentPlayer().addEventListener(this);
     }
