@@ -45,7 +45,6 @@ public class View implements Observer {
     private JPanel gameboardpanel;
     private ArrayList<ButtonClickedListener> listeners = new ArrayList<>();
     private Game game;
-    private ArrayList<ImageIcon> originalIcons = new ArrayList<ImageIcon>();
 
     /**
      * Constructor
@@ -56,27 +55,30 @@ public class View implements Observer {
         this.cols = 7;
         this.rows = 6;
         this.neutralIcon = new ImageIcon(View.class.getResource("/connectFour/images/default_white_dot.png"));
-        originalIcons.add(neutralIcon);
         this.game = null;
     }
 
     /**
-     * When a new Disc is added to the gameboard
-     *
-     * @param disc The Disc
+     * Add Listener go the the changes which row was clicked
+     * @param listener 
      */
-    public void addDisc(Disc disc) {
-
-    }
-
     public void addListener(ButtonClickedListener listener) {
         listeners.add(listener);
     }
 
+    /**
+     * Remove the Listener
+     * @param listener 
+     */
     public void removeListener(ButtonClickedListener listener) {
         listeners.remove(listener);
     }
 
+    /**
+     * Bind the game to the View
+     * Whithout this call the View cant be initialised
+     * @param game 
+     */
     public void bind(Game game) {
         this.game = game;
         this.cols = game.getCols();
@@ -149,6 +151,9 @@ public class View implements Observer {
         repaint();
     }
 
+    /**
+     * Repaint the Gameboard and recalculate the Icon Size etc
+     */
     public void repaint() {
         recalculateIconSizeOnWindowResize();
         try {
@@ -184,11 +189,20 @@ public class View implements Observer {
         }
     }
 
+    /**
+     * Set a Icon on a label
+     * @param identifier
+     * @param icon 
+     */
     private void setIconOnLabel(String identifier, ImageIcon icon) {
         JLabel label = dots.get(identifier);
         label.setIcon(icon);
     }
 
+    /**
+     * Creates the Gameboard with all the Discs
+     * @return JPanel with all Elements on it
+     */
     private JPanel createGameBoard() {
         gameboardpanel = new JPanel(new GridLayout(rows, cols));
         gameboardpanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
@@ -207,6 +221,10 @@ public class View implements Observer {
         return gameboardpanel;
     }
 
+    /**
+     * Is called when the Window is resized. This will recalculate the size
+     * of the Icons
+     */
     private void recalculateIconSizeOnWindowResize() {
         try {
             iconsize = gameboardpanel.getWidth() / (cols + 1);
