@@ -115,6 +115,11 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     private Timer waitingTimer;
 
     /**
+     * Status which player has to move
+     */
+    private JLabel status;
+    
+    /**
      * Constructor
      *
      * @param Game The gameboard
@@ -206,7 +211,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         JPanel mainpanel = new JPanel(new BorderLayout());
         JPanel statustop = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
-        JLabel status = new JLabel("Player 1 has to move");
+        status = new JLabel("Player 1 has to move");
         statustop.add(status);
 
         mainpanel.add(statustop, BorderLayout.NORTH);
@@ -265,6 +270,8 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
                 setIconOnLabel(j + ":" + i, icon);
             }
         }
+        
+        setStatus("Player " + game.getCurrentPlayer().getName() + " has to move");
         //Force to repaint everything on the jframe
         mainWindow.repaint();
 
@@ -364,6 +371,10 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         icons.put(col+":"+row, icon);
         setIconOnLabel(col+":"+row, icon);
         
+    }
+    
+    private void setStatus(String text){
+        status.setText(text);
     }
 
     /**
