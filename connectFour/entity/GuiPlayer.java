@@ -15,23 +15,30 @@ import connectFour.EventListener;
  *
  * @author  Jon Buchli
  */
-public class GuiPlayer extends AbstractPlayer {
+public class GuiPlayer extends AbstractPlayer implements ButtonClickedListener{
 
     private String name;
     private ImageIcon icon;
     
     
-    public GuiPlayer(String name, ImageIcon icon){
+    public GuiPlayer(String name, ImageIcon icon)
+    {
         this.name = name;
         this.icon = icon;
     }
     
-    public String getName(){
+    public String getName()
+    {
         return name;
     }
     
     public ImageIcon getIcon()
     {
         return icon;
+    }
+    
+    public void buttonClicked(int col)
+    {
+        dispatcher.dispatch(new MoveEvent(this, col));
     }
 }

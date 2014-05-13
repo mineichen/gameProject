@@ -10,7 +10,6 @@ import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
 import java.util.LinkedList;
-import java.lang.Iterable;
 
 /**
  *
@@ -20,11 +19,10 @@ public class Game implements GameInterface
 {
     private int playerCounter = 0;
     private final int winNumber;
-    private final PlayerInterface[] players;
     private final int cols;
     private final int rows;
-    private final EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
-
+    private final PlayerInterface[] players;
+    private final EventDispatcher<DiscMoveEvent> dispatcher = new EventDispatcher<>();
     /**
      * Disc[col][row]
      * 3 <- rows 
@@ -32,13 +30,13 @@ public class Game implements GameInterface
      * 1 2 3 <-cols
      */
     private final Disc[][] discs;
+    
     private static final Direction[] checkDirections = {
         Direction.WEST, 
         Direction.SOUTHWEST, 
         Direction.SOUTH, 
         Direction.SOUTHEAST
     };
-    
     
     public Game(PlayerInterface... players)
     {
@@ -59,13 +57,13 @@ public class Game implements GameInterface
         discs = new Disc[rows][cols];
     }
     
-    public void addEventListener(EventListener<MoveEvent> e)
+    public void addEventListener(EventListener<DiscMoveEvent> e)
     {
         dispatcher.addEventListener(e);
     }
     
     @Override
-    public void removeEventListener(EventListener<MoveEvent> e)
+    public void removeEventListener(EventListener<DiscMoveEvent> e)
     {
         dispatcher.removeEventListener(e);
     }
@@ -90,12 +88,13 @@ public class Game implements GameInterface
     public void addDisc(int col) throws InvalidInputException
     {
         int nextRow = calcNextRow(col);
-        
+       
+        // if the move is valid
         discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
+        dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow]));
         risePlayerCounter();
     }
-    
-    
+
     @Override
     public Iterable<Disc> getDiscs()
     {
@@ -133,7 +132,7 @@ public class Game implements GameInterface
         return false;
     }
     
-    private Disc getDisc(int row, int col)
+    public Disc getDisc(int row, int col)
     {
         return discs[col][row];
     }

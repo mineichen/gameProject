@@ -31,6 +31,10 @@ public class GameProject {
             game.addDisc(4);
             game.addDisc(3);
             game.addDisc(2);
+            
+            View view = new View();
+            view.bind(game);
+            
             System.out.println("Win: " + (game.isWinnerMove(1) ? "true" : "false"));
             game.addDisc(4);
             //game.addDisc(4);

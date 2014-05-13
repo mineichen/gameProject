@@ -14,13 +14,13 @@ import connectFour.entity.Disc;
  *
  * @author mineichen
  */
-public interface GameInterface
+public interface GameInterface 
 {
     public void addDisc(int col) throws InvalidInputException;
     public Iterable<Disc> getDiscs();
     public boolean isWinnerMove(int col);
     public PlayerInterface getCurrentPlayer();
     public boolean isFromCurrentPlayer(int col, int row);
-    public void removeEventListener(EventListener<MoveEvent> e);
-    public void addEventListener(EventListener<MoveEvent> e);
+    public void removeEventListener(EventListener<DiscMoveEvent> e);
+    public void addEventListener(EventListener<DiscMoveEvent> e);
 }
