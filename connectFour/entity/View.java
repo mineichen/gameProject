@@ -22,6 +22,8 @@ import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Observer ;
+import java.util.Observable ;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
@@ -39,7 +41,7 @@ import javax.swing.border.EmptyBorder;
  *
  * @author mike
  */
-public class View {
+public class View implements Observer {
 
     private int cols;
     private int rows;
@@ -84,6 +86,7 @@ public class View {
         this.game = game;
         this.cols = game.getCols();
         this.rows = game.getRows();
+        this.game.getGameObservable().addObserver(this) ;
         initializeSurface();
     }
 
@@ -237,6 +240,12 @@ public class View {
         for (ButtonClickedListener listener : listeners) {
             listener.buttonClicked(buttonClicked);
         }
+    }
+
+    @Override
+    public void update(Observable gameObservable, Object d)
+    {
+        Disc disc = (Disc) d ;
     }
 
 }
