@@ -27,11 +27,6 @@ public class GuiPlayer extends AbstractPlayer {
         return name;
     }
     
-    @Override   // evtl Name aendern
-    public void onMove(){
-        
-    }
-    
     public ImageIcon getIcon()
     {
         return icon;

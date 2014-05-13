@@ -27,6 +27,7 @@ public class Game implements GameInterface
         Direction.SOUTH, 
         Direction.SOUTHEAST
     };
+    public GameObservable gameObservable;
     /**
      * Disc[col][row]
      * 3 <- rows 
@@ -74,9 +75,16 @@ public class Game implements GameInterface
     public void addDisc(int col) throws InvalidInputException
     {
         int nextRow = calcNextRow(col);
-        
+       
+        // if the move is valid
         discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
+        gameObservable.discAdded(discs[col][nextRow]); // inform the view about the move
         risePlayerCounter();
+    }
+
+    public GameObservable getGameObservable()
+    {
+        return gameObservable ;
     }
     
     public boolean isWinnerMove(int col)
