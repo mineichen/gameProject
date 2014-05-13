@@ -41,7 +41,7 @@ public class Game implements GameInterface
     
     public Game(PlayerInterface... players)
     {
-        this(6, 7, 4, players);
+        this(7, 6, 4, players);
     }
     
     public Game(int cols, int rows, PlayerInterface... players) 
@@ -55,7 +55,7 @@ public class Game implements GameInterface
         this.cols = cols;
         this.rows = rows;
         this.players = players;
-        discs = new Disc[rows][cols];
+        discs = new Disc[cols][rows];
     }
     
     public void addEventListener(EventListener<DiscMoveEvent> e)
@@ -163,6 +163,7 @@ public class Game implements GameInterface
      */
     private int calcNextRow(int col) throws InvalidInputException
     {
+        System.out.println("Col:" + col);
         for(int i = 0; i < rows; i++) {
             if(discs[col][i] == null) {
                 return i;
