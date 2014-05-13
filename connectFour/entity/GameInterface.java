@@ -23,4 +23,6 @@ public interface GameInterface
     public boolean isFromCurrentPlayer(int col, int row);
     public void removeEventListener(EventListener<DiscMoveEvent> e);
     public void addEventListener(EventListener<DiscMoveEvent> e);
+    public int getCols();
+    public int getRows();
 }
