@@ -12,6 +12,9 @@ import connectFour.entity.PlayerInterface;
 import connectFour.View.View;
 import connectFour.entity.GameController;
 import java.awt.Color;
+import java.io.File;
+import java.io.IOException;
+import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
 /**
@@ -25,17 +28,18 @@ public class GameProject {
      */
     public static void main(String[] args) {
         
-            
+        try {
             View view = new View();
-            
-            PlayerInterface player = new GuiPlayer("Markus", new ImageIcon(GameProject.class.getResource("/connectFour/images/default_red_dot.png")), view);
-            PlayerInterface player2 = new GuiPlayer("Mike", new ImageIcon(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),view);
+            PlayerInterface player = new GuiPlayer("Markus", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png")), view);
+            PlayerInterface player2 = new GuiPlayer("Mike", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),view);
             
             Game game = new Game(player2, player);
             GameController ctrl = new GameController(game);
             
             view.bind(game);
-            
+        } catch(IOException e) {
+              System.out.println("Image not found: " + e.getMessage());
+        }    
         
     }
     

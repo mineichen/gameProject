@@ -10,6 +10,7 @@ import javax.swing.ImageIcon;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.View.View;
+import java.awt.Image;
 
 /**
  * Description
@@ -19,13 +20,13 @@ import connectFour.View.View;
 public class GuiPlayer extends AbstractPlayer {
 
     private String name;
-    private ImageIcon icon;
+    private Image image;
     private View view;
     
-    public GuiPlayer(String name, ImageIcon icon, View view)
+    public GuiPlayer(String name, Image image, View view)
     {
         this.name = name;
-        this.icon = icon;
+        this.image = image;
         this.view = view;
         
     }
@@ -51,14 +52,8 @@ public class GuiPlayer extends AbstractPlayer {
         return name;
     }
     
-    /**
-     * Returns the set icon of this Player
-     * 
-     * @return icon
-     */
-    @Override
-    public ImageIcon getIcon()
+    public Image getImage()
     {
-        return icon;
+        return image;
     }
 }

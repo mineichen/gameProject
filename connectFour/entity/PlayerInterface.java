@@ -7,6 +7,7 @@
 package connectFour.entity;
 
 import connectFour.EventListener;
+import java.awt.Image;
 import java.util.HashSet;
 import javax.swing.ImageIcon;
 
@@ -17,7 +18,7 @@ import javax.swing.ImageIcon;
 public interface PlayerInterface
 {
     public String getName();
-    public ImageIcon getIcon();        
+    public Image getImage();
     public void addEventListener(EventListener<MoveEvent> e);
     public void removeEventListener(EventListener<MoveEvent> e);
 }

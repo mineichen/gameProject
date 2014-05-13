@@ -6,6 +6,7 @@
 
 package connectFour.entity;
 
+import java.awt.Image;
 import javax.swing.ImageIcon;
 
 /**
@@ -36,11 +37,14 @@ public class Disc
     public int getCol(){
         return col;
     }
+    
     public int getRow(){
         return row;
     }
-    public ImageIcon getIcon(){
-        return player.getIcon();
+    
+    public Image getImage()
+    {
+        return player.getImage();
     }
 
     public boolean isSameTeam(PlayerInterface player)
