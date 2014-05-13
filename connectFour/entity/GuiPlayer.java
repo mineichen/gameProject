@@ -58,8 +58,7 @@ public class GuiPlayer extends AbstractPlayer implements ButtonClickedListener{
      */
     @Override
     public void buttonClicked(int col)
-    {
-        
+    {        
         dispatcher.dispatch(new MoveEvent(this, col));
         
     }

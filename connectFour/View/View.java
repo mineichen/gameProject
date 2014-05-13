@@ -290,7 +290,6 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     private void setIconOnLabel(String identifier, ImageIcon icon) {
         JLabel label = dots.get(identifier);
         label.setIcon(icon);
-        mainWindow.repaint();
     }
 
     /**
@@ -377,5 +376,6 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     public void on(DiscMoveEvent e)
     {
         addDisc(e.getDisc());
+        repaint();
     }
 }
