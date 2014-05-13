@@ -9,13 +9,9 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
-import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.Insets;
-import java.awt.event.ActionEvent;
-import java.awt.event.ActionListener;
-import java.awt.event.ComponentAdapter;
 import java.awt.event.ComponentEvent;
 import java.awt.event.ComponentListener;
 import java.awt.event.MouseAdapter;
@@ -26,15 +22,12 @@ import java.util.Observer ;
 import java.util.Observable ;
 import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
-import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.SwingConstants;
-import javax.swing.border.Border;
 import javax.swing.border.EmptyBorder;
 
 /**
@@ -52,6 +45,7 @@ public class View implements Observer {
     private JPanel gameboardpanel;
     private ArrayList<ButtonClickedListener> listeners = new ArrayList<>();
     private Game game;
+    private ArrayList<ImageIcon> originalIcons = new ArrayList<ImageIcon>();
 
     /**
      * Constructor
@@ -62,6 +56,7 @@ public class View implements Observer {
         this.cols = 7;
         this.rows = 6;
         this.neutralIcon = new ImageIcon(View.class.getResource("/connectFour/images/default_white_dot.png"));
+        originalIcons.add(neutralIcon);
         this.game = null;
     }
 
@@ -167,6 +162,8 @@ public class View implements Observer {
 
     }
 
+    
+    
     /**
      * Will read from Game if already some Disc are in the Board and add it
      */
