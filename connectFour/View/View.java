@@ -39,11 +39,12 @@ import connectFour.entity.ButtonClickedListener;
 import connectFour.entity.Disc;
 import connectFour.entity.DiscMoveEvent;
 import connectFour.entity.Game;
+import connectFour.entity.GameInterface;
 /**
  *
  * @author mike
  */
-public class View implements EventListener<DiscMoveEvent> {
+public class View implements ViewInterface, EventListener<DiscMoveEvent> {
 
     /**
      * The cols of the gameBoard
@@ -95,7 +96,7 @@ public class View implements EventListener<DiscMoveEvent> {
     /**
      * Game
      */
-    private Game game;
+    private GameInterface game;
 
     /**
      * Will be set to true as soon as everything is initialised Is needed for
@@ -145,7 +146,7 @@ public class View implements EventListener<DiscMoveEvent> {
      *
      * @param game
      */
-    public void bind(Game game) {
+    public void bind(GameInterface game) {
         this.game = game;
         this.cols = game.getCols();
         this.rows = game.getRows();
@@ -274,25 +275,10 @@ public class View implements EventListener<DiscMoveEvent> {
      * Will read from Game if already some Disc are in the Board and add it
      */
     private void loadExistingMoves() {
-        for (int i = 0; i < rows; i++) {
-            for (int j = 0; j < cols; j++) {
-                Disc disc = null;
-                try {
-                    disc = game.getDisc(j, i);
-                } catch (Exception ex) {
-                    System.out.println("Error: " + ex.toString());
-                }
-                if (disc != null) {
-                    ImageIcon icon = disc.getIcon();
-                    if (icon == null) {
-                        icon = neutralIcon;
-                    }
-                    icons.put(j + ":" + i, icon);
-                    setIconOnLabel(j + ":" + i, icon);
-                } else {
-                    icons.put(j + ":" + i, neutralIcon);
-                }
-            }
+        for(Disc disc : game.getDiscs()) {
+            ImageIcon icon = disc.getIcon();
+            icons.put(disc.getCol() + ":" + disc.getRow(), icon);
+            setIconOnLabel(disc.getCol() + ":" + disc.getRow(), icon);
         }
     }
 
