@@ -6,6 +6,8 @@
 
 package connectFour.entity;
 
+import connectFour.EventDispatcher;
+import connectFour.EventListener;
 import java.util.ArrayList;
 import javax.swing.ImageIcon;
 
@@ -15,22 +17,16 @@ import javax.swing.ImageIcon;
  */
 public abstract class AbstractPlayer implements PlayerInterface
 {
-    private ArrayList<MoveEventListener> listener = new ArrayList<>() ;
+    private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
     
-    public synchronized void addMoveListener(MoveEventListener listener)
-    {
-         this.listener.add(listener) ;
+    @Override
+    public void addEventListener(EventListener<MoveEvent> e) {
+        dispatcher.addEventListener(e);
     }
-
-    public synchronized void removeMoveListener(MoveEventListener listener)
+    
+    @Override
+    public void removeEventListener(EventListener<MoveEvent> e)
     {
-         this.listener.remove(listener) ;
-    }
-
-    private synchronized void fireMoveEvent(int col) {
-          MoveEvent moveEvent = new MoveEvent(this, col) ;
-          for(MoveEventListener listener : listener) {
-               listener.on(moveEvent) ;
-          }
+        dispatcher.removeEventListener(e);
     }
 }

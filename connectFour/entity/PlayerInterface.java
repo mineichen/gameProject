@@ -16,7 +16,6 @@ import javax.swing.ImageIcon;
  */
 public interface PlayerInterface
 {
-    public void onMove();
     public String getName();
     public ImageIcon getIcon();        
     public void addEventListener(EventListener<MoveEvent> e);

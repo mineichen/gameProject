@@ -6,9 +6,11 @@
 
 package connectFour.entity;
 
+import connectFour.EventDispatcher;
+import connectFour.EventListener;
 import connectFour.InvalidInputException;
-import java.awt.Graphics;
-import javax.swing.ImageIcon;
+import java.util.LinkedList;
+import java.lang.Iterable;
 
 /**
  *
@@ -16,24 +18,27 @@ import javax.swing.ImageIcon;
  */
 public class Game implements GameInterface
 {
-    private int winNumber;
     private int playerCounter = 0;
-    private PlayerInterface[] players;
+    private final int winNumber;
+    private final PlayerInterface[] players;
     private final int cols;
     private final int rows;
-    private static final Direction[] checkDirections = {
-        Direction.WEST, 
-        Direction.SOUTHWEST, 
-        Direction.SOUTH, 
-        Direction.SOUTHEAST
-    };
+    private final EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
+
     /**
      * Disc[col][row]
      * 3 <- rows 
      * 2
      * 1 2 3 <-cols
      */
-    private Disc[][] discs;
+    private final Disc[][] discs;
+    private static final Direction[] checkDirections = {
+        Direction.WEST, 
+        Direction.SOUTHWEST, 
+        Direction.SOUTH, 
+        Direction.SOUTHEAST
+    };
+    
     
     public Game(PlayerInterface... players)
     {
@@ -54,6 +59,17 @@ public class Game implements GameInterface
         discs = new Disc[rows][cols];
     }
     
+    public void addEventListener(EventListener<MoveEvent> e)
+    {
+        dispatcher.addEventListener(e);
+    }
+    
+    @Override
+    public void removeEventListener(EventListener<MoveEvent> e)
+    {
+        dispatcher.removeEventListener(e);
+    }
+    
     /**
      * Checks, weather field is from a specific Player
      * 
@@ -63,12 +79,12 @@ public class Game implements GameInterface
      * @return 
      */
     @Override
-    public boolean isFromPlayer(PlayerInterface player, int col, int row)
+    public boolean isFromCurrentPlayer(int col, int row)
     {
         return (cols - col) >= 1 && col >= 0
             && (rows - row) >= 1 && row >= 0
             && discs[col][row] != null
-            && discs[col][row].isSameTeam(player);
+            && discs[col][row].isSameTeam(getCurrentPlayer());
     }
     
     public void addDisc(int col) throws InvalidInputException
@@ -79,6 +95,24 @@ public class Game implements GameInterface
         risePlayerCounter();
     }
     
+    
+    @Override
+    public Iterable<Disc> getDiscs()
+    {
+        LinkedList<Disc> tmp = new LinkedList<>();
+        
+        for(Disc[] discCol: discs) {
+            for(Disc disc: discCol) {
+                if(disc != null) {
+                    tmp.add(disc);
+                }    
+            }
+        }
+        
+        return (Iterable)tmp;
+    }
+    
+    @Override
     public boolean isWinnerMove(int col)
     {
         try {
@@ -125,7 +159,7 @@ public class Game implements GameInterface
      * @param col
      * @return nextRow
      */
-    public int calcNextRow(int col) throws InvalidInputException
+    private int calcNextRow(int col) throws InvalidInputException
     {
         for(int i = 0; i < cols; i++) {
             if(discs[col][i] == null) {

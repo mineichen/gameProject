@@ -20,7 +20,6 @@ public class MoveEvent extends EventObject
     public MoveEvent(PlayerInterface player, int col)
     {
         super(player);
-        this.player = player;
         this.col = col;
     }
     
@@ -31,6 +30,6 @@ public class MoveEvent extends EventObject
     
     public PlayerInterface getPlayer()
     {
-        return player;
+        return (PlayerInterface) source;
     }
 }

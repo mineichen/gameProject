@@ -6,6 +6,7 @@
 
 package connectFour.entity;
 
+import connectFour.EventListener;
 import connectFour.InvalidInputException ;
 import connectFour.entity.Disc;
 
@@ -16,8 +17,10 @@ import connectFour.entity.Disc;
 public interface GameInterface
 {
     public void addDisc(int col) throws InvalidInputException;
+    public Iterable<Disc> getDiscs();
     public boolean isWinnerMove(int col);
     public PlayerInterface getCurrentPlayer();
-    public boolean isFromPlayer(PlayerInterface player, int col, int row);
-    //public Disc[] getDiscs();
+    public boolean isFromCurrentPlayer(int col, int row);
+    public void removeEventListener(EventListener<MoveEvent> e);
+    public void addEventListener(EventListener<MoveEvent> e);
 }

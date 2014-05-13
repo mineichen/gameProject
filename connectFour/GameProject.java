@@ -25,6 +25,7 @@ public class GameProject {
     public static void main(String[] args) {
         try {
             Color c = Color.red;
+            
             PlayerInterface player = new GuiPlayer("Markus", new ImageIcon(GameProject.class.getResource("/connectFour/images/default_white_dot.png")));
             Game game = new Game(player);
             game.addDisc(4);

@@ -15,38 +15,23 @@ import connectFour.EventListener;
  *
  * @author  Jon Buchli
  */
-public class GuiPlayer implements PlayerInterface {
+public class GuiPlayer extends AbstractPlayer {
 
     private String name;
     private ImageIcon icon;
-    private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
+    
     
     public GuiPlayer(String name, ImageIcon icon){
         this.name = name;
         this.icon = icon;
     }
     
-    public void addEventListener(EventListener<MoveEvent> e) {
-        dispatcher.addEventListener(e);
-    }
-    
-    public void removeEventListener(EventListener<MoveEvent> e)
-    {
-        dispatcher.removeEventListener(e);
-    }
-    
     public String getName(){
         return name;
-    }
-    
-    @Override   // evtl Name aendern
-    public void onMove(){
-        
     }
     
     public ImageIcon getIcon()
     {
         return icon;
     }
-    
 }
