@@ -8,8 +8,6 @@ package connectFour.entity;
 
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
-import java.util.ArrayList;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -17,7 +15,7 @@ import javax.swing.ImageIcon;
  */
 public abstract class AbstractPlayer implements PlayerInterface
 {
-    private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
+    protected EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
     
     @Override
     public void addEventListener(EventListener<MoveEvent> e) {
