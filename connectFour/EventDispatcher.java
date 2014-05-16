@@ -28,6 +28,11 @@ public class EventDispatcher<K extends EventObject>
         listeners.remove(event);
     }
     
+    public boolean hasEventListeners()
+    {
+        return !listeners.isEmpty();
+    }
+    
     public void removeAllEventListeners()
     {
         listeners.removeAll(listeners);

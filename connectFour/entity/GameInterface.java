@@ -25,4 +25,5 @@ public interface GameInterface
     public void addEventListener(EventListener<DiscMoveEvent> e);
     public int getCols();
     public int getRows();
+    public Iterable<PlayerInterface> getPlayers();
 }

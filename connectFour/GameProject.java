@@ -33,7 +33,7 @@ public class GameProject {
             PlayerInterface player = new GuiPlayer("Markus", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png")), view);
             PlayerInterface player2 = new GuiPlayer("Mike", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),view);
             
-            Game game = new Game(player2, player);
+            Game game = new Game(30,31, 5,player2, player);
             GameController ctrl = new GameController(game);
             
             view.bind(game);
