@@ -6,16 +6,19 @@
 
 package connectFour.entity;
 
+import connectFour.EventDispatcher;
+import connectFour.EventListener;
 import java.awt.Image;
 
 /**
  *
  * @author mike
  */
-public class KI_Player_Random extends AbstractPlayer{
+public class KI_Player_Random implements PlayerInterface{
 
     String name;
     Image icon;
+    protected EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
     
     public KI_Player_Random(String name, Image icon){
         this.name = name;
@@ -30,6 +33,16 @@ public class KI_Player_Random extends AbstractPlayer{
     @Override
     public Image getImage() {
         return icon;
+    }
+
+    @Override
+    public void addEventListener(EventListener<MoveEvent> e) {
+        dispatcher.addEventListener(e);
+    }
+
+    @Override
+    public void removeEventListener(EventListener<MoveEvent> e) {
+        dispatcher.removeEventListener(e);
     }
     
 }
