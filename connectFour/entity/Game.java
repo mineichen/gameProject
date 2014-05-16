@@ -9,6 +9,7 @@ package connectFour.entity;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
+import java.util.Arrays;
 import java.util.LinkedList;
 
 /**
@@ -21,8 +22,9 @@ public class Game implements GameInterface
     private final int winNumber;
     private final int cols;
     private final int rows;
+    private final int[] colCounter;
     private final PlayerInterface[] players;
-    private final EventDispatcher<DiscMoveEvent> dispatcher = new EventDispatcher<>();
+    private final transient EventDispatcher<DiscMoveEvent> dispatcher = new EventDispatcher<>();
     /**
      * Disc[col][row]
      * 3 <- rows 
@@ -56,6 +58,12 @@ public class Game implements GameInterface
         this.rows = rows;
         this.players = players;
         discs = new Disc[cols][rows];
+        colCounter = new int[cols];
+    }
+    
+    public Iterable<PlayerInterface> getPlayers()
+    {
+        return Arrays.asList(players);
     }
     
     public void addEventListener(EventListener<DiscMoveEvent> e)
@@ -88,11 +96,13 @@ public class Game implements GameInterface
     
     public void addDisc(int col) throws InvalidInputException
     {
-        int nextRow = calcNextRow(col);
-        boolean winnerMove = isWinnerMove(col, nextRow);
+        int nextRow = getNextRow(col);
         discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
-        dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow], winnerMove));
-        risePlayerCounter();
+        if(dispatcher.hasEventListeners()) {
+            dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow], isWinnerMove(col, nextRow)));
+        }
+        incrementPlayerCounter();
+        colCounter[col]++;
     }
 
 
@@ -116,7 +126,7 @@ public class Game implements GameInterface
     public boolean isWinnerMove(int col)
     {
         try {
-            return isWinnerMove(col, calcNextRow(col));
+            return isWinnerMove(col, getNextRow(col));
         } catch(InvalidInputException e) {
             return false;
         }
@@ -143,7 +153,7 @@ public class Game implements GameInterface
         return players[playerCounter];
     }
     
-    private void risePlayerCounter()
+    private void incrementPlayerCounter()
     {
         if(playerCounter == players.length - 1) {
             playerCounter = 0;
@@ -159,14 +169,13 @@ public class Game implements GameInterface
      * @param col
      * @return nextRow
      */
-    private int calcNextRow(int col) throws InvalidInputException
+    private int getNextRow(int col) throws InvalidInputException
     {
-        for(int i = 0; i < rows; i++) {
-            if(discs[col][i] == null) {
-                return i;
-            }
+        if(colCounter[col] >= rows) {
+            throw new InvalidInputException();
         }
-        throw new InvalidInputException();
+        
+        return colCounter[col];
     }
     
     public int getRows(){

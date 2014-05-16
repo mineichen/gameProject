@@ -33,8 +33,10 @@ import connectFour.entity.Disc;
 import connectFour.entity.DiscMoveEvent;
 import connectFour.entity.GameInterface;
 import connectFour.entity.MoveEvent;
+import connectFour.entity.PlayerInterface;
 import java.awt.event.ComponentAdapter;
 import java.io.IOException;
+import java.util.HashMap;
 import javax.imageio.ImageIO;
 /**
  *
@@ -52,17 +54,8 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     private JPanel mainPanel = new JPanel(new BorderLayout());
     private JPanel gameboardpanel;
     private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
-
-    /**
-     * Game
-     */
     private GameInterface game;
-
-    /**
-     * Will be set to true as soon as everything is initialised Is needed for
-     * make sure that repaint is not called before everything is initialised
-     */
-    private boolean initFinished = false;
+    private HashMap<Image, ImageIcon> resizedImageCache = new HashMap<>();
 
     /**
      * Status which player has to move
@@ -83,6 +76,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         mainWindow.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
+                resize();
                 repaint();
             }
         });
@@ -133,39 +127,34 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         this.game.addEventListener(this);
         dots = new JLabel[game.getCols()][game.getRows()];
         mainPanel.add(createGameBoard(), BorderLayout.CENTER);
-        
         for(Disc disc : game.getDiscs()) {
             this.addDisc(disc);
         }
-
         mainWindow.setVisible(true);
-
-        initFinished = true;
-
+        resize();
         repaint();
     }
 
+    private void resize()
+    {
+        int iconsize = getIconSize(); 
+        neutralIcon.setImage(neutralImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH));
+        for(PlayerInterface player : game.getPlayers()) {
+            Image playerImage = player.getImage();
+            
+            resizedImageCache.put(playerImage, new ImageIcon(
+                playerImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
+            ));
+        }
+    }
     /**
      * Repaint the Gameboard and recalculate the Icon Size etc
      */
     private void repaint() 
     {
-        int iconsize = getIconSize(); 
-        
-        neutralIcon.setImage(neutralImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH));
-        for(Disc disc : game.getDiscs()) {
-            dots[disc.getCol()][disc.getRow()].setIcon(new ImageIcon(
-                disc.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
-            ));
-        }
-        
         status.setText("Player " + game.getCurrentPlayer().getName() + " has to move");
-        //Force to repaint everything on the jframe
         mainWindow.repaint();
     }
-
-    
-    
 
     /**
      * Creates the Gameboard with all the Discs
@@ -210,16 +199,17 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      */
     private void rowClicked(MouseEvent e) {
         int buttonClicked = -1;
-        for(int i = (game.getRows()-1); i>=0; i--){
+        for(int i = 0; i < game.getRows(); i++){
             for (int j = 0; j < game.getCols(); j++) {
                 if (e.getSource().equals(dots[j][i])) {
                     buttonClicked = j;
                 }
             }
         }
-        //Inform all Listeners for the change
         
-        dispatcher.dispatch(new MoveEvent(game.getCurrentPlayer(), buttonClicked));
+        dispatcher.dispatch(
+            new MoveEvent(game.getCurrentPlayer(), buttonClicked)
+        );
     }
     
     /**
@@ -227,18 +217,16 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      * @param disc 
      */
     private void addDisc(Disc disc){
-        int row = disc.getRow();
-        int col = disc.getCol();
-        ImageIcon icon = new ImageIcon(disc.getImage());
-        dots[col][row].setIcon(icon);
+        dots[disc.getCol()][disc.getRow()].setIcon(
+            resizedImageCache.get(disc.getImage())
+        );
     }
     
     
     /**
      * Is called when a new disc get added to the game board
      *
-     * @param Observable usually the an object of GameObservable from a game
-     * @param Object the disc added to the game board
+     * @param e
      */
     @Override
     public void on(DiscMoveEvent e)
