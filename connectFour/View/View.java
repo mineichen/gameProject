@@ -173,9 +173,11 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
                 JLabel jlabel = new JLabel("", neutralIcon, JLabel.CENTER);
                 gameboardpanel.add(jlabel);
                 dots[j][i] = jlabel;
+                
+                final int col = j;
                 jlabel.addMouseListener(new MouseAdapter() {
                     public void mouseReleased(MouseEvent e) {
-                        rowClicked(e);
+                        rowClicked(col);
                     }
                 });
             }
@@ -201,18 +203,10 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      *
      * @param e MouseEvent
      */
-    private void rowClicked(MouseEvent e) {
-        int buttonClicked = -1;
-        for(int i = 0; i < game.getRows(); i++){
-            for (int j = 0; j < game.getCols(); j++) {
-                if (e.getSource().equals(dots[j][i])) {
-                    buttonClicked = j;
-                }
-            }
-        }
-        
+    private void rowClicked(final int col) 
+    {
         dispatcher.dispatch(
-            new MoveEvent(game.getCurrentPlayer(), buttonClicked)
+            new MoveEvent(game.getCurrentPlayer(), col)
         );
     }
     
