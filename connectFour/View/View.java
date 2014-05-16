@@ -131,7 +131,13 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
             this.addDisc(disc);
         }
         mainWindow.setVisible(true);
-        resize();
+        
+        int iconsize = getIconSize(); 
+        for(PlayerInterface player : game.getPlayers()) {
+            resizedImageCache.put(player.getImage(), new ImageIcon(
+                player.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
+            ));
+        }
         repaint();
     }
 
@@ -139,12 +145,10 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     {
         int iconsize = getIconSize(); 
         neutralIcon.setImage(neutralImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH));
-        for(PlayerInterface player : game.getPlayers()) {
-            Image playerImage = player.getImage();
-            
-            resizedImageCache.put(playerImage, new ImageIcon(
-                playerImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
-            ));
+        for(Image image : resizedImageCache.keySet()) {
+            resizedImageCache.get(image).setImage(
+                image.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
+            );
         }
     }
     /**
