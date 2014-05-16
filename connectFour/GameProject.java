@@ -11,6 +11,7 @@ import connectFour.entity.GuiPlayer;
 import connectFour.entity.PlayerInterface;
 import connectFour.View.View;
 import connectFour.entity.GameController;
+import connectFour.entity.KI_Player_Random;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -32,6 +33,8 @@ public class GameProject {
             View view = new View();
             PlayerInterface player = new GuiPlayer("Markus", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png")), view);
             PlayerInterface player2 = new GuiPlayer("Mike", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),view);
+            
+            PlayerInterface playerki = new KI_Player_Random("KI_Random", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")));
             
             Game game = new Game(30,31, 5,player2, player);
             GameController ctrl = new GameController(game);
