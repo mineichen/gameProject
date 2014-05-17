@@ -21,7 +21,7 @@ import java.io.InputStream;
  *
  * @author  efux
  */
-public abstract class AbstractNetworkPlayer extends AbstractPlayer implements EventListener<MoveEvent> {
+public abstract class AbstractNetworkPlayer extends AbstractPlayer implements EventListener<DiscMoveEvent> {
 
     private String name;
     private Image image;
@@ -38,23 +38,21 @@ public abstract class AbstractNetworkPlayer extends AbstractPlayer implements Ev
         this.image = image;
         this.host = host;
         this.port = port;
-
-        dispatcher.addEventListener(this) ;
     }
 
-    public void bindGame(Game game)
+    public void bind(Game game)
     {
         this.game = game ;
+        game.addEventListener(this) ;
     }
 
     protected abstract void connect();
     
-    public void on(MoveEvent event) 
+    public void on(DiscMoveEvent event) 
     {
-        System.out.println("Move registered: "+event.getCol()) ;
-        if(event.getPlayer() != this) {
+        if(event.getDisc().getPlayer() != this) {
             try {
-                out.write(event.getCol());
+                out.write(event.getDisc().getCol());
                 out.flush();
             } catch(Exception e) {
             }
@@ -75,8 +73,8 @@ public abstract class AbstractNetworkPlayer extends AbstractPlayer implements Ev
             try {
                 int data = in.read();
                 while(data != -1) {
-                    dispatcher.dispatch(new MoveEvent(playerInterface,data));
-                    System.out.println("hallo: " + data) ;
+                    //dispatcher.dispatch(new DiscMoveEvent(playerInterface,new Disc(playerInterface,data,game.getNextRow(data)),game.isWinnerMove(data)));
+                    dispatcher.dispatch(new MoveEvent(game.getCurrentPlayer(), data));
                     data = in.read();
                 }
             } catch(Exception e) {

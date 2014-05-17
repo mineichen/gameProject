@@ -47,6 +47,11 @@ public class Disc
         return player.getImage();
     }
 
+    public PlayerInterface getPlayer()
+    {
+        return player;
+    }
+
     public boolean isSameTeam(PlayerInterface player)
     {
         return this.player == player;

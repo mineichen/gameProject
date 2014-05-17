@@ -20,7 +20,7 @@ import javax.swing.ImageIcon;
 
 /**
  *
- * @author mike
+ * @author efux
  */
 public class ServerTest {
 
@@ -38,6 +38,7 @@ public class ServerTest {
             GameController ctrl = new GameController(game);
             
             view.bind(game);
+            player.bind(game);
         } catch(IOException e) {
               System.out.println("Image not found: " + e.getMessage());
         }    
