@@ -61,12 +61,14 @@ class NetworkGameFinder
             System.out.println(InetAddress.getByName("255.255.255.255"));
             
             DatagramPacket packet;
+            randomNumber[0] = 0x7;
             
             while(!gameFound) {
                 packet = new DatagramPacket(randomNumber,randomNumber.length, InetAddress.getByName("255.255.255.255"), port);
+                System.out.println(randomNumber);
                 socket.send(packet);
                 System.out.println("Broadcast sended");
-                Thread.sleep(1000);
+                Thread.sleep(10000);
             }
         } catch(Exception e) {
         }
@@ -83,15 +85,15 @@ class NetworkGameFinder
                     DatagramPacket packet = new DatagramPacket(new byte[1024],1);
                     socket.receive(packet);
                     InetAddress address = packet.getAddress();
-                    if(InetAddress.getAllByName(address.toString())!=InetAddress.getAllByName("127.0.0.1")) {
+                    //if(InetAddress.getAllByName(address.toString())!=InetAddress.getAllByName("127.0.0.1")) {
                         byte[] data = packet.getData();
                         
-                        if(data==randomNumber){
+                        if(data[0]==randomNumber[0]){
                             System.out.println(address + " wants to connect with me");
                         } else {
                             System.out.println("I want to connect with " + data + "@" + address);
                         }
-                    }
+                    //}
                 }
 
                 gameFound = true;
