@@ -11,6 +11,7 @@ import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
 import connectFour.View.View;
+import connectFour.View.ViewInterface;
 import java.awt.Image;
 
 /**
@@ -20,9 +21,9 @@ import java.awt.Image;
  */
 public class GuiPlayer extends AbstractPlayer {
 
-    private View view;
+    private ViewInterface view;
     
-    public GuiPlayer(String name, Image image, View view)
+    public GuiPlayer(String name, Image image, ViewInterface view)
     {
         super(name, image);
         this.view = view;

@@ -6,9 +6,12 @@
 
 package connectFour.View;
 
+import connectFour.EventDispatcher;
+import connectFour.EventListener;
 import connectFour.entity.Disc;
 import java.awt.Canvas;
 import connectFour.entity.GameInterface;
+import connectFour.entity.MoveEvent;
 import java.awt.Graphics;
 
 /**
@@ -18,6 +21,8 @@ import java.awt.Graphics;
 public class CanvasPlayGround extends Canvas implements ViewInterface
 {
     private GameInterface game;
+    private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
+    
     public CanvasPlayGround(int width, int height, int margin)
     {
         this.setSize(width, height);
@@ -33,7 +38,17 @@ public class CanvasPlayGround extends Canvas implements ViewInterface
         for(Disc circle : game.getDiscs()) {
             g.drawOval(WIDTH, WIDTH, WIDTH, WIDTH);
         }
-        
     }
+    
+    public void addEventListener(EventListener<MoveEvent> e)
+    {
+        dispatcher.addEventListener(e);
+    }
+    public void removeEventListener(EventListener<MoveEvent> e)
+    {
+        dispatcher.removeEventListener(e);
+    }
+    
+    
     
 }

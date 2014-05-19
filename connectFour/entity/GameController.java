@@ -33,7 +33,7 @@ public class GameController implements EventListener<MoveEvent>
                 game.getCurrentPlayer().addEventListener(this);     // view benachrichtigen
             } catch(InvalidInputException exception) {
                 player.handleError(exception);
-            }
+            } 
         }
     }
 }
