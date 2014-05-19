@@ -8,6 +8,7 @@ package connectFour.entity;
 
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import java.awt.Image;
 
 /**
@@ -31,6 +32,9 @@ public class KIPlayerMike extends AbstractKIPlayer{
         return (int)(Math.random()*(maxCol-1));
     }
     
-    
+    public void handleError(InvalidInputException e)
+    {
+        throw new RuntimeException("KI Player performed forbidden move");
+    }
     
 }

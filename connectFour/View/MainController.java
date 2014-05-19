@@ -34,7 +34,7 @@ public class MainController {
                                 "/connectFour/images/default_yellow_dot.png")), view);
 
         Game game = new Game(8, 6, 4, player1, player2);
-        GameController ctrl = new GameController(game);
+        new GameController(game);
 
         view.bind(game);
         return game;
