@@ -8,6 +8,7 @@ package connectFour.entity;
 
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import java.awt.Image;
 
 /**
@@ -30,7 +31,10 @@ public class KIPlayer extends AbstractKIPlayer{
     public int getRandomCol(int maxCol){
         return (int)(Math.random()*(maxCol-1));
     }
-    
-    
+    @Override
+    public void handleError(InvalidInputException e)
+    {
+        
+    }
     
 }

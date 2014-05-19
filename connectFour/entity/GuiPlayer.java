@@ -9,6 +9,7 @@ package connectFour.entity;
 import javax.swing.ImageIcon;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import connectFour.View.View;
 import java.awt.Image;
 
@@ -30,6 +31,11 @@ public class GuiPlayer extends AbstractPlayer {
     @Override
     public void addEventListener(EventListener<MoveEvent> e) {
         view.addEventListener(e);
+    }
+    @Override
+    public void handleError(InvalidInputException e)
+    {
+        System.out.println(e.getMessage());
     }
     
     @Override
