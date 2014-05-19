@@ -26,8 +26,4 @@ public abstract class AbstractKIPlayer extends AbstractPlayer {
         this.game = game;
     }
     
-    @Override
-    public void handleError(InvalidInputException e) {
-        throw new RuntimeException("KI Player performed forbidden move");
-    }
 }
