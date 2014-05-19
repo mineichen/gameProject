@@ -12,7 +12,6 @@ import connectFour.entity.PlayerInterface;
 import connectFour.View.View;
 import connectFour.entity.GameController;
 import connectFour.entity.KIPlayer;
-import connectFour.entity.KI_Player_Random;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
@@ -37,7 +36,7 @@ public class GameProject {
             
             KIPlayer playerki = new KIPlayer("KI_Random", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")));
             
-            Game game = new Game(7,6, 5,player, player2);
+            Game game = new Game(7,6, 5,player, playerki);
             GameController ctrl = new GameController(game);
             
             

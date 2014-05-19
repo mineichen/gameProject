@@ -13,19 +13,15 @@ import java.awt.Image;
  *
  * @author mike
  */
-public abstract class AbstractKIPlayer extends AbstractPlayer implements EventListener<DiscMoveEvent>{
+public abstract class AbstractKIPlayer extends AbstractPlayer {
     
     Game game;
     
     public AbstractKIPlayer(String name, Image image){
-        this.name = name;
-        this.image = image;
+        super(name, image);
     }
     
     public void bind(Game game){
         this.game = game;
-        game.addEventListener(this);
     }
-
-    
 }

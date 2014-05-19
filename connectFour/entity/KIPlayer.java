@@ -16,19 +16,15 @@ import java.awt.Image;
  */
 public class KIPlayer extends AbstractKIPlayer{
     
-    private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
-    
     public KIPlayer(String name, Image image){
         super(name,image);
     }
 
     @Override
-    public void on(DiscMoveEvent event) {
+    public void addEventListener(EventListener<MoveEvent> e) {
+        super.addEventListener(e);
         int randomCol = getRandomCol(game.getCols());
-        
-        if(event.getDisc().getPlayer()!=this){
-            dispatcher.dispatch(new MoveEvent(game.getCurrentPlayer(), randomCol));
-        }
+        dispatcher.dispatch(new MoveEvent(game.getCurrentPlayer(), randomCol));
     }
     
     public int getRandomCol(int maxCol){
