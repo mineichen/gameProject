@@ -23,10 +23,8 @@ public class GuiPlayer extends AbstractPlayer {
     
     public GuiPlayer(String name, Image image, View view)
     {
-        this.name = name;
-        this.image = image;
+        super(name, image);
         this.view = view;
-        
     }
     
     @Override

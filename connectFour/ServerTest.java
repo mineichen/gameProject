@@ -11,10 +11,11 @@ import connectFour.entity.GuiPlayer;
 import connectFour.entity.PlayerInterface;
 import connectFour.View.View;
 import connectFour.entity.GameController;
-import connectFour.entity.ServerNetworkPlayer;
+import connectFour.entity.NetworkPlayer;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
+import java.net.ServerSocket;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 
@@ -30,8 +31,14 @@ public class ServerTest {
     public static void main(String[] args) {
         
         try {
+            ServerSocket server = new ServerSocket(1111);
+            
             View view = new View();
-            ServerNetworkPlayer player = new ServerNetworkPlayer("Markus", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png")), "localhost", 9999);
+            NetworkPlayer player = new NetworkPlayer(
+                "Markus", 
+                ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png")), 
+                server.accept()
+            );
             PlayerInterface player2 = new GuiPlayer("Mike", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),view);
             
             Game game = new Game(30,31, 5,player, player2);

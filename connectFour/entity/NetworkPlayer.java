@@ -13,29 +13,27 @@ import connectFour.entity.DiscMoveEvent;
 import connectFour.entity.Disc;
 import connectFour.entity.Game;
 import java.awt.Image;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.io.InputStream;
+import java.net.Socket;
 
 /**
  * Description
  *
  * @author  efux
  */
-public abstract class AbstractNetworkPlayer extends AbstractPlayer implements EventListener<DiscMoveEvent> {
+public class NetworkPlayer extends AbstractPlayer implements EventListener<DiscMoveEvent> {
 
-    protected String host;
-    protected int port;
+    private Socket socket;
     protected Game game ;
-    protected OutputStream out;
-    protected InputStream in;
     protected NetworkThread networkThread;
     
-    public AbstractNetworkPlayer(String name, Image image, String host, int port)
+    public NetworkPlayer(String name, Image image, Socket socket)
     {
-        this.name = name;
-        this.image = image;
-        this.host = host;
-        this.port = port;
+        super(name, image);
+        this.socket = socket;
+        new Thread(new NetworkThread(this)).start();
     }
 
     public void bind(Game game)
@@ -44,12 +42,11 @@ public abstract class AbstractNetworkPlayer extends AbstractPlayer implements Ev
         game.addEventListener(this) ;
     }
 
-    protected abstract void connect();
-    
     public void on(DiscMoveEvent event) 
     {
         if(event.getDisc().getPlayer() != this) {
             try {
+                OutputStream out = socket.getOutputStream();
                 out.write(event.getDisc().getCol());
                 out.flush();
             } catch(Exception e) {
@@ -61,7 +58,7 @@ public abstract class AbstractNetworkPlayer extends AbstractPlayer implements Ev
     {
         private PlayerInterface playerInterface;
 
-        public NetworkThread(AbstractNetworkPlayer player)
+        public NetworkThread(NetworkPlayer player)
         {
             playerInterface = player;
         }
@@ -69,13 +66,14 @@ public abstract class AbstractNetworkPlayer extends AbstractPlayer implements Ev
         public void run()
         {
             try {
-                int data = in.read();
-                while(data != -1) {
-                    //dispatcher.dispatch(new DiscMoveEvent(playerInterface,new Disc(playerInterface,data,game.getNextRow(data)),game.isWinnerMove(data)));
+                InputStream in = socket.getInputStream();
+                
+                while(true) {
+                    int data = in.read();
                     dispatcher.dispatch(new MoveEvent(game.getCurrentPlayer(), data));
-                    data = in.read();
                 }
-            } catch(Exception e) {
+            } catch(IOException e) {
+                System.out.println(e.getMessage());
             }
         }
     }
