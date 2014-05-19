@@ -7,9 +7,8 @@
 package connectFour.entity;
 
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import java.awt.Image;
-import java.util.HashSet;
-import javax.swing.ImageIcon;
 
 /**
  *
@@ -21,4 +20,5 @@ public interface PlayerInterface
     public Image getImage();
     public void addEventListener(EventListener<MoveEvent> e);
     public void removeEventListener(EventListener<MoveEvent> e);
+    public void handleError(InvalidInputException e);
 }

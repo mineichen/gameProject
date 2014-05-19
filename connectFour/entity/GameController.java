@@ -32,8 +32,8 @@ public class GameController implements EventListener<MoveEvent>
                 player.removeEventListener(this);
                 game.getCurrentPlayer().addEventListener(this);     // view benachrichtigen
             } catch(InvalidInputException exception) {
-                System.out.println("Move is not allowed");
-            }
+                player.handleError(exception);
+            } 
         }
     }
 }

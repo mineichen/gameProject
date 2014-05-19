@@ -8,6 +8,7 @@ package connectFour.entity;
 
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import java.awt.Image;
 
 /**
@@ -16,9 +17,15 @@ import java.awt.Image;
  */
 public abstract class AbstractPlayer implements PlayerInterface
 {
-    protected String name;
-    protected Image image;
+    private String name;
+    private Image image;
     protected EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
+    
+    public AbstractPlayer(String name, Image image)
+    {
+        this.name = name;
+        this.image = image;
+    }
     
     @Override
     public void addEventListener(EventListener<MoveEvent> e) {

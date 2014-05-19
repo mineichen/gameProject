@@ -184,4 +184,7 @@ public class Game implements GameInterface
     public int getCols(){
         return cols;
     }
+    public int getWinNumber(){
+        return winNumber;
+    }
 }
