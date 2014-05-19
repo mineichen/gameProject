@@ -14,9 +14,9 @@ import java.awt.Image;
  *
  * @author mike
  */
-public class KIPlayer extends AbstractKIPlayer{
+public class KIPlayerMike extends AbstractKIPlayer{
     
-    public KIPlayer(String name, Image image){
+    public KIPlayerMike(String name, Image image){
         super(name,image);
     }
 

@@ -29,10 +29,11 @@ public class GameController implements EventListener<MoveEvent>
         if (event.getPlayer() == player) {
             try {
                 game.addDisc(event.getCol());
-                player.removeEventListener(this);
-                game.getCurrentPlayer().addEventListener(this);     // view benachrichtigen
             } catch(InvalidInputException exception) {
                 System.out.println("Move is not allowed");
+            }finally{                
+                player.removeEventListener(this);
+                game.getCurrentPlayer().addEventListener(this);     // view benachrichtigen
             }
         }
     }
