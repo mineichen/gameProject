@@ -14,27 +14,15 @@ import java.awt.Image;
  *
  * @author mike
  */
-public class KI_Player_Random implements PlayerInterface{
+public class KI_Player_Random extends AbstractPlayer {
 
-    String name;
-    Image icon;
     protected EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
     
-    public KI_Player_Random(String name, Image icon){
+    public KI_Player_Random(String name, Image image){
         this.name = name;
-        this.icon = icon;
+        this.image = image;
     }
     
-    @Override
-    public String getName() {
-        return name;
-    }
-
-    @Override
-    public Image getImage() {
-        return icon;
-    }
-
     @Override
     public void addEventListener(EventListener<MoveEvent> e) {
         dispatcher.addEventListener(e);

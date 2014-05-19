@@ -8,6 +8,7 @@ package connectFour.entity;
 
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
+import java.awt.Image;
 
 /**
  *
@@ -15,6 +16,8 @@ import connectFour.EventListener;
  */
 public abstract class AbstractPlayer implements PlayerInterface
 {
+    protected String name;
+    protected Image image;
     protected EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
     
     @Override
@@ -26,5 +29,19 @@ public abstract class AbstractPlayer implements PlayerInterface
     public void removeEventListener(EventListener<MoveEvent> e)
     {
         dispatcher.removeEventListener(e);
+    }
+    
+    /**
+     * Returns the name of this Player
+     * 
+     * @return name
+     */
+    public String getName(){
+        return name;
+    }
+    
+    public Image getImage()
+    {
+        return image;
     }
 }

@@ -23,8 +23,6 @@ import java.io.InputStream;
  */
 public abstract class AbstractNetworkPlayer extends AbstractPlayer implements EventListener<DiscMoveEvent> {
 
-    private String name;
-    private Image image;
     protected String host;
     protected int port;
     protected Game game ;
@@ -80,16 +78,5 @@ public abstract class AbstractNetworkPlayer extends AbstractPlayer implements Ev
             } catch(Exception e) {
             }
         }
-    }
-
-    @Override
-    public String getName(){
-        return name;
-    }
-   
-    @Override
-    public Image getImage()
-    {
-        return image;
     }
 }
