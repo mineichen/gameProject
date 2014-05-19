@@ -9,8 +9,6 @@ package connectFour.entity;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
 import java.awt.Image;
-import java.util.HashSet;
-import javax.swing.ImageIcon;
 
 /**
  *
