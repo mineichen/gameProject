@@ -59,19 +59,11 @@ public abstract class AbstractNetworkPlayer extends AbstractPlayer implements Ev
 
     protected class NetworkThread implements Runnable
     {
-        private PlayerInterface playerInterface;
-
-        public NetworkThread(AbstractNetworkPlayer player)
-        {
-            playerInterface = player;
-        }
-
         public void run()
         {
             try {
                 int data = in.read();
                 while(data != -1) {
-                    //dispatcher.dispatch(new DiscMoveEvent(playerInterface,new Disc(playerInterface,data,game.getNextRow(data)),game.isWinnerMove(data)));
                     dispatcher.dispatch(new MoveEvent(game.getCurrentPlayer(), data));
                     data = in.read();
                 }

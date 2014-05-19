@@ -33,7 +33,7 @@ public class ClientNetworkPlayer extends AbstractNetworkPlayer {
             out = server.getOutputStream();
             in = server.getInputStream();
 
-            new Thread(new NetworkThread(this)).start();
+            new Thread(new NetworkThread()).start();
         } catch(Exception e) {
         }
     }
