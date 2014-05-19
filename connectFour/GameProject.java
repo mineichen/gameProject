@@ -6,6 +6,7 @@
 
 package connectFour;
 
+import connectFour.View.MainController;
 import connectFour.entity.Game;
 import connectFour.entity.GuiPlayer;
 import connectFour.entity.PlayerInterface;

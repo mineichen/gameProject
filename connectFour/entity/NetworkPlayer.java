@@ -9,6 +9,7 @@ package connectFour.entity;
 import javax.swing.ImageIcon;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import connectFour.entity.DiscMoveEvent;
 import connectFour.entity.Disc;
 import connectFour.entity.Game;
@@ -54,6 +55,12 @@ public class NetworkPlayer extends AbstractPlayer implements EventListener<DiscM
         }
     }
 
+    @Override
+    public void handleError(InvalidInputException e)
+    {
+        
+    }
+    
     protected class NetworkThread implements Runnable
     {
         private PlayerInterface playerInterface;

@@ -6,13 +6,17 @@
 
 package connectFour.View;
 
+import connectFour.EventListener;
 import connectFour.entity.GameInterface;
+import connectFour.entity.MoveEvent;
 
 /**
  *
  * @author mineichen
  */
-public interface ViewInterface
+public interface ViewInterface  
 {
     public void bind(GameInterface game);
+    public void addEventListener(EventListener<MoveEvent> e);
+    public void removeEventListener(EventListener<MoveEvent> e);
 }

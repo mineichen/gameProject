@@ -53,6 +53,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     private JFrame mainWindow = new JFrame("FourConnect");
     private JPanel mainPanel = new JPanel(new BorderLayout());
     private JPanel gameboardpanel;
+    //private ViewMenu menu = new ViewMenu(this);
     private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
     private GameInterface game;
     private HashMap<Image, ImageIcon> resizedImageCache = new HashMap<>();
@@ -73,19 +74,15 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         }
         mainWindow.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
         mainWindow.setSize(new Dimension(800, 600));
+        mainWindow.setLocationRelativeTo(null);
         mainWindow.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
                 resize();
+                
                 repaint();
             }
         });
-
-        JMenuBar jmb = new JMenuBar();
-        JMenu jm = new JMenu("File");
-        JMenuItem jmi = new JMenuItem("Close");
-        jmb.add(jm);
-        jm.add(jmi);
 
         JPanel statustop = new JPanel(new FlowLayout(FlowLayout.LEFT));
 
@@ -93,7 +90,8 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
 
         mainPanel.add(statustop, BorderLayout.NORTH);
         
-        mainWindow.add(jmb, BorderLayout.NORTH);
+        
+        mainWindow.add(new ViewMenu(this, new MainController()), BorderLayout.NORTH);
         mainWindow.add(mainPanel, BorderLayout.CENTER);
 
         JPanel borderLeft = new JPanel();
@@ -105,6 +103,8 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         mainWindow.add(borderLeft, BorderLayout.LINE_START);
         mainWindow.add(borderRight, BorderLayout.LINE_END);
         mainWindow.add(borderBottom, BorderLayout.SOUTH);
+        
+        mainWindow.setVisible(true);
     }
     
     public void addEventListener(EventListener<MoveEvent> e) 
@@ -127,11 +127,11 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         this.game.addEventListener(this);
         dots = new JLabel[game.getCols()][game.getRows()];
         mainPanel.add(createGameBoard(), BorderLayout.CENTER);
+        
         for(Disc disc : game.getDiscs()) {
             this.addDisc(disc);
         }
-        mainWindow.setVisible(true);
-        
+        resize();
         int iconsize = getIconSize(); 
         for(PlayerInterface player : game.getPlayers()) {
             resizedImageCache.put(player.getImage(), new ImageIcon(
@@ -143,12 +143,14 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
 
     private void resize()
     {
-        int iconsize = getIconSize(); 
-        neutralIcon.setImage(neutralImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH));
-        for(Image image : resizedImageCache.keySet()) {
-            resizedImageCache.get(image).setImage(
-                image.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
-            );
+        if(game != null) {
+            int iconsize = getIconSize(); 
+            neutralIcon.setImage(neutralImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH));
+            for(Image image : resizedImageCache.keySet()) {
+                resizedImageCache.get(image).setImage(
+                    image.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
+                );
+            }
         }
     }
     /**
@@ -156,7 +158,9 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      */
     private void repaint() 
     {
-        status.setText("Player " + game.getCurrentPlayer().getName() + " has to move");
+        if(game != null) {
+            status.setText("Player " + game.getCurrentPlayer().getName() + " has to move");
+        }
         mainWindow.repaint();
     }
 
@@ -190,10 +194,10 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      * the Icons
      */
     private int getIconSize() {
-        if(gameboardpanel.getWidth() >= gameboardpanel.getHeight()) {
-            return gameboardpanel.getHeight() / (game.getRows() + 1);
+        if(mainWindow.getWidth() >= mainWindow.getHeight()) {
+            return mainWindow.getHeight() / (game.getRows() + 1);
         } else {
-            return gameboardpanel.getWidth() / (game.getCols() + 1);
+            return mainWindow.getWidth() / (game.getCols() + 1);
         }
     }
 
