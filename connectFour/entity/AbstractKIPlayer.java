@@ -7,6 +7,7 @@
 package connectFour.entity;
 
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import java.awt.Image;
 
 /**
@@ -23,5 +24,10 @@ public abstract class AbstractKIPlayer extends AbstractPlayer {
     
     public void bind(Game game){
         this.game = game;
+    }
+    
+    @Override
+    public void handleError(InvalidInputException e) {
+        throw new RuntimeException("KI Player performed forbidden move");
     }
 }

@@ -40,10 +40,9 @@ public class KIPlayerMike extends AbstractKIPlayer{
         for(int i = 0;i<game.getCols();i++){
             for (int j = 0; j < game.getRows(); j++) {
                 if(grid[i][j]!=null && grid[i][j]!=game.getCurrentPlayer()){
-                    System.out.println("Check " + i +" : "+j);
-                    int[] check = isPossibleWinnerMove(i, j);
-                    if(check[0]!=-1){
-                        System.out.println("zug verhindern");
+                    int check = isPossibleWinnerMove(i, j);
+                    if(check!=-1){
+                        dispatcher.dispatch(new MoveEvent(game.getCurrentPlayer(), check));
                     }
                 }
             }
@@ -59,16 +58,29 @@ public class KIPlayerMike extends AbstractKIPlayer{
      * @param row
      * @return int Array with 2 Values, if value is [-1][-1] there is no possible winnermove, else there are the coordinates to set next disc
      */
-    private int[] isPossibleWinnerMove(int col, int row){
+    private int isPossibleWinnerMove(int col, int row){
         int winNumber = game.getWinNumber();
-        for(int i = 0;i<winNumber-1;i++){
-            /////tbd
-            if(grid[col][row]!=null  ){
-                
+        //Check left
+        if(checkLeftSamePlayer(col, row, winNumber)){
+            if(grid[col-winNumber][row]==null && (col-winNumber)>=0){
+                return col-winNumber;
+            }
+        }
+        //Check top left
+        if(checkTopLeftSamePlayer(col, row, winNumber)){
+            if(grid[col-winNumber][row+winNumber]==null && (col-winNumber)>=0 && (row+winNumber)<=game.getRows()){
+                return col-winNumber;
+            }
+        }
+        //Check top
+        if(checkTopSamePlayer(col, row, winNumber)){
+            if(grid[col][row+winNumber]==null && (row+winNumber)<=game.getRows()){
+                return col;
             }
         }
         
-        return new int[]{-1,-1};
+        
+        return -1;
     }
     
     private boolean checkLeftSamePlayer(int startCol, int startRow, int numberoflines){
@@ -76,7 +88,7 @@ public class KIPlayerMike extends AbstractKIPlayer{
              return false;
         }
         for(int i = 0; i<numberoflines; i++){
-            if(grid[startCol][startRow] != grid[startCol][startRow-i]){
+            if(grid[startCol][startRow] != grid[startCol-i][startRow]){
                 return false;
             }
         }
@@ -139,7 +151,7 @@ public class KIPlayerMike extends AbstractKIPlayer{
 
     @Override
     public void handleError(InvalidInputException e) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        throw new RuntimeException("KI Player performed forbidden move");
     }
         
     

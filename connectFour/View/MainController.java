@@ -10,6 +10,7 @@ import connectFour.entity.Game;
 import connectFour.entity.GameController;
 import connectFour.entity.GameInterface;
 import connectFour.entity.GuiPlayer;
+import connectFour.entity.KIPlayerMike;
 import connectFour.entity.NetworkPlayer;
 import connectFour.entity.PlayerInterface;
 import java.io.IOException;
@@ -37,6 +38,22 @@ public class MainController {
         new GameController(game);
 
         view.bind(game);
+        return game;
+    }
+    
+    public GameInterface newGameKIMike(ViewInterface view) throws IOException{
+        PlayerInterface player1 = new GuiPlayer("Markus",
+                ImageIO.read(GameProject.class.getResource(
+                                "/connectFour/images/default_red_dot.png")), view);
+        KIPlayerMike playerki = new KIPlayerMike("KI Mike",
+                ImageIO.read(GameProject.class.getResource(
+                                "/connectFour/images/default_yellow_dot.png")));
+        
+        Game game = new Game(8, 6, 4, player1, playerki);
+        GameController ctrl = new GameController(game);
+        
+        view.bind(game);
+        playerki.bind(game);
         return game;
     }
 
