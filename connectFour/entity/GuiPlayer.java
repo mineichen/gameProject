@@ -20,16 +20,12 @@ import java.awt.Image;
  */
 public class GuiPlayer extends AbstractPlayer {
 
-    private String name;
-    private Image image;
     private ViewInterface view;
     
     public GuiPlayer(String name, Image image, ViewInterface view)
     {
-        this.name = name;
-        this.image = image;
+        super(name, image);
         this.view = view;
-        
     }
     
     @Override
@@ -41,20 +37,5 @@ public class GuiPlayer extends AbstractPlayer {
     public void removeEventListener(EventListener<MoveEvent> e)
     {
         view.removeEventListener(e);
-    }
-    
-    /**
-     * Returns the name of this Player
-     * 
-     * @return name
-     */
-    @Override
-    public String getName(){
-        return name;
-    }
-    
-    public Image getImage()
-    {
-        return image;
     }
 }

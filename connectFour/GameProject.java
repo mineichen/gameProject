@@ -12,7 +12,7 @@ import connectFour.entity.GuiPlayer;
 import connectFour.entity.PlayerInterface;
 import connectFour.View.View;
 import connectFour.entity.GameController;
-import connectFour.entity.KI_Player_Random;
+import connectFour.entity.KIPlayerMike;
 import java.awt.Color;
 import java.io.File;
 import java.io.IOException;
