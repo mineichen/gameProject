@@ -36,7 +36,7 @@ public class GameProject {
             
             PlayerInterface playerki = new KI_Player_Random("KI_Random", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")));
             
-            Game game = new Game(30,31, 5,player2, player);
+            Game game = new Game(7,6, 5,player2, player);
             GameController ctrl = new GameController(game);
             
             view.bind(game);
