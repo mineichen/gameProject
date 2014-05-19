@@ -9,7 +9,6 @@ import connectFour.GameProject;
 import connectFour.entity.Game;
 import connectFour.entity.GameController;
 import connectFour.entity.GuiPlayer;
-import connectFour.entity.KI_Player_Random;
 import connectFour.entity.PlayerInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -42,10 +41,12 @@ public class ViewMenu extends JMenuBar {
         JMenu menuFile = new JMenu("File");
         JMenuItem filePlayerPlayer = new JMenuItem("New Game Player vs. Player");
         JMenuItem fileFindNetwork = new JMenuItem("Find Network-Player");
+        JMenuItem fileConnectNetworkGame = new JMenuItem("Connect Network Game");
         JMenuItem fileSave = new JMenuItem("Save");
         JMenuItem fileClose = new JMenuItem("Close");
         menuFile.add(filePlayerPlayer);
         menuFile.add(fileFindNetwork);
+        menuFile.add(fileConnectNetworkGame);
         menuFile.addSeparator();
         menuFile.add(fileSave);
         menuFile.add(fileClose);
@@ -56,19 +57,31 @@ public class ViewMenu extends JMenuBar {
         filePlayerPlayer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
-                // MainController Methode
                 try {
                     mainContr.newGameTwoGuiPlayers(view);
                 } catch(IOException ioException) {
                     System.out.println("Error loading Images");
                 }
-                
             }
         });
 
         fileFindNetwork.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-
+                try {
+                    mainContr.findNetworkPlayer(view);                    
+                } catch(IOException ioException) {
+                    System.out.println("Error loading Images");
+                }
+            }
+        });
+        
+        fileConnectNetworkGame.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    mainContr.connectNetworkGame(view);
+                } catch(IOException ioException) {
+                    System.out.println("Error loading Images");
+                }
             }
         });
 
