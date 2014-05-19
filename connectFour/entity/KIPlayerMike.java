@@ -8,6 +8,7 @@ package connectFour.entity;
 
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import java.awt.Image;
 
 /**
@@ -134,6 +135,11 @@ public class KIPlayerMike extends AbstractKIPlayer{
         for(Disc disc : game.getDiscs()){
             grid[disc.getCol()][disc.getRow()] = disc.getPlayer();
         }
+    }
+
+    @Override
+    public void handleError(InvalidInputException e) {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
         
     
