@@ -36,7 +36,7 @@ public class GameProject {
             
             KIPlayerMike playerki = new KIPlayerMike("KI_Random", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")));
             
-            Game game = new Game(7,6, 5,player, playerki);
+            Game game = new Game(7,6, 4,player, playerki);
             GameController ctrl = new GameController(game);
             
             
