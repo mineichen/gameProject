@@ -169,7 +169,7 @@ public class Game implements GameInterface
      * @param col
      * @return nextRow
      */
-    private int getNextRow(int col) throws InvalidInputException
+    public int getNextRow(int col) throws InvalidInputException
     {
         if(colCounter[col] >= rows) {
             throw new InvalidInputException();
