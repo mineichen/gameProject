@@ -165,7 +165,17 @@ public class KIPlayerMike extends AbstractKIPlayer {
                 
             }
         }
-        
+        //Check topright but with 2 stones less then winNumber
+        if(checkTopRightSamePlayer(col, row, winNumber-2)){
+            if((col+(winNumber-2))<=(game.getCols()-1) &&
+                    (row+(winNumber-2))<=(game.getRows()-1) &&
+                    (grid[col+(winNumber-2)][row+(winNumber-2)]) == null){
+                if((grid[col+(winNumber-2)][row+(winNumber-1-2)]) != null){
+                    return col + (winNumber-2);
+                }
+                
+            }
+        }
         return -1;
     }
     
@@ -210,6 +220,8 @@ public class KIPlayerMike extends AbstractKIPlayer {
                     //When stone is left underneath set one on top
                     if (grid[col - (winNumber - 1)][row - 1] != null) {
                         return col - (winNumber - 1);
+                    }else if(row==1 && grid[col - (winNumber - 1)][row - 1] == null){
+                        forbiddenMovesCol.add(col - (winNumber - 1));
                     } else if (row >= 2 && grid[col - (winNumber - 1)][row - 2] != null) {
                         //Forbid move when there are 2 stone needed to win because if you set one here
                         //the opposite player can win if he set in the same col
@@ -226,7 +238,7 @@ public class KIPlayerMike extends AbstractKIPlayer {
                     && (row + (winNumber - 1)) < game.getRows()) {
                 if (grid[col - (winNumber - 1)][row + (winNumber - 1 - 1)] != null) {
                     return col - (winNumber - 1);
-                } else if (grid[col - (winNumber - 1)][row + (winNumber - 1 - 2)] != null) {
+                } else if (grid[col - (winNumber - 1)][row + (winNumber - 1 -2)] != null) {
                     //Forbid move when there are 2 stone needed to win because if you set one here
                     //the opposite player can win if he set in the same col
                     forbiddenMovesCol.add(col - (winNumber - 1));
@@ -265,6 +277,8 @@ public class KIPlayerMike extends AbstractKIPlayer {
                     //When stone is left underneath set one on top
                     if (grid[col + (winNumber - 1)][row - 1] != null) {
                         return col + (winNumber - 1);
+                    }else if(row==1 && grid[col + (winNumber - 1)][row - 1] == null){
+                        forbiddenMovesCol.add(col + (winNumber - 1));
                     } else if (row >= 2 && grid[col + (winNumber - 1)][row - 2] != null) {
                         //Forbid move when there are 2 stone needed to win because if you set one here
                         //the opposite player can win if he set in the same col
@@ -383,7 +397,8 @@ public class KIPlayerMike extends AbstractKIPlayer {
      * @return Random Number between 0 and maxCol
      */
     private int getRandomCol(int maxCol) {
-        return (int) (Math.random() * (maxCol - 1));
+        int random = (int) (Math.random() * (maxCol));
+        return (random==maxCol) ? maxCol-1 : random;
     }
 
     /**

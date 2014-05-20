@@ -20,7 +20,7 @@ import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 /**
- * Description
+ * Menu bar in main window
  *
  * @author jonbuc
  */
@@ -33,7 +33,6 @@ public class ViewMenu extends JMenuBar {
         this.view = view;
         this.mainContr = mainContr;
         this.addFileMenu();
-        //makeMenuBar(frame);
     }
 
     private void addFileMenu() {
@@ -55,7 +54,7 @@ public class ViewMenu extends JMenuBar {
 
         this.add(menuFile);
 
-        // create the File menu
+        // Create a game for the server to play over network
         filePlayerPlayer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -88,6 +87,7 @@ public class ViewMenu extends JMenuBar {
             }
         });
         
+        // Create a game for the client to play over network
         fileConnectNetworkGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -97,7 +97,8 @@ public class ViewMenu extends JMenuBar {
                 }
             }
         });
-
+        
+        
         fileSave.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
 
@@ -109,15 +110,5 @@ public class ViewMenu extends JMenuBar {
                 System.exit(0);
             }
         });
-    }
-
-    /**
-     * Create the main frame's menu bar.
-     *
-     * @param frame The frame that the menu bar should be added to.
-     */
-    private void makeMenuBar(JFrame frame) {
-
-        
     }
 }
