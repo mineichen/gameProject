@@ -238,7 +238,7 @@ public class KIPlayerMike extends AbstractKIPlayer {
                     && (row + (winNumber - 1)) < game.getRows()) {
                 if (grid[col - (winNumber - 1)][row + (winNumber - 1 - 1)] != null) {
                     return col - (winNumber - 1);
-                } else if (grid[col - (winNumber - 1)][row + (winNumber - 1 - 2)] != null) {
+                } else if (grid[col - (winNumber - 1)][row + (winNumber - 1 -2)] != null) {
                     //Forbid move when there are 2 stone needed to win because if you set one here
                     //the opposite player can win if he set in the same col
                     forbiddenMovesCol.add(col - (winNumber - 1));
