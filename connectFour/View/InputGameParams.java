@@ -6,6 +6,7 @@
 
 package connectFour.View;
 
+import java.awt.HeadlessException;
 import javax.swing.JOptionPane;
 import javax.swing.JSpinner;
 import javax.swing.JTextField;
@@ -53,12 +54,16 @@ public class InputGameParams {
                 "Name Player 2", name2,
                 "Anzahl Spalten", rows,
                 "Anzahl Zeilen", cols};
-
-            JOptionPane pane1 = new JOptionPane(message1,
+            try {
+                JOptionPane pane1 = new JOptionPane(message1,
                     JOptionPane.PLAIN_MESSAGE,
                     JOptionPane.OK_CANCEL_OPTION); // OK_CANCEL
-            pane1.createDialog(null, "Nameneingabe").setVisible(true);
-            
+            pane1.createDialog(null, "Paramtereingabe").setVisible(true);
+            } catch (HeadlessException error) {
+                    JOptionPane.showMessageDialog(null,"Something went wrong");
+                    namePlayer1 = "Player1";
+                    namePlayer2 = "Player2";
+                }
             namePlayer1 = name1.getText();
             namePlayer2 = name2.getText();
             gameRows = (Integer)rows.getValue();
