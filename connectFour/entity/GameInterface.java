@@ -9,12 +9,13 @@ package connectFour.entity;
 import connectFour.EventListener;
 import connectFour.InvalidInputException ;
 import connectFour.entity.Disc;
+import java.util.List;
 
 /**
  *
  * @author mineichen
  */
-public interface GameInterface 
+public interface GameInterface extends Cloneable
 {
     public void addDisc(int col) throws InvalidInputException;
     public Iterable<Disc> getDiscs();
@@ -25,5 +26,6 @@ public interface GameInterface
     public void addEventListener(EventListener<DiscMoveEvent> e);
     public int getCols();
     public int getRows();
-    public Iterable<PlayerInterface> getPlayers();
+    public List<PlayerInterface> getPlayers();
+    public Object clone();
 }

@@ -174,7 +174,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         gameboardpanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         for(int i = (game.getRows()-1); i>=0; i--){
             for (int j = 0; j < game.getCols(); j++) {
-                JLabel jlabel = new JLabel("", neutralIcon, JLabel.CENTER);
+                JLabel jlabel = new JLabel(neutralIcon);
                 gameboardpanel.add(jlabel);
                 dots[j][i] = jlabel;
                 

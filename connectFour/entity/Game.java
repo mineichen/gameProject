@@ -9,14 +9,18 @@ package connectFour.entity;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  *
  * @author mineichen
  */
-public class Game implements GameInterface
+public class Game implements GameInterface, Serializable, Cloneable
 {
     private int playerCounter = 0;
     private final int winNumber;
@@ -61,7 +65,7 @@ public class Game implements GameInterface
         colCounter = new int[cols];
     }
     
-    public Iterable<PlayerInterface> getPlayers()
+    public List<PlayerInterface> getPlayers()
     {
         return Arrays.asList(players);
     }
@@ -69,6 +73,11 @@ public class Game implements GameInterface
     public void addEventListener(EventListener<DiscMoveEvent> e)
     {
         dispatcher.addEventListener(e);
+    }
+    
+    public boolean isAllowed(int col)
+    {
+        return colCounter[col] < rows;
     }
     
     @Override
@@ -171,7 +180,7 @@ public class Game implements GameInterface
      */
     public int getNextRow(int col) throws InvalidInputException
     {
-        if(colCounter[col] >= rows) {
+        if(!isAllowed(col)) {
             throw new InvalidInputException();
         }
         
@@ -183,5 +192,14 @@ public class Game implements GameInterface
     }
     public int getCols(){
         return cols;
+    }
+    
+    public Object clone()  
+    {
+        try {
+            return super.clone();
+        } catch(CloneNotSupportedException e) {
+            throw new RuntimeException("Game is not Clonable");
+        }
     }
 }

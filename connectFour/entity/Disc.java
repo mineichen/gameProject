@@ -54,6 +54,6 @@ public class Disc
 
     public boolean isSameTeam(PlayerInterface player)
     {
-        return this.player == player;
+        return this.player.isSameTeam(player);
     }
 }

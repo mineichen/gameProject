@@ -38,6 +38,10 @@ public abstract class AbstractPlayer implements PlayerInterface
         dispatcher.removeEventListener(e);
     }
     
+    public boolean isSameTeam(PlayerInterface player)
+    {
+        return this.equals(player);
+    }
     /**
      * Returns the name of this Player
      * 
