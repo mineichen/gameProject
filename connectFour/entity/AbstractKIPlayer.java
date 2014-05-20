@@ -7,6 +7,7 @@
 package connectFour.entity;
 
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import java.awt.Image;
 
 /**
@@ -24,4 +25,5 @@ public abstract class AbstractKIPlayer extends AbstractPlayer {
     public void bind(Game game){
         this.game = game;
     }
+    
 }

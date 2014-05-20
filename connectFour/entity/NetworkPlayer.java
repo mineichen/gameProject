@@ -9,9 +9,10 @@ package connectFour.entity;
 import javax.swing.ImageIcon;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
+import connectFour.InvalidInputException;
 import connectFour.entity.DiscMoveEvent;
 import connectFour.entity.Disc;
-import connectFour.entity.Game;
+import connectFour.entity.Game; 
 import java.awt.Image;
 import java.io.IOException;
 import java.io.OutputStream;
@@ -33,7 +34,7 @@ public class NetworkPlayer extends AbstractPlayer implements EventListener<DiscM
     {
         super(name, image);
         this.socket = socket;
-        new Thread(new NetworkThread(this)).start();
+        new NetworkThread(this).start();
     }
 
     public void bind(Game game)
@@ -42,6 +43,7 @@ public class NetworkPlayer extends AbstractPlayer implements EventListener<DiscM
         game.addEventListener(this) ;
     }
 
+    @Override
     public void on(DiscMoveEvent event) 
     {
         if(event.getDisc().getPlayer() != this) {
@@ -49,20 +51,27 @@ public class NetworkPlayer extends AbstractPlayer implements EventListener<DiscM
                 OutputStream out = socket.getOutputStream();
                 out.write(event.getDisc().getCol());
                 out.flush();
-            } catch(Exception e) {
+            } catch(IOException e) {
             }
         }
     }
-
-    protected class NetworkThread implements Runnable
+ 
+    @Override
+    public void handleError(InvalidInputException e)
     {
-        private PlayerInterface playerInterface;
+        throw new RuntimeException("KI Player performed forbidden move");
+    }
+    
+    private class NetworkThread extends Thread
+    {
+        private final PlayerInterface playerInterface;
 
         public NetworkThread(NetworkPlayer player)
         {
             playerInterface = player;
         }
 
+        @Override
         public void run()
         {
             try {
