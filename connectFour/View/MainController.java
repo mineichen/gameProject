@@ -42,11 +42,7 @@ public class MainController {
      * @throws IOException
      */
     public GameInterface newGameTwoGuiPlayers(ViewInterface view) throws IOException {
-//        try{
-        setGameParams();
-//        } catch(IOException ioExc) {
-//                    System.out.println("Error setting parameters");
-//        }
+        setGameParams("Player 2");
         PlayerInterface player1 = new GuiPlayer(namePlayer1,
                 ImageIO.read(GameProject.class.getResource(
                                 "/connectFour/images/default_red_dot.png")), view);
@@ -63,14 +59,15 @@ public class MainController {
     }
     
     public GameInterface newGameKIMike(ViewInterface view) throws IOException{
-        PlayerInterface player1 = new GuiPlayer("Markus",
+        setGameParams("KI Mike");
+        PlayerInterface player1 = new GuiPlayer(namePlayer1,
                 ImageIO.read(GameProject.class.getResource(
                                 "/connectFour/images/default_red_dot.png")), view);
-        KIPlayerMike playerki = new KIPlayerMike("KI Mike",
+        KIPlayerMike playerki = new KIPlayerMike(namePlayer2,
                 ImageIO.read(GameProject.class.getResource(
                                 "/connectFour/images/default_yellow_dot.png")));
         
-        Game game = new Game(8, 6, 4, player1, playerki);
+        Game game = new Game(gameRows, gameCols, 4, player1, playerki);
         GameController ctrl = new GameController(game);
         
         view.bind(game);
@@ -129,9 +126,9 @@ public class MainController {
     
     
     
-    private void setGameParams() {
+    private void setGameParams(String player2) {
         
-        InputGameParams params = new InputGameParams();
+        InputGameParams params = new InputGameParams(player2);
         namePlayer1 = params.getNamePlayer1();
         namePlayer2 = params.getNamePlayer2();
         gameRows = params.getGameRows();

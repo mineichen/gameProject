@@ -25,14 +25,14 @@ public class InputGameParams {
     private int gameCols;
     private Object[] params;
     
-    public InputGameParams(){
-        setGameParameters();
+    public InputGameParams(String player2){
+        setGameParameters(player2);
     }
     
     /**
      * Set the game parameters with dialog inputs
      */
-    private void setGameParameters(){
+    private void setGameParameters(String player2){
     
 
         JTextField name1;
@@ -44,8 +44,8 @@ public class InputGameParams {
         defaultParams = JOptionPane.showConfirmDialog(null,
                 "Default-Einstellungen?", "Auswahl der Einstellungen", JOptionPane.YES_NO_OPTION);
         if (defaultParams != 0) {
-            name1 = new JTextField();
-            name2 = new JTextField();
+            name1 = new JTextField("Player 1");
+            name2 = new JTextField(player2);
             SpinnerNumberModel model1 = new SpinnerNumberModel(10, 1, 35, 1);  //default value,lower bound,upper bound,increment by
             SpinnerNumberModel model2 = new SpinnerNumberModel(8, 1, 30, 1);
             rows = new JSpinner(model1);
