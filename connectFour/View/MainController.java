@@ -16,30 +16,57 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
+import javax.swing.JTextField;
 
 /**
- * Description
+ * Controller of the menu in main window
  *
  * @author jonbuc
  */
 public class MainController {
 
+    private String namePlayer1;
+    private String namePlayer2;
+    private int gameRows;
+    private int gameCols;
+    
+    private Object[] params;
+
+    /**
+     * Create a new game with two local players
+     *
+     * @param view
+     * @return game
+     * @throws IOException
+     */
     public GameInterface newGameTwoGuiPlayers(ViewInterface view) throws IOException {
-        //View view = new View();
-        PlayerInterface player1 = new GuiPlayer("Markus",
+//        try{
+        setGameParams();
+//        } catch(IOException ioExc) {
+//                    System.out.println("Error setting parameters");
+//        }
+        PlayerInterface player1 = new GuiPlayer(namePlayer1,
                 ImageIO.read(GameProject.class.getResource(
                                 "/connectFour/images/default_red_dot.png")), view);
-        PlayerInterface player2 = new GuiPlayer("Mike",
+        PlayerInterface player2 = new GuiPlayer(namePlayer2,
                 ImageIO.read(GameProject.class.getResource(
                                 "/connectFour/images/default_yellow_dot.png")), view);
 
-        Game game = new Game(8, 6, 4, player1, player2);
+        Game game = new Game(gameRows, gameCols, 4, player1, player2);
         GameController ctrl = new GameController(game);
 
         view.bind(game);
         return game;
     }
 
+    /**
+     * Create a game for the server to play over network
+     *
+     * @param view
+     * @return game
+     * @throws IOException
+     */
     public GameInterface findNetworkPlayer(ViewInterface view) throws IOException {
 
         ServerSocket server = new ServerSocket(1111);
@@ -59,6 +86,13 @@ public class MainController {
         return game;
     }
 
+    /**
+     * Create a game for the client to play over network
+     *
+     * @param view
+     * @return game
+     * @throws IOException
+     */
     public GameInterface connectNetworkGame(ViewInterface view) throws IOException {
         PlayerInterface player = new GuiPlayer("Markus", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png")), view);
         NetworkPlayer player2 = new NetworkPlayer(
@@ -74,5 +108,16 @@ public class MainController {
         player2.bind(game);
         return game;
     }
-
+    
+    
+    
+    private void setGameParams() {
+        
+        InputGameParams params = new InputGameParams();
+        namePlayer1 = params.getNamePlayer1();
+        namePlayer2 = params.getNamePlayer2();
+        gameRows = params.getGameRows();
+        gameCols = params.getGameCols();
+    }
+    
 }
