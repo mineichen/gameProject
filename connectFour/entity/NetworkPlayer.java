@@ -6,13 +6,8 @@
 
 package connectFour.entity;
 
-import javax.swing.ImageIcon;
-import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
-import connectFour.entity.DiscMoveEvent;
-import connectFour.entity.Disc;
-import connectFour.entity.Game; 
 import java.awt.Image;
 import java.io.IOException;
 import java.io.OutputStream;

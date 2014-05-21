@@ -21,4 +21,5 @@ public interface PlayerInterface
     public void addEventListener(EventListener<MoveEvent> e);
     public void removeEventListener(EventListener<MoveEvent> e);
     public void handleError(InvalidInputException e);
+    public boolean isSameTeam(PlayerInterface player);
 }

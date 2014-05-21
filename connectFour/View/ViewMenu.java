@@ -5,22 +5,16 @@
  */
 package connectFour.View;
 
-import connectFour.GameProject;
-import connectFour.entity.Game;
-import connectFour.entity.GameController;
-import connectFour.entity.GuiPlayer;
-import connectFour.entity.PlayerInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 
 /**
- * Menu bar in main window
+ * Description
  *
  * @author jonbuc
  */
@@ -29,7 +23,7 @@ public class ViewMenu extends JMenuBar {
     private ViewInterface view;
     private final MainController mainContr;
 
-    public ViewMenu(ViewInterface view,MainController mainContr) {
+    public ViewMenu(ViewInterface view, MainController mainContr) {
         this.view = view;
         this.mainContr = mainContr;
         this.addFileMenu();
@@ -43,6 +37,7 @@ public class ViewMenu extends JMenuBar {
         JMenuItem fileFindNetwork = new JMenuItem("Find Network-Player");
         JMenuItem fileConnectNetworkGame = new JMenuItem("Connect Network Game");
         JMenuItem fileSave = new JMenuItem("Save");
+        JMenuItem fileLoad = new JMenuItem("Load");
         JMenuItem fileClose = new JMenuItem("Close");
         menuFile.add(filePlayerPlayer);
         menuFile.add(filePlayerKIMike);
@@ -50,11 +45,12 @@ public class ViewMenu extends JMenuBar {
         menuFile.add(fileConnectNetworkGame);
         menuFile.addSeparator();
         menuFile.add(fileSave);
+        menuFile.add(fileLoad);
         menuFile.add(fileClose);
 
         this.add(menuFile);
 
-        // Create a game for the server to play over network
+        // create the File menu
         filePlayerPlayer.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
@@ -87,7 +83,6 @@ public class ViewMenu extends JMenuBar {
             }
         });
         
-        // Create a game for the client to play over network
         fileConnectNetworkGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -97,11 +92,20 @@ public class ViewMenu extends JMenuBar {
                 }
             }
         });
-        
-        
-        fileSave.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
 
+        fileSave.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                try {
+                    mainContr.saveGame(view.getGame(), view.getMainWindow());
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                
+            }
+        });
+        fileLoad.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                mainContr.loadGame(view);
             }
         });
 
@@ -110,5 +114,15 @@ public class ViewMenu extends JMenuBar {
                 System.exit(0);
             }
         });
+    }
+
+    /**
+     * Create the main frame's menu bar.
+     *
+     * @param frame The frame that the menu bar should be added to.
+     */
+    private void makeMenuBar(JFrame frame) {
+
+        
     }
 }

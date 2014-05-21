@@ -16,13 +16,13 @@ import java.awt.Image;
  */
 public abstract class AbstractKIPlayer extends AbstractPlayer {
     
-    Game game;
+    protected transient GameInterface game;
     
     public AbstractKIPlayer(String name, Image image){
         super(name, image);
     }
     
-    public void bind(Game game){
+    public void bind(GameInterface game){
         this.game = game;
     }
     

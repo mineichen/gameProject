@@ -9,14 +9,21 @@ package connectFour.entity;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
+import java.io.Serializable;
 import java.util.Arrays;
+import java.util.HashMap;
 import java.util.LinkedList;
+import java.util.List;
+import java.util.Queue;
 
 /**
  *
  * @author mineichen
  */
-public class Game implements GameInterface
+public class Game implements GameInterface, Serializable, Cloneable
 {
     private int playerCounter = 0;
     private final int winNumber;
@@ -24,7 +31,7 @@ public class Game implements GameInterface
     private final int rows;
     private final int[] colCounter;
     private final PlayerInterface[] players;
-    private final transient EventDispatcher<DiscMoveEvent> dispatcher = new EventDispatcher<>();
+    private transient EventDispatcher<DiscMoveEvent> dispatcher;
     /**
      * Disc[col][row]
      * 3 <- rows 
@@ -39,7 +46,16 @@ public class Game implements GameInterface
         Direction.SOUTHEAST
     };
 
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        dispatcher = new EventDispatcher<>();
+    }
+
     
+    public Game()
+    {
+        this(7, 6, 4, new PlayerInterface[0]); 
+    }
     
     public Game(PlayerInterface... players)
     {
@@ -53,6 +69,7 @@ public class Game implements GameInterface
     
     public Game(int cols, int rows, int winNumber, PlayerInterface... players) 
     {
+        dispatcher = new EventDispatcher<>();
         this.winNumber = winNumber;
         this.cols = cols;
         this.rows = rows;
@@ -61,7 +78,7 @@ public class Game implements GameInterface
         colCounter = new int[cols];
     }
     
-    public Iterable<PlayerInterface> getPlayers()
+    public List<PlayerInterface> getPlayers()
     {
         return Arrays.asList(players);
     }
@@ -69,6 +86,11 @@ public class Game implements GameInterface
     public void addEventListener(EventListener<DiscMoveEvent> e)
     {
         dispatcher.addEventListener(e);
+    }
+    
+    public boolean isAllowed(int col)
+    {
+        return colCounter[col] < rows;
     }
     
     @Override
@@ -97,12 +119,14 @@ public class Game implements GameInterface
     public void addDisc(int col) throws InvalidInputException
     {
         int nextRow = getNextRow(col);
+        boolean winnerMove = isWinnerMove(col, nextRow);
         discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
-        if(dispatcher.hasEventListeners()) {
-            dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow], isWinnerMove(col, nextRow)));
-        }
+        
         incrementPlayerCounter();
         colCounter[col]++;
+        if(dispatcher.hasEventListeners()) {
+            dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow], winnerMove));
+        }
     }
 
 
@@ -171,7 +195,7 @@ public class Game implements GameInterface
      */
     public int getNextRow(int col) throws InvalidInputException
     {
-        if(colCounter[col] >= rows) {
+        if(!isAllowed(col)) {
             throw new InvalidInputException();
         }
         
@@ -184,7 +208,28 @@ public class Game implements GameInterface
     public int getCols(){
         return cols;
     }
+    
+    public Object clone()  
+    {
+        try {
+            return super.clone();
+        } catch(CloneNotSupportedException e) {
+            throw new RuntimeException("Game is not Clonable");
+        }
+    }
+    
     public int getWinNumber(){
         return winNumber;
+    }
+    
+    public boolean isSerializable()
+    {
+        for(PlayerInterface player : players) {
+            if(!(player instanceof Serializable)) {
+                return false;
+            }
+        }
+        
+        return true;
     }
 }
