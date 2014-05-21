@@ -9,6 +9,9 @@ package connectFour.entity;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
+import java.awt.Image;
+import java.awt.image.BufferedImage;
+import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
 import java.util.HashMap;
@@ -28,7 +31,7 @@ public class Game implements GameInterface, Serializable, Cloneable
     private final int rows;
     private final int[] colCounter;
     private final PlayerInterface[] players;
-    private final transient EventDispatcher<DiscMoveEvent> dispatcher = new EventDispatcher<>();
+    private transient EventDispatcher<DiscMoveEvent> dispatcher;
     /**
      * Disc[col][row]
      * 3 <- rows 
@@ -43,7 +46,16 @@ public class Game implements GameInterface, Serializable, Cloneable
         Direction.SOUTHEAST
     };
 
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        dispatcher = new EventDispatcher<>();
+    }
+
     
+    public Game()
+    {
+        this(7, 6, 4, new PlayerInterface[0]); 
+    }
     
     public Game(PlayerInterface... players)
     {
@@ -57,6 +69,7 @@ public class Game implements GameInterface, Serializable, Cloneable
     
     public Game(int cols, int rows, int winNumber, PlayerInterface... players) 
     {
+        dispatcher = new EventDispatcher<>();
         this.winNumber = winNumber;
         this.cols = cols;
         this.rows = rows;
@@ -106,12 +119,14 @@ public class Game implements GameInterface, Serializable, Cloneable
     public void addDisc(int col) throws InvalidInputException
     {
         int nextRow = getNextRow(col);
+        boolean winnerMove = isWinnerMove(col, nextRow);
         discs[col][nextRow] = new Disc(getCurrentPlayer(), col, nextRow);
-        if(dispatcher.hasEventListeners()) {
-            dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow], isWinnerMove(col, nextRow)));
-        }
+        
         incrementPlayerCounter();
         colCounter[col]++;
+        if(dispatcher.hasEventListeners()) {
+            dispatcher.dispatch(new DiscMoveEvent(this, discs[col][nextRow], winnerMove));
+        }
     }
 
 
@@ -201,5 +216,9 @@ public class Game implements GameInterface, Serializable, Cloneable
         } catch(CloneNotSupportedException e) {
             throw new RuntimeException("Game is not Clonable");
         }
+    }
+    
+    public int getWinNumber(){
+        return winNumber;
     }
 }

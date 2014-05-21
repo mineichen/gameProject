@@ -26,6 +26,7 @@ public interface GameInterface extends Cloneable
     public void addEventListener(EventListener<DiscMoveEvent> e);
     public int getCols();
     public int getRows();
+    public int getWinNumber();
     public List<PlayerInterface> getPlayers();
     public Object clone();
 }

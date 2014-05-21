@@ -56,7 +56,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     //private ViewMenu menu = new ViewMenu(this);
     private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();
     private GameInterface game;
-    private HashMap<Image, ImageIcon> resizedImageCache = new HashMap<>();
+    private HashMap<PlayerInterface, ImageIcon> resizedImageCache = new HashMap<>();
 
     /**
      * Status which player has to move
@@ -112,6 +112,19 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         dispatcher.addEventListener(e);
     }
     
+    public GameInterface getGame() throws Exception
+    {
+        if(this.game == null) {
+            throw new Exception("NoGameSet in Gui");
+        }
+        return this.game;
+    }
+    
+    public JFrame getMainWindow()
+    {
+        return mainWindow;
+    }
+    
     public void removeEventListener(EventListener<MoveEvent> e)
     {
         dispatcher.removeEventListener(e);
@@ -125,19 +138,20 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     public void bind(GameInterface game) {
         this.game = game;
         this.game.addEventListener(this);
-        dots = new JLabel[game.getCols()][game.getRows()];
-        mainPanel.add(createGameBoard(), BorderLayout.CENTER);
-        
-        for(Disc disc : game.getDiscs()) {
-            this.addDisc(disc);
-        }
-        resize();
         int iconsize = getIconSize(); 
+        
+        neutralIcon.setImage(neutralImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH));
+        mainPanel.add(createGameBoard(), BorderLayout.CENTER);
+        status.setText("Player " + game.getCurrentPlayer().getName() + " has to move");
         for(PlayerInterface player : game.getPlayers()) {
-            resizedImageCache.put(player.getImage(), new ImageIcon(
+            resizedImageCache.put(player, new ImageIcon(
                 player.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
             ));
         }
+        for(Disc disc : game.getDiscs()) {
+            this.addDisc(disc);
+        }
+        
         repaint();
     }
 
@@ -146,9 +160,9 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         if(game != null) {
             int iconsize = getIconSize(); 
             neutralIcon.setImage(neutralImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH));
-            for(Image image : resizedImageCache.keySet()) {
-                resizedImageCache.get(image).setImage(
-                    image.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
+            for(PlayerInterface player : resizedImageCache.keySet()) {
+                resizedImageCache.get(player).setImage(
+                    player.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
                 );
             }
         }
@@ -158,9 +172,6 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      */
     private void repaint() 
     {
-        if(game != null) {
-            status.setText("Player " + game.getCurrentPlayer().getName() + " has to move");
-        }
         mainWindow.repaint();
     }
 
@@ -170,6 +181,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      * @return JPanel with all Elements on it
      */
     private JPanel createGameBoard() {
+        dots = new JLabel[game.getCols()][game.getRows()];
         gameboardpanel = new JPanel(new GridLayout(game.getRows(), game.getCols()));
         gameboardpanel.setBorder(BorderFactory.createLineBorder(Color.BLACK));
         for(int i = (game.getRows()-1); i>=0; i--){
@@ -220,7 +232,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      */
     private void addDisc(Disc disc){
         dots[disc.getCol()][disc.getRow()].setIcon(
-            resizedImageCache.get(disc.getImage())
+            resizedImageCache.get(disc.getPlayer())
         );
     }
     
@@ -235,6 +247,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     {
         System.out.println("Is Winner Move: " + ((e.isWinnerMove()) ? "yes" : "no"));
         addDisc(e.getDisc());
-        repaint();
+        status.setText("Player " + game.getCurrentPlayer().getName() + " has to move");
     }
+    
 }

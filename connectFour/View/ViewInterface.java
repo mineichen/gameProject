@@ -9,6 +9,7 @@ package connectFour.View;
 import connectFour.EventListener;
 import connectFour.entity.GameInterface;
 import connectFour.entity.MoveEvent;
+import javax.swing.JFrame;
 
 /**
  *
@@ -19,4 +20,6 @@ public interface ViewInterface
     public void bind(GameInterface game);
     public void addEventListener(EventListener<MoveEvent> e);
     public void removeEventListener(EventListener<MoveEvent> e);
+    public GameInterface getGame() throws Exception;
+    public JFrame getMainWindow();
 }

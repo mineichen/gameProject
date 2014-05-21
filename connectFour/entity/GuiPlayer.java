@@ -13,19 +13,32 @@ import connectFour.InvalidInputException;
 import connectFour.View.View;
 import connectFour.View.ViewInterface;
 import java.awt.Image;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  * Description
  *
  * @author  Jon Buchli
  */
-public class GuiPlayer extends AbstractPlayer {
+public class GuiPlayer extends AbstractPlayer implements Serializable {
 
-    private ViewInterface view;
+    private transient ViewInterface view;
     
-    public GuiPlayer(String name, Image image, ViewInterface view)
+    public GuiPlayer()
+    {
+        super();
+    }
+    
+    public GuiPlayer(String name, Image image)
     {
         super(name, image);
+    }
+    
+    public void bind(ViewInterface view)
+    {
         this.view = view;
     }
     
@@ -43,5 +56,13 @@ public class GuiPlayer extends AbstractPlayer {
     public void removeEventListener(EventListener<MoveEvent> e)
     {
         view.removeEventListener(e);
+    }
+    
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        abstractReadObject(in);    
+    }
+    
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        abstractWriteObject(out);
     }
 }

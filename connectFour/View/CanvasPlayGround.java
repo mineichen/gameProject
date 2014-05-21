@@ -18,7 +18,7 @@ import java.awt.Graphics;
  *
  * @author mineichen
  */
-public class CanvasPlayGround extends Canvas implements ViewInterface
+public class CanvasPlayGround extends Canvas
 {
     private GameInterface game;
     private EventDispatcher<MoveEvent> dispatcher = new EventDispatcher<>();

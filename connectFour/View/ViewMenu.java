@@ -40,15 +40,19 @@ public class ViewMenu extends JMenuBar {
 
         JMenu menuFile = new JMenu("File");
         JMenuItem filePlayerPlayer = new JMenuItem("New Game Player vs. Player");
+        JMenuItem filePlayerKIMike = new JMenuItem("New Game Player vs. KI Mike");
         JMenuItem fileFindNetwork = new JMenuItem("Find Network-Player");
         JMenuItem fileConnectNetworkGame = new JMenuItem("Connect Network Game");
         JMenuItem fileSave = new JMenuItem("Save");
+        JMenuItem fileLoad = new JMenuItem("Load");
         JMenuItem fileClose = new JMenuItem("Close");
         menuFile.add(filePlayerPlayer);
+        menuFile.add(filePlayerKIMike);
         menuFile.add(fileFindNetwork);
         menuFile.add(fileConnectNetworkGame);
         menuFile.addSeparator();
         menuFile.add(fileSave);
+        menuFile.add(fileLoad);
         menuFile.add(fileClose);
 
         this.add(menuFile);
@@ -59,6 +63,17 @@ public class ViewMenu extends JMenuBar {
             public void actionPerformed(ActionEvent e) {
                 try {
                     mainContr.newGameTwoGuiPlayers(view);
+                } catch(IOException ioException) {
+                    System.out.println("Error loading Images");
+                }
+            }
+        });
+        
+         filePlayerKIMike.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    mainContr.newGameKIMike(view);
                 } catch(IOException ioException) {
                     System.out.println("Error loading Images");
                 }
@@ -86,8 +101,18 @@ public class ViewMenu extends JMenuBar {
         });
 
         fileSave.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-
+            public void actionPerformed(ActionEvent ev) {
+                try {
+                    mainContr.saveGame(view.getGame(), view.getMainWindow());
+                } catch(Exception e) {
+                    System.out.println(e.getMessage());
+                }
+                
+            }
+        });
+        fileLoad.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent ev) {
+                mainContr.loadGame(view);
             }
         });
 

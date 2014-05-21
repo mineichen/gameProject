@@ -29,7 +29,6 @@ public class GameProject {
      * @param args the command line arguments
      */
     public static void main(String[] args) {
-        new View();
+            View view = new View();
     }
-    
 }
