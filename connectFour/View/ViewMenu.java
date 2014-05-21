@@ -5,15 +5,9 @@
  */
 package connectFour.View;
 
-import connectFour.GameProject;
-import connectFour.entity.Game;
-import connectFour.entity.GameController;
-import connectFour.entity.GuiPlayer;
-import connectFour.entity.PlayerInterface;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.io.IOException;
-import javax.imageio.ImageIO;
 import javax.swing.JFrame;
 import javax.swing.JMenu;
 import javax.swing.JMenuBar;
@@ -29,11 +23,10 @@ public class ViewMenu extends JMenuBar {
     private ViewInterface view;
     private final MainController mainContr;
 
-    public ViewMenu(ViewInterface view,MainController mainContr) {
+    public ViewMenu(ViewInterface view, MainController mainContr) {
         this.view = view;
         this.mainContr = mainContr;
         this.addFileMenu();
-        //makeMenuBar(frame);
     }
 
     private void addFileMenu() {
