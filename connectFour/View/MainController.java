@@ -71,18 +71,21 @@ public class MainController {
     
     public GameInterface newGameKIMike(ViewInterface view) throws IOException{
         setGameParams("KI Mike");
-        PlayerInterface player1 = new GuiPlayer(namePlayer1,
-                ImageIO.read(GameProject.class.getResource(
-                                "/connectFour/images/default_red_dot.png")));
-        KIPlayerMike playerki = new KIPlayerMike(namePlayer2,
-                ImageIO.read(GameProject.class.getResource(
-                                "/connectFour/images/default_yellow_dot.png")));
+        GuiPlayer player1 = new GuiPlayer(
+            namePlayer1,
+            ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png"))
+        );
+        KIPlayerMike playerki = new KIPlayerMike(
+            namePlayer2,
+            ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png"))
+        );
+        player1.bind(view);
         
         Game game = new Game(gameRows, gameCols, 4, player1, playerki);
-        GameController ctrl = new GameController(game);
-        
-        view.bind(game);
         playerki.bind(game);
+        
+        GameController ctrl = new GameController(game);
+        view.bind(game);
         return game;
     }
 
@@ -115,7 +118,11 @@ public class MainController {
 
     public void saveGame(GameInterface game, Component view)
     {
-        gameBackend.save(game, view);
+        try {
+            gameBackend.save(game, view);
+        } catch(IOException e) {
+            System.out.println("Game is not Serializable");
+        }
     }
     
     public void loadGame(ViewInterface view)

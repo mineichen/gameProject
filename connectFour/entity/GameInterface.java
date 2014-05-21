@@ -29,4 +29,5 @@ public interface GameInterface extends Cloneable
     public int getWinNumber();
     public List<PlayerInterface> getPlayers();
     public Object clone();
+    public boolean isSerializable();
 }

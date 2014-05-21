@@ -136,6 +136,10 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
      * @param game
      */
     public void bind(GameInterface game) {
+        if(this.gameboardpanel != null) {
+            mainPanel.remove(gameboardpanel);
+            game.removeEventListener(this);
+        }
         this.game = game;
         this.game.addEventListener(this);
         int iconsize = getIconSize(); 
@@ -152,7 +156,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
             this.addDisc(disc);
         }
         
-        repaint();
+        gameboardpanel.repaint();
     }
 
     private void resize()

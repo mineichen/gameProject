@@ -221,4 +221,15 @@ public class Game implements GameInterface, Serializable, Cloneable
     public int getWinNumber(){
         return winNumber;
     }
+    
+    public boolean isSerializable()
+    {
+        for(PlayerInterface player : players) {
+            if(!(player instanceof Serializable)) {
+                return false;
+            }
+        }
+        
+        return true;
+    }
 }

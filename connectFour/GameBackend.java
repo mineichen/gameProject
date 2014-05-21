@@ -28,12 +28,15 @@ import javax.swing.JFileChooser;
  */
 public class GameBackend
 {
-    public void save(GameInterface game, Component component)
+    public void save(GameInterface game, Component component) throws IOException
     {
+        if(!game.isSerializable()) {
+            throw new IOException("Game is not serializable");
+        }
         new SaveThread(game, component).run();
     }
     
-    public void load(Component component, GameLoadedCallback callback)
+    public void load(Component component, GameLoadedCallback callback) 
     {
         new LoadThread(component, callback).run();
     }
@@ -86,6 +89,7 @@ public class GameBackend
                 ObjectOutputStream writer;
                 
                 try {
+                    
                     writer = new ObjectOutputStream(new FileOutputStream(chooser.getSelectedFile()));
                     writer.writeObject(game);
                 } catch(Exception e) {
