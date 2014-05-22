@@ -78,9 +78,15 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         mainWindow.addComponentListener(new ComponentAdapter() {
             @Override
             public void componentResized(ComponentEvent e) {
-                resize();
-                
-                repaint();
+                if(game != null) {
+                    int iconsize = getIconSize(); 
+                    neutralIcon.setImage(neutralImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH));
+                    for(PlayerInterface player : resizedImageCache.keySet()) {
+                        resizedImageCache.get(player).setImage(
+                            player.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
+                        );
+                    }    
+                }
             }
         });
 
@@ -157,26 +163,6 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         }
         
         gameboardpanel.repaint();
-    }
-
-    private void resize()
-    {
-        if(game != null) {
-            int iconsize = getIconSize(); 
-            neutralIcon.setImage(neutralImage.getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH));
-            for(PlayerInterface player : resizedImageCache.keySet()) {
-                resizedImageCache.get(player).setImage(
-                    player.getImage().getScaledInstance(iconsize, iconsize, Image.SCALE_SMOOTH)
-                );
-            }
-        }
-    }
-    /**
-     * Repaint the Gameboard and recalculate the Icon Size etc
-     */
-    private void repaint() 
-    {
-        mainWindow.repaint();
     }
 
     /**

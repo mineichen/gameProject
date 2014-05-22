@@ -30,4 +30,5 @@ public interface GameInterface extends Cloneable
     public List<PlayerInterface> getPlayers();
     public Object clone();
     public boolean isSerializable();
+    public boolean isAllowed(int col);
 }

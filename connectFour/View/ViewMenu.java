@@ -34,6 +34,7 @@ public class ViewMenu extends JMenuBar {
         JMenu menuFile = new JMenu("File");
         JMenuItem filePlayerPlayer = new JMenuItem("New Game Player vs. Player");
         JMenuItem filePlayerKIMike = new JMenuItem("New Game Player vs. KI Mike");
+        JMenuItem filePlayerKIKusi = new JMenuItem("New Game Player vs. KI Kusi");
         JMenuItem fileFindNetwork = new JMenuItem("Find Network-Player");
         JMenuItem fileConnectNetworkGame = new JMenuItem("Connect Network Game");
         JMenuItem fileSave = new JMenuItem("Save");
@@ -41,6 +42,7 @@ public class ViewMenu extends JMenuBar {
         JMenuItem fileClose = new JMenuItem("Close");
         menuFile.add(filePlayerPlayer);
         menuFile.add(filePlayerKIMike);
+        menuFile.add(filePlayerKIKusi);
         menuFile.add(fileFindNetwork);
         menuFile.add(fileConnectNetworkGame);
         menuFile.addSeparator();
@@ -67,6 +69,16 @@ public class ViewMenu extends JMenuBar {
             public void actionPerformed(ActionEvent e) {
                 try {
                     mainContr.newGameKIMike(view);
+                } catch(IOException ioException) {
+                    System.out.println("Error loading Images");
+                }
+            }
+        });
+         filePlayerKIKusi.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                try {
+                    mainContr.newGameKIKusi(view);
                 } catch(IOException ioException) {
                     System.out.println("Error loading Images");
                 }
