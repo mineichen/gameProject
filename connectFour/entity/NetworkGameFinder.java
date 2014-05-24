@@ -14,12 +14,11 @@ import java.net.Socket;
 import java.net.ServerSocket;
 import java.awt.Image;
 import java.util.ArrayList;
-import java.util.Enumeration;
-import java.util.Random;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import java.io.ObjectOutputStream;
 import java.io.ObjectInputStream;
+import java.io.IOException;
 
 import connectFour.View.View;
 
@@ -28,20 +27,21 @@ class NetworkGameFinder
     private boolean gameFound = false;
     private boolean isServer = false;
     private DatagramSocket socket; 
-    private byte[] randomNumber = new byte[1024];
+    private ByteValidator checkValue;
     private final int port = 8921;
     private ArrayList<PlayerInterface> players;
-    private PlayerInterface player;
+    private GuiPlayer player;
     private int tcpport = 9999;
     private PlayerInterface opponent;
     private ObjectOutputStream oout;
     private ObjectInputStream oin;
     private Socket playersocket;
+    private Object lockedOpponent = new Object();
 
     public static void main(String[] args)
     {
         try {
-            PlayerInterface guiplayer = new GuiPlayer("Eti", ImageIO.read(NetworkGameFinder.class.getResource("/connectFour/images/default_red_dot.png")), null);
+            GuiPlayer guiplayer = new GuiPlayer("Eti", ImageIO.read(NetworkGameFinder.class.getResource("/connectFour/images/default_red_dot.png")));
             NetworkGameFinder g = new NetworkGameFinder(guiplayer);
             g.startSearch();
         } catch(Exception e) {
@@ -50,11 +50,12 @@ class NetworkGameFinder
         System.out.println("Stop search");
     }
 
-    public NetworkGameFinder(PlayerInterface player)
+    public NetworkGameFinder(GuiPlayer player)
     {
         this.player = player;
-        Random randomGenerator = new Random();
-        randomGenerator.nextBytes(randomNumber);
+
+        players = new ArrayList<PlayerInterface>();
+        checkValue = new ByteValidator();
     }
 
     public PlayerInterface[] startSearch()
@@ -63,21 +64,22 @@ class NetworkGameFinder
             socket = new DatagramSocket(port, InetAddress.getByName("0.0.0.0"));
             socket.setBroadcast(true);
 
-            Thread serverListener = new Thread(new ServerListener());
+            Thread serverListener = new Thread(new UDPPacketReceiver());
             serverListener.start();
 
             DatagramPacket packet;
 
             while(!gameFound) {
-                packet = new DatagramPacket(randomNumber,randomNumber.length, InetAddress.getByName("255.255.255.255"), port);
+                packet = new DatagramPacket(checkValue.getPacket(),checkValue.getPacket().length, InetAddress.getByName("255.255.255.255"), port);
                 socket.send(packet);
-                System.out.println("Broadcast sended");
-                Thread.sleep(10000);
+                System.out.println("Broadcast send");
+                Thread.sleep(500);
             }
             System.out.println("Opponent name: " + opponent.getName());
         } catch(Exception e) {
         }
-        return (PlayerInterface[]) players.toArray() ;
+        PlayerInterface[] hallo = new PlayerInterface[2];
+        return hallo;
 
     }
 
@@ -85,10 +87,14 @@ class NetworkGameFinder
     {
         public void run()
         {
-            synchronized(opponent) {
+            synchronized(lockedOpponent) {
                 try {
-                    PlayerInterface networkplayer = (PlayerInterface) oin.readObject();
+                    if(oin==null) {
+                        System.out.println("Upps");
+                    }
+                    GuiPlayer networkplayer = (GuiPlayer) oin.readObject();
                     opponent = new NetworkPlayer(networkplayer.getName(), networkplayer.getImage(), playersocket); 
+                    System.out.println("Player fetched");
                 } catch(Exception e) {
                     e.printStackTrace();
                 }
@@ -96,41 +102,66 @@ class NetworkGameFinder
         }
     }
 
-    private class ServerListener implements Runnable
+    private class UDPPacketReceiver implements Runnable
     {
+        private ByteValidator foreign;
+        private InetAddress address;
+        
+        private void makeConnectionAsClient()
+        {
+            try {
+                playersocket = new Socket(address,tcpport);
+            } catch(IOException e) {
+                System.out.println("Failed to establish the connection as a client");
+            }
+        }
+
+        private void makeConnectionAsServer()
+        {
+            isServer = true;
+            try {
+                ServerSocket serverSocket = new ServerSocket(tcpport);
+                playersocket = serverSocket.accept();
+            } catch(IOException e) {
+                System.out.println("Failed to establish the connection as a server");
+            }
+        }
+
+        private void sendClientRole()
+        {
+            foreign.setHostPart(checkValue.getHostPart());
+            try {
+                socket.send(new DatagramPacket(foreign.getPacket(), foreign.getPacket().length, address, port));
+            } catch(IOException e) {
+                System.out.println("Failed to send an answer packet via UDP");
+            }
+        }
+
         public void run()
         {
             try {
                 while(!gameFound) {
-                    DatagramPacket packet = new DatagramPacket(new byte[1024],1);
-                    socket.receive(packet);
-                    InetAddress address = packet.getAddress();
-                    byte[] data = packet.getData();
-                    if(data[0]!=randomNumber[0] && data[1]!=randomNumber[1]) {
-                        System.out.println("fam annru");
+                    DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
 
-                        System.out.println(data[3]);
-                        System.out.println(randomNumber[3]);
-                        
-                        if(data[3] == randomNumber[3]){
+                    socket.receive(packet);
+                    address = packet.getAddress();
+                    byte[] data = packet.getData();
+                    foreign = new ByteValidator(data);
+
+                    if(!checkValue.isFromTheSameHost(data)) {
+                        if(checkValue.containsTheSameSum(data)){
                             System.out.println(address + " wants to connect with me");
-                            // ich bin der Client
-                            Thread.sleep(2000);
-                            playersocket = new Socket(address, tcpport);
-                            exchangePlayers();
+                            makeConnectionAsClient();
                         } else {
                             isServer = true;
                             System.out.println("I want to connect with " + data + "@" + address);
-                            // ich bin der Server
-                            ServerSocket serverSocket = new ServerSocket(tcpport);
-                            data[0] = randomNumber[0];
-                            data[1] = randomNumber[1];
-                            socket.send(new DatagramPacket(data, data.length, address, port));
-                            playersocket = serverSocket.accept();
-                            exchangePlayers();
+                            sendClientRole();
+                            makeConnectionAsServer();
                         }
+                        exchangePlayers();
                     }
                 }
+                System.out.println("Connected successfully with " + opponent.getName() + "@" + address.getHostAddress());
             } catch(Exception e) {
                 e.printStackTrace();
             }
@@ -144,10 +175,10 @@ class NetworkGameFinder
             oin = new ObjectInputStream(playersocket.getInputStream());
 
             new Thread(new NetworkPlayerListener()).start();
-            Thread.sleep(1000);
+            //Thread.sleep(1000);
             oout.writeObject(player);
 
-            synchronized(opponent) {
+            synchronized(lockedOpponent) {
                 if(isServer) {
                     players.add(player);
                     players.add(opponent);
@@ -156,6 +187,8 @@ class NetworkGameFinder
                     players.add(player);
                 }
             }
+            System.out.println("set gamefound = true") ;
+
             gameFound = true;
         } catch (Exception e) {
             e.printStackTrace();
