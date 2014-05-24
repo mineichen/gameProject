@@ -14,8 +14,8 @@ import connectFour.entity.GameController;
 import connectFour.entity.GameInterface;
 import connectFour.entity.GuiPlayer;
 import connectFour.entity.KIPlayerMike;
-import connectFour.entity.KiPlayer;
 import connectFour.entity.NetworkPlayer;
+import connectFour.entity.NetworkGameFinder;
 import connectFour.entity.PlayerInterface;
 import java.awt.Component;
 import java.io.IOException;
@@ -98,11 +98,16 @@ public class MainController {
             namePlayer1,
             ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png"))
         );
-        KiPlayer playerki = new KiPlayer(
+        /*KIPlayerMike playerki = new KIPlayerMike(
             namePlayer2,
             ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),
             ki
+        );*/
+        KIPlayerMike playerki = new KIPlayerMike(
+            namePlayer2,
+            ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png"))
         );
+
         player1.bind(view);
         
         Game game = new Game(gameRows, gameCols, 4, playerki, player1);
@@ -188,8 +193,31 @@ public class MainController {
         player2.bind(game);
         return game;
     }
-    
-    
+
+    /**
+     * Search a game via UDP
+     * @param view
+     * @return game
+     */
+    public GameInterface searchUDPGame(ViewInterface view) throws IOException
+    {
+        String playername = InputGameParams.askForPlayerName();
+        GuiPlayer player = new GuiPlayer(
+            playername,
+            ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png"))
+        );
+
+        player.bind(view);
+        NetworkGameFinder udpSearch = new NetworkGameFinder(player);
+        Game game = new Game(10,10,4, udpSearch.startSearch());
+        udpSearch.getNetworkPlayer().bind(game);
+
+        // change the image, so the players don't have both the red dot
+        player.setImage(ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")));
+        GameController ctrl = new GameController(game);
+        view.bind(game);
+        return game;
+    }
     
     private void setGameParams(String player2) {
         

@@ -17,39 +17,54 @@ import java.util.ArrayList;
 import javax.imageio.ImageIO;
 import javax.swing.ImageIcon;
 import java.io.ObjectOutputStream;
-import java.io.ObjectInputStream;
 import java.io.IOException;
 
 import connectFour.View.View;
 
-class NetworkGameFinder
+/**
+ * Class for finding games over the network via UDP
+ *
+ * @author efux
+ */
+public class NetworkGameFinder
 {
     private boolean gameFound = false;
     private boolean isServer = false;
+
+    /**
+     * Socket for sending UDP packets
+     */
     private DatagramSocket socket; 
+
     private ByteValidator checkValue;
     private final int port = 8921;
-    private ArrayList<PlayerInterface> players;
-    private GuiPlayer player;
     private int tcpport = 9999;
-    private PlayerInterface opponent;
-    private ObjectOutputStream oout;
-    private ObjectInputStream oin;
+
+    private GuiPlayer player;
+    private NetworkPlayer opponent;
     private Socket playersocket;
+    private ArrayList<PlayerInterface> players;
+
+    /**
+     * Used to synchronize the threads
+     */
     private Object lockedOpponent = new Object();
 
-    public static void main(String[] args)
+    /**
+     * Returns the found network player
+     *
+     * @return opponent
+     */
+    public NetworkPlayer getNetworkPlayer()
     {
-        try {
-            GuiPlayer guiplayer = new GuiPlayer("Eti", ImageIO.read(NetworkGameFinder.class.getResource("/connectFour/images/default_red_dot.png")));
-            NetworkGameFinder g = new NetworkGameFinder(guiplayer);
-            g.startSearch();
-        } catch(Exception e) {
-            e.printStackTrace();
-        }
-        System.out.println("Stop search");
+        return opponent;
     }
 
+    /**
+     * Constructor for the search of a network player
+     *
+     * @param player The Guiplayer to send to the opponent
+     */
     public NetworkGameFinder(GuiPlayer player)
     {
         this.player = player;
@@ -58,6 +73,11 @@ class NetworkGameFinder
         checkValue = new ByteValidator();
     }
 
+    /**
+     * Starts the search for players via UDP
+     *
+     * @return An array with the players of a game in the correct order
+     */
     public PlayerInterface[] startSearch()
     {
         try {
@@ -67,46 +87,50 @@ class NetworkGameFinder
             Thread serverListener = new Thread(new UDPPacketReceiver());
             serverListener.start();
 
-            DatagramPacket packet;
-
             while(!gameFound) {
-                packet = new DatagramPacket(checkValue.getPacket(),checkValue.getPacket().length, InetAddress.getByName("255.255.255.255"), port);
-                socket.send(packet);
-                System.out.println("Broadcast send");
-                Thread.sleep(500);
+                sendBroadcast();
+                // the timeout is necessary, so the connection attempt doesn't get interrupted by other arriving packets
+                Thread.sleep(10000);
             }
             System.out.println("Opponent name: " + opponent.getName());
         } catch(Exception e) {
+            System.out.println("Failed to create an UDP socket or to send packets");
         }
-        PlayerInterface[] hallo = new PlayerInterface[2];
-        return hallo;
-
+        return players.toArray(new PlayerInterface[players.size()]);
     }
 
-    private class NetworkPlayerListener implements Runnable
+    private void sendBroadcast() throws IOException
     {
-        public void run()
-        {
-            synchronized(lockedOpponent) {
-                try {
-                    if(oin==null) {
-                        System.out.println("Upps");
-                    }
-                    GuiPlayer networkplayer = (GuiPlayer) oin.readObject();
-                    opponent = new NetworkPlayer(networkplayer.getName(), networkplayer.getImage(), playersocket); 
-                    System.out.println("Player fetched");
-                } catch(Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
+        socket.send(new DatagramPacket(checkValue.getPacket(),checkValue.getPacket().length, InetAddress.getByName("255.255.255.255"), port));
+        System.out.println("Broadcast send");
     }
 
+    public void setOpponent(NetworkPlayer networkPlayer)
+    {
+        opponent = networkPlayer;
+    }
+
+    public Socket getPlayersocket()
+    {
+        return playersocket;
+    }
+
+    /**
+     * @return Returns the object which is used for synchronisation
+     */
+    public Object getLock()
+    {
+        return lockedOpponent;
+    }
+
+    /**
+     * Class which waits for arriving UDP packets and treats them correctly
+     */
     private class UDPPacketReceiver implements Runnable
     {
         private ByteValidator foreign;
         private InetAddress address;
-        
+
         private void makeConnectionAsClient()
         {
             try {
@@ -127,7 +151,7 @@ class NetworkGameFinder
             }
         }
 
-        private void sendClientRole()
+        private void sendClientNotification()
         {
             foreign.setHostPart(checkValue.getHostPart());
             try {
@@ -139,46 +163,45 @@ class NetworkGameFinder
 
         public void run()
         {
-            try {
-                while(!gameFound) {
-                    DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
+            while(!gameFound) {
+                DatagramPacket packet = new DatagramPacket(new byte[1024],1024);
 
+                try {
                     socket.receive(packet);
-                    address = packet.getAddress();
-                    byte[] data = packet.getData();
-                    foreign = new ByteValidator(data);
-
-                    if(!checkValue.isFromTheSameHost(data)) {
-                        if(checkValue.containsTheSameSum(data)){
-                            System.out.println(address + " wants to connect with me");
-                            makeConnectionAsClient();
-                        } else {
-                            isServer = true;
-                            System.out.println("I want to connect with " + data + "@" + address);
-                            sendClientRole();
-                            makeConnectionAsServer();
-                        }
-                        exchangePlayers();
-                    }
+                } catch(Exception e) {
+                    System.out.println("UDP Socket can't receive packets");
                 }
-                System.out.println("Connected successfully with " + opponent.getName() + "@" + address.getHostAddress());
-            } catch(Exception e) {
-                e.printStackTrace();
+                address = packet.getAddress();
+                byte[] data = packet.getData();
+                foreign = new ByteValidator(data);
+
+                if(!checkValue.isFromTheSameHost(data)) {
+                    if(checkValue.containsTheSameSum(data)){
+                        System.out.println(address + " wants to connect with me");
+                        makeConnectionAsClient();
+                    } else {
+                        isServer = true;
+                        System.out.println("I want to connect with " + data + "@" + address);
+                        sendClientNotification();
+                        makeConnectionAsServer();
+                    }
+                    exchangePlayers();
+                }
             }
+            System.out.println("Connected successfully with " + opponent.getName() + "@" + address.getHostAddress());
         }
     }
 
-    public void exchangePlayers()
+    private void exchangePlayers()
     {
         try {
-            oout = new ObjectOutputStream(playersocket.getOutputStream());
-            oin = new ObjectInputStream(playersocket.getInputStream());
+            ObjectOutputStream oout = new ObjectOutputStream(playersocket.getOutputStream());
 
-            new Thread(new NetworkPlayerListener()).start();
-            //Thread.sleep(1000);
+            new Thread(new NetworkPlayerObjectListener(this)).start();
             oout.writeObject(player);
 
             synchronized(lockedOpponent) {
+                // the order of the players is important
                 if(isServer) {
                     players.add(player);
                     players.add(opponent);
@@ -191,7 +214,7 @@ class NetworkGameFinder
 
             gameFound = true;
         } catch (Exception e) {
-            e.printStackTrace();
+            System.out.println("Failed to send the player object to socket");
         }
     }
 }

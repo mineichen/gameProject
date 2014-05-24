@@ -28,6 +28,20 @@ public class InputGameParams {
     public InputGameParams(String player2){
         setGameParameters(player2);
     }
+
+    /**
+     * Creates a dialog and asks for the name of the player
+     */
+    public static String askForPlayerName()
+    {
+        JTextField name = new JTextField();
+        Object[] dialogElements = {"Name Player", name};
+
+        JOptionPane pane1 = new JOptionPane(dialogElements, JOptionPane.PLAIN_MESSAGE, JOptionPane.OK_CANCEL_OPTION);
+        pane1.createDialog(null, "Spielernamen eingeben").setVisible(true);
+
+        return name.getText();
+    }
     
     /**
      * Set the game parameters with dialog inputs
