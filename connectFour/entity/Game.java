@@ -29,7 +29,7 @@ public class Game implements GameInterface, Serializable, Cloneable
     private final int winNumber;
     private final int cols;
     private final int rows;
-    private final int[] colCounter;
+    private int[] colCounter;
     private final PlayerInterface[] players;
     private transient EventDispatcher<DiscMoveEvent> dispatcher;
     /**
@@ -38,7 +38,7 @@ public class Game implements GameInterface, Serializable, Cloneable
      * 2
      * 1 2 3 <-cols
      */
-    private final Disc[][] discs;
+    private Disc[][] discs;
     private static final Direction[] checkDirections = {
         Direction.WEST, 
         Direction.SOUTHWEST, 
@@ -212,7 +212,15 @@ public class Game implements GameInterface, Serializable, Cloneable
     public Object clone()  
     {
         try {
-            return super.clone();
+            Game game = (Game)super.clone();
+            game.dispatcher = new EventDispatcher<>();
+            game.colCounter = this.colCounter.clone();
+            game.discs = new Disc[this.cols][this.rows];
+            for(int i=0;i<game.cols;i++) {
+                game.discs[i] = this.discs[i].clone();
+            }
+            
+            return game;
         } catch(CloneNotSupportedException e) {
             throw new RuntimeException("Game is not Clonable");
         }

@@ -8,11 +8,13 @@ package connectFour.View;
 import connectFour.GameBackend;
 import connectFour.GameLoadedCallback;
 import connectFour.GameProject;
+import connectFour.MinMaxKI;
 import connectFour.entity.Game;
 import connectFour.entity.GameController;
 import connectFour.entity.GameInterface;
 import connectFour.entity.GuiPlayer;
 import connectFour.entity.KIPlayerMike;
+import connectFour.entity.KiPlayer;
 import connectFour.entity.NetworkPlayer;
 import connectFour.entity.PlayerInterface;
 import java.awt.Component;
@@ -83,6 +85,28 @@ public class MainController {
         
         Game game = new Game(gameRows, gameCols, 4, player1, playerki);
         playerki.bind(game);
+        
+        GameController ctrl = new GameController(game);
+        view.bind(game);
+        return game;
+    }
+    
+    public GameInterface newGameKIKusi(ViewInterface view) throws IOException{
+        setGameParams("KI Kusi");
+        MinMaxKI ki= new MinMaxKI();
+        GuiPlayer player1 = new GuiPlayer(
+            namePlayer1,
+            ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png"))
+        );
+        KiPlayer playerki = new KiPlayer(
+            namePlayer2,
+            ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),
+            ki
+        );
+        player1.bind(view);
+        
+        Game game = new Game(gameRows, gameCols, 4, playerki, player1);
+        ki.bind(game);
         
         GameController ctrl = new GameController(game);
         view.bind(game);

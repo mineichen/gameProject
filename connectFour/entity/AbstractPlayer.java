@@ -60,8 +60,7 @@ public abstract class AbstractPlayer implements PlayerInterface
     protected void abstractWriteObject(ObjectOutputStream out) throws IOException {
         out.defaultWriteObject();
         out.writeObject(name);
-        ImageIO.write((RenderedImage)image, "PNG", out);
-        
+        ImageIO.write((RenderedImage)image, "PNG", out);    
     }
 
     @Override
