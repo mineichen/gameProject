@@ -87,8 +87,7 @@ public class MainController {
         playerki.bind(game);
         
         GameController ctrl = new GameController(game);
-        view.bind(game);
-        return game;
+        view.bind(game); return game;
     }
     
     public GameInterface newGameKIKusi(ViewInterface view) throws IOException{
@@ -197,9 +196,8 @@ public class MainController {
     /**
      * Search a game via UDP
      * @param view
-     * @return game
      */
-    public GameInterface searchUDPGame(ViewInterface view) throws IOException
+    public void searchUDPGame(ViewInterface view) throws IOException
     {
         String playername = InputGameParams.askForPlayerName();
         GuiPlayer player = new GuiPlayer(
@@ -207,16 +205,7 @@ public class MainController {
             ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png"))
         );
 
-        player.bind(view);
-        NetworkGameFinder udpSearch = new NetworkGameFinder(player);
-        Game game = new Game(10,10,4, udpSearch.startSearch());
-        udpSearch.getNetworkPlayer().bind(game);
-
-        // change the image, so the players don't have both the red dot
-        player.setImage(ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")));
-        GameController ctrl = new GameController(game);
-        view.bind(game);
-        return game;
+        new Thread(new NetworkGameFinder(player, view)).start();
     }
     
     private void setGameParams(String player2) {

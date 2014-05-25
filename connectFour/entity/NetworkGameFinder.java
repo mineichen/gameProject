@@ -19,14 +19,15 @@ import javax.swing.ImageIcon;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
 
-import connectFour.View.View;
+import connectFour.View.ViewInterface;
+import connectFour.GameProject;
 
 /**
  * Class for finding games over the network via UDP
  *
  * @author efux
  */
-public class NetworkGameFinder
+public class NetworkGameFinder implements Runnable
 {
     private boolean gameFound = false;
     private boolean isServer = false;
@@ -40,6 +41,7 @@ public class NetworkGameFinder
     private final int port = 8921;
     private int tcpport = 9999;
 
+    private ViewInterface view;
     private GuiPlayer player;
     private NetworkPlayer opponent;
     private Socket playersocket;
@@ -65,12 +67,30 @@ public class NetworkGameFinder
      *
      * @param player The Guiplayer to send to the opponent
      */
-    public NetworkGameFinder(GuiPlayer player)
+    public NetworkGameFinder(GuiPlayer player, ViewInterface view)
     {
         this.player = player;
+        this.view = view;
 
         players = new ArrayList<PlayerInterface>();
         checkValue = new ByteValidator();
+    }
+
+    public void run()
+    {
+        player.bind(view);
+        Game game = new Game(10,10,4, startSearch());
+
+        // change the image, so the players don't have both the red dot
+        try {
+            player.setImage(ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")));
+        } catch(IOException e) {
+            System.out.println("Failed to load image");
+        }
+
+        GameController ctrl = new GameController(game);
+        getNetworkPlayer().bind(game);
+        view.bind(game);
     }
 
     /**
@@ -78,7 +98,7 @@ public class NetworkGameFinder
      *
      * @return An array with the players of a game in the correct order
      */
-    public PlayerInterface[] startSearch()
+    private PlayerInterface[] startSearch()
     {
         try {
             socket = new DatagramSocket(port, InetAddress.getByName("0.0.0.0"));
