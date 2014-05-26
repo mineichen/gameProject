@@ -110,7 +110,7 @@ public class NetworkGameFinder implements Runnable
             while(!gameFound) {
                 sendBroadcast();
                 // the timeout is necessary, so the connection attempt doesn't get interrupted by other arriving packets
-                Thread.sleep(10000);
+                Thread.sleep(3000);
             }
             socket.close();
             System.out.println("Opponent name: " + opponent.getName());
