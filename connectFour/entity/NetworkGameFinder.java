@@ -112,6 +112,7 @@ public class NetworkGameFinder implements Runnable
                 // the timeout is necessary, so the connection attempt doesn't get interrupted by other arriving packets
                 Thread.sleep(10000);
             }
+            socket.close();
             System.out.println("Opponent name: " + opponent.getName());
         } catch(Exception e) {
             System.out.println("Failed to create an UDP socket or to send packets");
