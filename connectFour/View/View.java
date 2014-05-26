@@ -38,6 +38,7 @@ import java.awt.event.ComponentAdapter;
 import java.io.IOException;
 import java.util.HashMap;
 import javax.imageio.ImageIO;
+import javax.swing.JOptionPane;
 /**
  *
  * @author mike
@@ -238,6 +239,10 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         System.out.println("Is Winner Move: " + ((e.isWinnerMove()) ? "yes" : "no"));
         addDisc(e.getDisc());
         status.setText("Player " + game.getCurrentPlayer().getName() + " has to move");
+        if(e.isWinnerMove()){
+            JOptionPane.showMessageDialog(mainWindow, "Player " + game.getCurrentPlayer().getName() + " has won the game");
+            System.exit(0);
+        }
     }
     
 }

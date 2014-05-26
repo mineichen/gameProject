@@ -78,6 +78,17 @@ public abstract class AbstractPlayer implements PlayerInterface
     {
         return this.equals(player);
     }
+
+    /**
+     * set the image of this Player
+     *
+     * @param img The image of this player
+     */
+    public void setImage(Image img)
+    {
+        image = img;
+    }
+
     /**
      * Returns the name of this Player
      * 
