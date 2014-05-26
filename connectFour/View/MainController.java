@@ -14,6 +14,7 @@ import connectFour.entity.GameController;
 import connectFour.entity.GameInterface;
 import connectFour.entity.GuiPlayer;
 import connectFour.entity.KIPlayerMike;
+import connectFour.entity.KiPlayer;
 import connectFour.entity.NetworkPlayer;
 import connectFour.entity.NetworkGameFinder;
 import connectFour.entity.PlayerInterface;
@@ -103,25 +104,20 @@ public class MainController {
      * @throws IOException
      */
     public GameInterface newGameKIKusi(ViewInterface view) throws IOException{
-        setGameParams("KI Kusi");
         MinMaxKI ki= new MinMaxKI();
         GuiPlayer player1 = new GuiPlayer(
-            namePlayer1,
+            "Du",
             ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png"))
         );
-        /*KIPlayerMike playerki = new KIPlayerMike(
-            namePlayer2,
+        KiPlayer playerki = new KiPlayer(
+            "Gegner",
             ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),
             ki
-        );*/
-        KIPlayerMike playerki = new KIPlayerMike(
-            namePlayer2,
-            ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png"))
         );
 
         player1.bind(view);
         
-        Game game = new Game(gameRows, gameCols, 4, playerki, player1);
+        Game game = new Game(7, 6, 4, player1, playerki);
         ki.bind(game);
         
         GameController ctrl = new GameController(game);

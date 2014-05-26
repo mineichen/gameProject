@@ -112,6 +112,6 @@ public abstract class AbstractPlayer implements PlayerInterface
     {
         return o != null
             && o.getClass() == this.getClass()
-            && ((AbstractPlayer) o).getName() == this.name;
+            && ((AbstractPlayer) o).getName().equals(this.name);
     }
 }
