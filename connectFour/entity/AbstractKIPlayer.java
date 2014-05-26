@@ -7,14 +7,17 @@
 package connectFour.entity;
 
 import java.awt.Image;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  *
  * @author mike
  */
-public abstract class AbstractKIPlayer extends AbstractPlayer {
+public abstract class AbstractKIPlayer extends AbstractPlayer implements Serializable{
     
-    protected transient GameInterface game;
+    protected GameInterface game;
     
     public AbstractKIPlayer(String name, Image image){
         super(name, image);
@@ -24,4 +27,11 @@ public abstract class AbstractKIPlayer extends AbstractPlayer {
         this.game = game;
     }
     
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        abstractReadObject(in);    
+    }
+    
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        abstractWriteObject(out);
+    }
 }

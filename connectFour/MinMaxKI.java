@@ -22,7 +22,7 @@ public class MinMaxKI
 {
 
     private GameInterface game;
-    private int level = 8;  
+    private int level = 7;  
     private PlayerInterface tPlayer;
     private ExecutorService executor;
     private boolean makeThread= true;

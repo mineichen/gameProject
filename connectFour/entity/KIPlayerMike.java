@@ -8,13 +8,14 @@ package connectFour.entity;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
 import java.awt.Image;
+import java.io.Serializable;
 import java.util.ArrayList;
 
 /**
  *
  * @author mike
  */
-public class KIPlayerMike extends AbstractKIPlayer {
+public class KIPlayerMike extends AbstractKIPlayer  {
 
     //Intern Data structur of the KI
     private PlayerInterface grid[][];
