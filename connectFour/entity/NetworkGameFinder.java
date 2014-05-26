@@ -206,6 +206,7 @@ public class NetworkGameFinder implements Runnable
                         sendClientNotification();
                         makeConnectionAsServer();
                     }
+                    gameFound = true;
                     exchangePlayers();
                 }
             }
@@ -233,7 +234,7 @@ public class NetworkGameFinder implements Runnable
             }
             System.out.println("set gamefound = true") ;
 
-            gameFound = true;
+            
         } catch (Exception e) {
             System.out.println("Failed to send the player object to socket");
         }
