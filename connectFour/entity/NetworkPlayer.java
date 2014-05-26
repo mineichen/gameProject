@@ -15,7 +15,7 @@ import java.io.InputStream;
 import java.net.Socket;
 
 /**
- * Description
+ * NetworkPlayer is a player which listens to the network and sends moves to opponents
  *
  * @author  efux
  */
@@ -24,7 +24,14 @@ public class NetworkPlayer extends AbstractPlayer implements EventListener<DiscM
     private Socket socket;
     protected Game game ;
     protected NetworkThread networkThread;
-    
+   
+    /**
+     * Default constructor
+     *
+     * @param name Name of the player
+     * @param image Image of the player
+     * @param socket Socket of the network opponent, has to be established before creating this object
+     */
     public NetworkPlayer(String name, Image image, Socket socket)
     {
         super(name, image);
@@ -32,12 +39,22 @@ public class NetworkPlayer extends AbstractPlayer implements EventListener<DiscM
         new NetworkThread(this).start();
     }
 
+    /**
+     * Binds the game to this player so the player gets informed about all the moves
+     *
+     * @param game The game in which this player is
+     */
     public void bind(Game game)
     {
         this.game = game ;
         game.addEventListener(this) ;
     }
 
+    /**
+     * This method gets called by the controller when a player makes a move
+     *
+     * @param event The DiscMoveEvent
+     */
     @Override
     public void on(DiscMoveEvent event) 
     {
@@ -57,6 +74,9 @@ public class NetworkPlayer extends AbstractPlayer implements EventListener<DiscM
         throw new RuntimeException("KI Player performed forbidden move");
     }
     
+    /**
+     * This Thread listens to the network traffic and creates the events from the opponents for this game
+     */
     private class NetworkThread extends Thread
     {
         private final PlayerInterface playerInterface;

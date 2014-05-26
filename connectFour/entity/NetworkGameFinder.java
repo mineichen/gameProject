@@ -29,9 +29,7 @@ import connectFour.GameProject;
  */
 public class NetworkGameFinder implements Runnable
 {
-    private boolean gameFound = false;
-    private boolean isServer = false;
-
+    private boolean gameFound = false; private boolean isServer = false; 
     /**
      * Socket for sending UDP packets
      */
@@ -107,10 +105,14 @@ public class NetworkGameFinder implements Runnable
             Thread serverListener = new Thread(new UDPPacketReceiver());
             serverListener.start();
 
+            int timer = 49;
             while(!gameFound) {
-                sendBroadcast();
-                // the timeout is necessary, so the connection attempt doesn't get interrupted by other arriving packets
-                Thread.sleep(3000);
+                timer++;
+                if(timer>=50) {
+                    sendBroadcast();
+                    timer=0;
+                }
+                Thread.sleep(500);
             }
             socket.close();
             System.out.println("Opponent name: " + opponent.getName());
