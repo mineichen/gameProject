@@ -8,7 +8,6 @@ package connectFour.entity;
 
 import connectFour.EventListener;
 import connectFour.InvalidInputException ;
-import connectFour.entity.Disc;
 import java.util.List;
 
 /**

@@ -6,18 +6,7 @@
 
 package connectFour;
 
-import connectFour.View.MainController;
-import connectFour.entity.Game;
-import connectFour.entity.GuiPlayer;
-import connectFour.entity.PlayerInterface;
 import connectFour.View.View;
-import connectFour.entity.GameController;
-import connectFour.entity.KIPlayerMike;
-import java.awt.Color;
-import java.io.File;
-import java.io.IOException;
-import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 
 /**
  *

@@ -9,15 +9,11 @@ package connectFour.entity;
 import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
-import java.awt.Image;
-import java.awt.image.BufferedImage;
 import java.io.IOException;
 import java.io.Serializable;
 import java.util.Arrays;
-import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
-import java.util.Queue;
 
 /**
  *
