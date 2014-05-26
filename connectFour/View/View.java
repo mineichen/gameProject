@@ -231,7 +231,6 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
     @Override
     public void on(DiscMoveEvent e)
     {
-        System.out.println("Is Winner Move: " + ((e.isWinnerMove()) ? "yes" : "no"));
         addDisc(e.getDisc());
         status.setText("Player " + game.getCurrentPlayer().getName() + " has to move");
         if(e.isWinnerMove()){
