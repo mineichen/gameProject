@@ -92,9 +92,10 @@ public class NetworkPlayer extends AbstractPlayer implements EventListener<DiscM
             try {
                 InputStream in = socket.getInputStream();
                 
+                int data = in.read();
                 while(data != -1) {
-                    int data = in.read();
                     dispatcher.dispatch(new MoveEvent(game.getCurrentPlayer(), data));
+                    data = in.read();
                 }
             } catch(IOException e) {
                 System.out.println(e.getMessage());
