@@ -241,6 +241,7 @@ public class View implements ViewInterface, EventListener<DiscMoveEvent> {
         status.setText("Player " + game.getCurrentPlayer().getName() + " has to move");
         if(e.isWinnerMove()){
             JOptionPane.showMessageDialog(mainWindow, "Player " + game.getCurrentPlayer().getName() + " has won the game");
+            System.exit(0);
         }
     }
     
