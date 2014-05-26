@@ -8,6 +8,9 @@ package connectFour;
 import connectFour.entity.GameInterface;
 import connectFour.entity.MoveEvent;
 import connectFour.entity.PlayerInterface;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
@@ -18,14 +21,18 @@ import java.util.concurrent.Future;
  *
  * @author mineichen
  */
-public class MinMaxKI
+public class MinMaxKI implements Serializable
 {
-
     private GameInterface game;
     private int level = 7;  
     private PlayerInterface tPlayer;
-    private ExecutorService executor;
+    private transient ExecutorService executor;
     private boolean makeThread= true;
+    
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        in.defaultReadObject();
+        executor = Executors.newFixedThreadPool(game.getCols() + 1);
+    }
     
     public void bind(GameInterface game)
     {

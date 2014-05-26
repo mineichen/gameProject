@@ -10,12 +10,15 @@ import connectFour.EventListener;
 import connectFour.InvalidInputException;
 import connectFour.MinMaxKI;
 import java.awt.Image;
+import java.io.IOException;
+import java.io.ObjectOutputStream;
+import java.io.Serializable;
 
 /**
  *
  * @author mineichen
  */
-public class KiPlayer extends AbstractPlayer
+public class KiPlayer extends AbstractPlayer implements Serializable
 {
     private MinMaxKI ki;
     
@@ -23,6 +26,14 @@ public class KiPlayer extends AbstractPlayer
     {
         super(name, image);
         this.ki = ki;
+    }
+    
+    private void readObject(java.io.ObjectInputStream in) throws IOException, ClassNotFoundException {
+        abstractReadObject(in);    
+    }
+    
+    private void writeObject(ObjectOutputStream out) throws IOException {
+        abstractWriteObject(out);
     }
     
     public void addEventListener(EventListener<MoveEvent> e) 
