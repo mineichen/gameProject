@@ -68,9 +68,14 @@ public class MainController {
         view.bind(game);
         return game;
     }
-    
-    
-    
+
+    /**
+     * Create a new game with KIMike
+     * 
+     * @param view
+     * @return game
+     * @throws IOException
+     */
     public GameInterface newGameKIMike(ViewInterface view) throws IOException{
         setGameParams("KI Mike");
         GuiPlayer player1 = new GuiPlayer(
@@ -90,6 +95,13 @@ public class MainController {
         view.bind(game); return game;
     }
     
+    /**
+     * Create a new game with KIMike
+     * 
+     * @param view
+     * @return game
+     * @throws IOException
+     */
     public GameInterface newGameKIKusi(ViewInterface view) throws IOException{
         setGameParams("KI Kusi");
         MinMaxKI ki= new MinMaxKI();
@@ -118,32 +130,10 @@ public class MainController {
     }
 
     /**
-     * Create a game for the server to play over network
-     *
+     * Save the current game
+     * @param game
      * @param view
-     * @return game
-     * @throws IOException
      */
-    public GameInterface findNetworkPlayer(ViewInterface view) throws IOException {
-
-        ServerSocket server = new ServerSocket(1111);
-
-        NetworkPlayer player = new NetworkPlayer(
-                "Markus",
-                ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png")),
-                server.accept()
-        );
-        GuiPlayer player2 = new GuiPlayer("Mike", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")));
-        player2.bind(view);
-
-        Game game = new Game(30, 31, 5, player, player2);
-        GameController ctrl = new GameController(game);
-
-        view.bind(game);
-        player.bind(game);
-        return game;
-    }
-
     public void saveGame(GameInterface game, Component view)
     {
         try {
@@ -153,6 +143,10 @@ public class MainController {
         }
     }
     
+    /**
+     * Load a saved game
+     * @param view
+     */
     public void loadGame(ViewInterface view)
     {
         final ViewInterface viewForInnerClass = view;
@@ -169,29 +163,6 @@ public class MainController {
         });
     }
     
-    /**
-     * Create a game for the client to play over network
-     *
-     * @param view
-     * @return game
-     * @throws IOException
-     */
-    public GameInterface connectNetworkGame(ViewInterface view) throws IOException {
-        GuiPlayer player = new GuiPlayer("Markus", ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png")));
-        player.bind(view);
-        NetworkPlayer player2 = new NetworkPlayer(
-                "Mike",
-                ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),
-                new Socket("localhost", 1111)
-        );
-
-        Game game = new Game(30, 31, 5, player, player2);
-        GameController ctrl = new GameController(game);
-
-        view.bind(game);
-        player2.bind(game);
-        return game;
-    }
 
     /**
      * Search a game via UDP

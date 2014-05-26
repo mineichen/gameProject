@@ -35,8 +35,6 @@ public class ViewMenu extends JMenuBar {
         JMenuItem filePlayerPlayer = new JMenuItem("New Game Player vs. Player");
         JMenuItem filePlayerKIMike = new JMenuItem("New Game Player vs. KI Mike");
         JMenuItem filePlayerKIKusi = new JMenuItem("New Game Player vs. KI Kusi");
-        JMenuItem fileFindNetwork = new JMenuItem("New Game as Network host");
-        JMenuItem fileConnectNetworkGame = new JMenuItem("Connect to a network game as client");
         JMenuItem fileSearchUDPGame = new JMenuItem("Search a network game");
         JMenuItem fileSave = new JMenuItem("Save");
         JMenuItem fileLoad = new JMenuItem("Load");
@@ -44,8 +42,6 @@ public class ViewMenu extends JMenuBar {
         menuFile.add(filePlayerPlayer);
         menuFile.add(filePlayerKIMike);
         menuFile.add(filePlayerKIKusi);
-        menuFile.add(fileFindNetwork);
-        menuFile.add(fileConnectNetworkGame);
         menuFile.add(fileSearchUDPGame);
         menuFile.addSeparator();
         menuFile.add(fileSave);
@@ -87,26 +83,6 @@ public class ViewMenu extends JMenuBar {
             }
         });
 
-        fileFindNetwork.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    mainContr.findNetworkPlayer(view);                    
-                } catch(IOException ioException) {
-                    System.out.println("Error loading Images");
-                }
-            }
-        });
-        
-        fileConnectNetworkGame.addActionListener(new ActionListener() {
-            public void actionPerformed(ActionEvent e) {
-                try {
-                    mainContr.connectNetworkGame(view);
-                } catch(IOException ioException) {
-                    System.out.println("Error loading Images");
-                }
-            }
-        });
-
         fileSearchUDPGame.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
                 try {
@@ -140,13 +116,4 @@ public class ViewMenu extends JMenuBar {
         });
     }
 
-    /**
-     * Create the main frame's menu bar.
-     *
-     * @param frame The frame that the menu bar should be added to.
-     */
-    private void makeMenuBar(JFrame frame) {
-
-        
-    }
 }
