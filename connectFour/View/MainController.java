@@ -92,20 +92,19 @@ public class MainController {
     }
     
     public GameInterface newGameKIKusi(ViewInterface view) throws IOException{
-        setGameParams("KI Kusi");
         MinMaxKI ki= new MinMaxKI();
         GuiPlayer player1 = new GuiPlayer(
-            namePlayer1,
+            "Du",
             ImageIO.read(GameProject.class.getResource("/connectFour/images/default_red_dot.png"))
         );
         KiPlayer playerki = new KiPlayer(
-            namePlayer2,
+            "Gegner",
             ImageIO.read(GameProject.class.getResource("/connectFour/images/default_yellow_dot.png")),
             ki
         );
         player1.bind(view);
         
-        Game game = new Game(gameRows, gameCols, 4, playerki, player1);
+        Game game = new Game(7, 6, 4, player1, playerki);
         ki.bind(game);
         
         GameController ctrl = new GameController(game);
