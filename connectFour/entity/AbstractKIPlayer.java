@@ -6,8 +6,6 @@
 
 package connectFour.entity;
 
-import connectFour.EventListener;
-import connectFour.InvalidInputException;
 import java.awt.Image;
 
 /**

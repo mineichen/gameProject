@@ -7,9 +7,7 @@
 package connectFour.entity;
 
 import java.awt.Image;
-import java.awt.image.RenderedImage;
 import java.io.Serializable;
-import javax.swing.ImageIcon;
 
 /**
  *

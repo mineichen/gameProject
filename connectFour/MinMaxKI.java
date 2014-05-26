@@ -5,18 +5,14 @@
  */
 package connectFour;
 
-import connectFour.entity.Game;
 import connectFour.entity.GameInterface;
 import connectFour.entity.MoveEvent;
 import connectFour.entity.PlayerInterface;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
-import java.util.concurrent.TimeUnit;
-import javax.security.auth.callback.Callback;
 
 /**
  *

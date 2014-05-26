@@ -6,14 +6,10 @@
 
 package connectFour.entity;
 
-import javax.swing.ImageIcon;
-import connectFour.EventDispatcher;
 import connectFour.EventListener;
 import connectFour.InvalidInputException;
-import connectFour.View.View;
 import connectFour.View.ViewInterface;
 import java.awt.Image;
-import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;

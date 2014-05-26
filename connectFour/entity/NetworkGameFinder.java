@@ -8,14 +8,11 @@ package connectFour.entity;
 
 import java.net.DatagramSocket;
 import java.net.DatagramPacket;
-import java.net.NetworkInterface;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.net.ServerSocket;
-import java.awt.Image;
 import java.util.ArrayList;
 import javax.imageio.ImageIO;
-import javax.swing.ImageIcon;
 import java.io.ObjectOutputStream;
 import java.io.IOException;
 

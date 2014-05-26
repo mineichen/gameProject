@@ -15,16 +15,11 @@ import connectFour.entity.GameInterface;
 import connectFour.entity.GuiPlayer;
 import connectFour.entity.KIPlayerMike;
 import connectFour.entity.KiPlayer;
-import connectFour.entity.NetworkPlayer;
 import connectFour.entity.NetworkGameFinder;
 import connectFour.entity.PlayerInterface;
 import java.awt.Component;
 import java.io.IOException;
-import java.net.ServerSocket;
-import java.net.Socket;
 import javax.imageio.ImageIO;
-import javax.swing.JOptionPane;
-import javax.swing.JTextField;
 
 /**
  * Controller of the menu in main window
